@@ -68,7 +68,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
                return DataManager.Products.SearchFor(t => t.CategoryId == catId && t.Published);
             }
 
-
+  
         }
 
 

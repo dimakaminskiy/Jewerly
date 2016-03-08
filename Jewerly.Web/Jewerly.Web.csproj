@@ -193,6 +193,7 @@
     <Compile Include="Areas\Admin\Controllers\SpecificationAttributeOptionsController.cs" />
     <Compile Include="Areas\Default\Controllers\AboutController.cs" />
     <Compile Include="Areas\Default\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Default\Controllers\ManageController.cs" />
     <Compile Include="Areas\Default\Controllers\ReviewsController.cs" />
     <Compile Include="Areas\Default\Controllers\ShoppingCartController.cs" />
     <Compile Include="Areas\Default\Controllers\StoreController.cs" />
@@ -348,6 +349,13 @@
     <Content Include="Areas\Default\Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_SiteAccountMenu.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_RegisterPartial.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_MustConfirmEmail.cshtml" />
+    <Content Include="Areas\Default\Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Areas\Default\Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Areas\Default\Views\Account\ResetPassword.cshtml" />
+    <Content Include="Areas\Default\Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Areas\Default\Views\Manage\Index.cshtml" />
+    <Content Include="Areas\Default\Views\Manage\ChangePassword.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />

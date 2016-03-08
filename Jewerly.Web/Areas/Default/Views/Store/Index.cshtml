@@ -57,22 +57,29 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <div>
-                    <button type="button" class="btn btn-default exchange" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">
+
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Сумма 179,99">
                         <div id="exchange">
                             <span>Валюта</span> /
                             <span>грн</span>
                         </div>
                     </button>
 
-                    <div id="popover_content_exchange" style="display: none">
-                        <div>Выберите валюту</div>
-                        <button class="btn btn-default btn-md" type="button">грн</button>
-                        <button class="btn btn-default btn-md" type="button">грн</button>
-                        <button class="btn btn-default btn-md" type="button">грн</button>
 
-                        <button class="btn btn-default btn-sm pull-right" type="button">Принять</button>
+
+                    <div class="dropdown-menu popover popover-content">
+                        <div>
+                            <div>Выберите валюту</div>
+                            <button class="btn btn-default btn-md" type="button">грн</button>
+                            <button class="btn btn-default btn-md" type="button">грн</button>
+                            <button class="btn btn-default btn-md" type="button">грн</button>
+
+                            <button class="btn btn-default btn-sm pull-right" type="button">Принять</button>
+                        </div>
                     </div>
+
+
                 </div>
 
             </div>

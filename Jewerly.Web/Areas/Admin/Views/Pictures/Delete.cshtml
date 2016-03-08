@@ -1,57 +1,43 @@
-﻿@model Jewerly.Domain.Picture
+﻿@using Jewerly.Web.Utils
+@model Jewerly.Domain.Picture
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Изображения товаров";
     Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Удаление</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Подтвердите удаление</h3>
 <div>
-    <h4>Picture</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Path)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Path)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Caption)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Caption)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AltAttribute)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AltAttribute)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TitleAttribute)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TitleAttribute)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+    <h4>Изображение товара</h4>
+    <hr/>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Path)
+            </div>
+            <div class="col-md-10">
+                <img class="img-responsive shadow" src="@Model.Preview()" alt="@Model.Path" title="@Model.Path" />
+            </div>
         </div>
-    }
-</div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Caption)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Caption)
+            </div>
+        </div>
+
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Удалить" class="btn btn-primary" />
+                <a href="@Url.Action("Index", "Pictures")" class="btn btn-default">Назад</a>
+            </div>
+        }
+    </div>

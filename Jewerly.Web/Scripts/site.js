@@ -1,25 +1,5 @@
 ﻿
-    //корзина
-    $(function (e) {
-        $('[data-toggle="popover"].cart').popover({
-            html: true,
-            content: function () {
-                return $('#popover_content_wrapper').html();
-            }
-        });
-    });
-
-//валюта
-$(function (e) {
-    $('[data-toggle="popover"].exchange').popover({
-        html: true,
-        content: function () {
-            return $('#popover_content_exchange').html();
-        }
-    });
-});
-
-   
+ 
 //слайдер
 $('.carousel').carousel({
     interval: 5000,
@@ -94,7 +74,7 @@ function SetDiscountValueOnProductPicture() {
     $(".discount-nm").css("right", result);
 }
 
-//скролл для модальных окон
+//скролл для модальных окон и попавер
 function SetScrollPadding() {
 
     var height_document = $(document).height();

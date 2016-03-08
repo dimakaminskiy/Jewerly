@@ -18,6 +18,18 @@ namespace Jewerly.Web.Areas.Default.Controllers
     public class AccountController : BaseController
     {
 
+        #region Ctor
+
+        public AccountController(DataManager dataManager)
+            : base(dataManager)
+        {
+
+        }
+
+        #endregion
+
+        #region Fields
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -35,11 +47,12 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
         private IAuthenticationManager AuthenticationManager
         {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            get { return HttpContext.GetOwinContext().Authentication; }
         }
+
+        #endregion
+
+        #region Helpers
 
         private void AddErrors(IdentityResult result)
         {
@@ -49,18 +62,43 @@ namespace Jewerly.Web.Areas.Default.Controllers
             }
         }
 
-       public AccountController(DataManager dataManager)
-           : base(dataManager)
-       {
-        
-       }
+        private string GetRegisterMessge(string link, string code)
+        {
+            // var settings = new FashionStones.Utils.EmailSettings();
+            var tb = new TagBuilder("a");
+            tb.MergeAttribute("href", link);
+            tb.SetInnerText(link);
+            tb.ToString(TagRenderMode.SelfClosing);
 
-        // GET: Default/Account
+            var callBack = new TagBuilder("a");
+            callBack.MergeAttribute("href", code);
+            callBack.SetInnerText("ссылке");
+            callBack.ToString(TagRenderMode.SelfClosing);
+
+
+            return string.Format("Регистрация на сайте {0}" + "{2}" +
+                           "Здравствуйте! {2}" +
+                            "Поздравляем, Вы зарегистрировались на сайте {0} {2}" +
+                            "Для завершения регистрации, перейдите, пожалуйста, по этой {1}.{2}" +
+                             "С уважением, команда {3}", link, callBack, "<br/>", tb);
+        }
+
+        #endregion
+
+        #region Actions
+
+        #region Index
+
         public ActionResult Index()
         {
             return View();
         }
-         [AjaxOnly]
+
+        #endregion
+
+        #region Login
+
+        [AjaxOnly]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -72,7 +110,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-       
+
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
@@ -113,13 +151,18 @@ namespace Jewerly.Web.Areas.Default.Controllers
             {
                 case SignInStatus.Success:
                     string url = Url.Action("Index", "Store");
-                    return Json(new { success = true, url = url });
+                    return Json(new {success = true, url = url});
                 default:
                     ModelState.AddModelError("", @"Неверное имя пользователя или пароль");
                     return PartialView("_LoginPartial", model);
             }
 
         }
+
+        #endregion
+
+        #region Register
+
         [AllowAnonymous]
         [AjaxOnly]
         public ActionResult Register()
@@ -127,13 +170,13 @@ namespace Jewerly.Web.Areas.Default.Controllers
             var countries = DataManager.Countries.GetAll().OrderBy(t => t.Name).ToList();
             if (countries.Any())
             {
-                ViewBag.CountryId =  new SelectList(countries, "Id", "Name",countries.First().Id);  
+                ViewBag.CountryId = new SelectList(countries, "Id", "Name", countries.First().Id);
             }
             else
             {
-                ViewBag.CountryId = new SelectList(countries, "Id", "Name");   
+                ViewBag.CountryId = new SelectList(countries, "Id", "Name");
             }
-            
+
             return PartialView("_RegisterPartial");
         }
 
@@ -148,13 +191,13 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 if (UserManager.Users.Any(t => t.Email == model.Email))
                 {
                     ModelState.AddModelError("", @"Пользователь с таким email уже зарегистрирован");
-                    //   ViewBag.CountryId = new SelectList(db.Coutries.GetAll().ToList(), "Id", "Name", model.CountryId);
+                    ViewBag.CountryId = new SelectList(DataManager.Countries.GetAll().OrderBy(t=>t.Name), "Id", "Name", model.CountryId);
                     return PartialView("_RegisterPartial", model);
                 }
                 if (UserManager.Users.Any(t => t.PhoneNumber == model.Phone))
                 {
                     ModelState.AddModelError("", @"Пользователь с таким номером телефоном уже зарегистрирован");
-                    // ViewBag.CountryId = new SelectList(DataManager.Coutries.GetAll().ToList(), "Id", "Name", model.CountryId);
+                    ViewBag.CountryId = new SelectList(DataManager.Countries.GetAll().OrderBy(t => t.Name), "Id", "Name", model.CountryId);
                     return PartialView("_RegisterPartial", model);
                 }
 
@@ -181,10 +224,12 @@ namespace Jewerly.Web.Areas.Default.Controllers
                     EmailSettings settings = new EmailSettings();
 
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    //await UserManager.SendEmailAsync(user.Id, "Регистрация " + settings.Link, GetRegisterMessge(settings.Link, callbackUrl));
-                    //return PartialView("_MustConfirmEmail", model);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Регистрация " + settings.Link, GetRegisterMessge(settings.Link, callbackUrl));
 
+                    ViewBag.Name = model.FirstName + " " + model.LastName;
+                    ViewBag.Email = model.Email;
+                    return PartialView("_MustConfirmEmail");
 
                 }
 
@@ -194,6 +239,9 @@ namespace Jewerly.Web.Areas.Default.Controllers
             return PartialView("_RegisterPartial", model);
         }
 
+        #endregion
+
+        #region LogOff
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -203,5 +251,138 @@ namespace Jewerly.Web.Areas.Default.Controllers
             return RedirectToAction("Index", "Store");
         }
 
-    }
+        #endregion
+
+        #region ForgotPassword
+
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/ForgotPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByNameAsync(model.Email);
+                //if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                //{
+                //    // Don't reveal that the user does not exist or is not confirmed
+                //    return View("ForgotPasswordConfirmation");
+                //}
+
+                //var user = await UserManager.FindByNameAsync(model.Email);
+
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("", @"Пользователь с таким e-mail не зарегистрирован");
+                    return View(model);
+                }
+
+
+
+                EmailSettings settings = new EmailSettings();
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new {userId = user.Id, code = code},
+                    protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Восстановление пароля",
+                    "Здравствуйте! <br/>Вы отправили запрос на восстановление пароля от аккаунта " + user.Email +
+                    " .<br/>" +
+                    "Для того чтобы задать новый пароль, перейдите по  <a href=\"" + callbackUrl + "\">ссылке</a>" +
+                    "С уважением, команда <a href=\"" + settings.Link + "\">" + settings.Link + "</a>");
+                return View("ForgotPasswordConfirmation");
+
+
+
+                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                // Send an email with this link
+                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+
+        #endregion
+
+        #region ConfirmEmail
+
+        //
+        // GET: /Account/ConfirmEmail
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
+
+        #endregion
+
+        #region ResetPassword
+
+        //
+        // GET: /Account/ResetPassword
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string code)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            AddErrors(result);
+            return View();
+        }
+
+        //
+        // GET: /Account/ResetPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+        #endregion
+
+
+
+      }
+
+    #endregion
+
 }
