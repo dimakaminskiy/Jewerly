@@ -1,18 +1,15 @@
 ﻿@model Jewerly.Domain.Picture
 
 @{
-    ViewBag.Title = "Изображение";
+    ViewBag.Title = "Изображения товаров";
     Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
 }
 
-<h2>Create</h2>
-
-
+<h2>Создание</h2>
     
     <div class="form-horizontal">
-    <h4>Picture</h4>
+    <h4>Изображение товара</h4>
     <hr />
-
 
     <div id="avatar-crop-box">
         <div class="jc-demo-box">
@@ -46,22 +43,20 @@
             </div>
 
             
-
-           
-
-            <div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
                 <button id="Save" class="btn btn-default" onclick="SaveWithChek()">
                     Сохранить
                 </button>
                 <span class="field-validation-valid text-danger" data-valmsg-replace="true" data-valmsg-for="Image"></span>
-
             </div>
         </div>
-        
 
-        <div>
-            @Html.ActionLink("Back to List", "Index")
         </div>
+        
+<div>
+    <a href="@Url.Action("Index", "Pictures")" class="btn btn-default">Назад</a>
+</div>
 
         @section Scripts {
             <link href="~/Scripts/fine-uploader/fineuploader.css" rel="stylesheet" />

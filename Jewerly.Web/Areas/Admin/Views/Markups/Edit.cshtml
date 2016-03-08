@@ -1,54 +1,46 @@
 ﻿@model Jewerly.Domain.Markup
-
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Наценки";
     Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
 }
-
-<h2>Edit</h2>
-
+<h2>Редактировать</h2>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Markup</h4>
+        <h4>Наценки</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
-
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.Retail, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Retail, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Retail, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Retail, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Retail)
+                @Html.ValidationMessageFor(model => model.Retail)
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.Trade, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Trade, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Trade, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Trade, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Trade)
+                @Html.ValidationMessageFor(model => model.Trade)
             </div>
         </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Сохранить" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
-
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Index", "Markups")" class="btn btn-default">Назад</a>
 </div>

@@ -1,19 +1,24 @@
 ﻿@model Jewerly.Domain.CategoryPicture
 
 @{
-    ViewBag.Title = "Изображение";
+    ViewBag.Title = "Изображения категорий";
     Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
 }
 
-
+<h2>Создание</h2>
 @using (Html.BeginForm())
 {
-    <div>
+<h4>Изображение категории</h4>
+<hr />
+
+    <div class="form-horizontal">
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new {@class = "text-danger"})
 
         <div class="form-group">
-            <img src="" id="image-preview" alt="uploaded image" class="hidden"/>
+            <div class="col-md-12">
+                <img src="" id="image-preview" alt="uploaded image" class="hidden shadow" />
+            </div>
         </div>
 
         <div class="form-group">
@@ -28,10 +33,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Caption, htmlAttributes: new {@class = "control-label"})
-            <div>
-                @Html.EditorFor(model => model.Caption, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Caption, "", new {@class = "text-danger"})
+            @Html.LabelFor(model => model.Caption, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Caption, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Caption, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -53,13 +58,15 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default"/>
+                <input type="submit" value="Создать" class="btn btn-default"/>
             </div>
         </div>
     </div>
 
 }
-
+<div>
+    <a href="@Url.Action("Index", "CategoryPictures")" class="btn btn-default">Назад</a>
+</div>
 
 
 

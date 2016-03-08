@@ -1,49 +1,49 @@
 ﻿@model Jewerly.Domain.ChoiceAttributeOption
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Опции атрибутов выбора";
     Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Удаление</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Подтвердите удаление</h3>
 <div>
-    <h4>ChoiceAttributeOption</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductChoiceAttribute.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductChoiceAttribute.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DisplayOrder)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DisplayOrder)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
+    <h4>Опция атрибута выбора</h4>
+    <hr/>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.ProductChoiceAttribute.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.ProductChoiceAttribute.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.DisplayOrder)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.DisplayOrder)
+            </div>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Удалить" class="btn btn-primary" />
+            <a href="@Url.Action("Index", "ChoiceAttributeOptions")" class="btn btn-default">Назад</a>
         </div>
     }
-</div>
+    </div>

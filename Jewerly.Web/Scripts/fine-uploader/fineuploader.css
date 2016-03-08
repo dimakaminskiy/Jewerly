@@ -20,7 +20,7 @@
     padding: 7px 0;
     text-align: center;
     font-weight: 900;
-    background: url(/Content/images/bg/bg_dark.png);
+    background: url(/Content/images/bg_dark.png);
     border-bottom: 1px solid #DDD;
     border-radius: 15px;
     color: #FFF;
@@ -96,7 +96,7 @@
 }
 .qq-drop-processing-spinner {
     display: inline-block;
-    background: url("images/processing.gif");
+    background: url("/Content/images/loading.gif");
     width: 24px;
     height: 24px;
     vertical-align: text-bottom;
@@ -140,7 +140,7 @@
     color: #D60000;
 }
 .qq-upload-list li.qq-upload-success {
-    background: url(images/bg/bg_dark.png);
+    background: url(/Content/images/bg_dark.png);
     border-radius: 10px;
     color: #FFFFFF;
 }

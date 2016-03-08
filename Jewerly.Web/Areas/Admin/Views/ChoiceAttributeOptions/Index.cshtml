@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<Jewerly.Domain.ChoiceAttributeOption>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Опции атрибутов выбора";
     Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Опции атрибутов выбора</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Создать", "Create")
 </p>
 <table class="table">
     <tr>
@@ -36,9 +36,8 @@
             @Html.DisplayFor(modelItem => item.DisplayOrder)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ChoiceAttributeOptionId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ChoiceAttributeOptionId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ChoiceAttributeOptionId })
+            <a href="@Url.Action("Edit", new {id = item.ChoiceAttributeOptionId})"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="@Url.Action("Delete", new {id = item.ChoiceAttributeOptionId})"><span class="glyphicon glyphicon-trash"></span></a>
         </td>
     </tr>
 }
