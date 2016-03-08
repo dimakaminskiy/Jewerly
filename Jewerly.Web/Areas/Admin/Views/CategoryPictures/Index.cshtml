@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Jewerly.Domain.CategoryPicture>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
+}
+
+
+<h2>Изображения</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+
+<div class="row">
+    @{
+        int count = 0;
+    }
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3 col-sm-6">
+            <div class="product-wrapper sale">
+                <div class="product-image text-center">
+                    <img class="img-responsive" src="@item.Path" alt="@item.Path" title="@item.Path" />
+                </div>
+                <div class="product-info text-center">
+                    <div class="text-uppercase">@item.Caption</div>
+                    <a href="@Url.Action("Delete", new { id = item.Id })"><span class="glyphicon glyphicon-trash"></span></a>
+                </div>
+            </div>
+        </div>
+
+
+        count++;
+
+        if (count == 2)
+        {
+            <div class="clearfix visible-sm"></div>
+        }
+        else if (count == 4)
+        {
+            count = 0;
+            <div class="clearfix visible-md"></div>
+            <div class="clearfix visible-sm"></div>
+        }
+
+    }
+</div>
+
+
+

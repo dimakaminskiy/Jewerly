@@ -1,0 +1,154 @@
+﻿@model Jewerly.Web.Models.CategoriesMenuViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+
+
+
+
+    <div class="col-sm-4 col-md-3">
+        <!--левая часть--->
+
+            @Html.Partial("_SiteNavigationMenu", Model)
+    </div> <!--левая часть End--->
+
+    <div class="col-sm-8 col-md-9">
+        <!-----правая часть----->
+
+        <div class="row mgo">
+
+            <!---Слайдер---->
+            <div id="myCarousel" class="carousel slide hidden-xs shadow" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+
+                    <div class="item active">
+                        <img src="/Content/img/tmp/sl (1).jpeg" alt="Один" class="img-responsive">
+                        <div class="carousel-caption">
+                            <h3>Chania</h3>
+                            <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <img src="/Content/img/tmp/sl (1).jpg" alt="Два" class="img-responsive">
+                        <div class="carousel-caption">
+                            <h3>Chania</h3>
+                            <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <img src="/Content/img/tmp/sl (2).jpg" alt="Три" class="img-responsive">
+                        <div class="carousel-caption">
+                            <h3>Flowers</h3>
+                            <p>Beatiful flowers in Kolymbari, Crete.</p>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <img src="../../../../Content/img/tmp/sl (3).jpg" alt="Четыре" class="img-responsive">
+                        <div class="carousel-caption">
+                            <h3>Flowers</h3>
+                            <p>Beatiful flowers in Kolymbari, Crete.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+            <!---СлайдерEnd---->
+
+            <div class="panel panel-default">
+                <!--о магазине---->
+                <div class="panel-body">
+                    <h3 class="panel-title">Лучшие условия + качественная бижутерия и украшения из натуральных камней</h3>
+                </div>
+                <div class="panel-footer">
+
+                    <div class="collapse-group">
+                        Мы рады приветствовать Вас в интернет-магазине бижутерии "Trandycats". Название магазина говорит о продукции, которую мы с удовольствием представляем Вашему вниманию. Здесь вы можете выбрать уникальную бижутерию высокого качества и изделия из натуральных камней.                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="panel-title">Огромный выбор украшений из бижутерии и натуральных камней, сувениры, фурнитура!</h3>
+                </div>
+                <div class="panel-footer">
+
+                    <div class="collapse-group">
+                        Мы имеем многолетний опыт работы на рынке украшений. Вам мы предлагаем только лучшую продукцию. Помимо этого, большое внимание уделяем изучению клиентского спроса, а также держим руку на пульсе моды. Поэтому украшения из нашего ассортимента всегда востребованы. Разные виды украшений как вечерние (нарядные) так и в повседневное! Большой выбор подвесок, бус, серёжек, браслетов - как бижутерия, так и из натурального камня! Большой выбор фурнитуры (пластмасса, металл, натуральный камень) для рукодельниц.                    </div>
+                </div>
+            </div>
+
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="panel-title">Мгновенная доставка товара</h3>
+                </div>
+                <div class="panel-footer">
+
+                    <div class="collapse-group">
+                        <p>Сделанный Вами заказ примется и обработается в самые короткие сроки, а сотрудничество с лучшей транспортной компанией позволяет нам предельно быстро осуществить доставку товара по Украине, России, Белоруссии. Товар возможно отправить:</p>
+                        <h4>Доставка товара по территории Украины!</h4>
+                        <p>
+                            1) « Нова Почта - Экспресс доставка, грузов, писем, корреспонденции »
+                            <div>
+                                <a href="https://novaposhta.ua" class="btn btn-default" target="blank">Новая почта >></a>
+                            </div>
+                        </p>
+                        <p>
+                            2) « Ин-Тайм - Национальная служба доставки »
+                            <div>
+                                <a href="http://www.intime.ua/" class="btn btn-default" target="blank">Интайм >></a>
+                            </div>
+                        </p>
+                        <p>
+                            3) « Деливери - Транспортно-экспедиционная компания »
+                            <div>
+                                <a href="http://www.delivery-auto.com/" class="btn btn-default" target="blank">Деливери >></a>
+                            </div>
+                        </p>
+                        <p>
+                            4) « Автолюкс - Экспресс доставка грузов и почты »
+                            <div>
+                                <a href="http://autolux.ua/" class="btn btn-default" target="blank">Автолюкс >></a>
+                            </div>
+                        </p>
+                        <h4>Доставка товара из Украины по территории России и Белоруссии!</h4>
+                        <p>
+                            1) « Росукр Экспресс - международная доставка грузов »
+                            <div>
+                                <a href="http://ruex.org.ua/" class="btn btn-default" target="blank">Росукр Экспресс >></a>
+                            </div>
+                        </p>
+                        <p>
+                            2) « Pony Express » - Компания ООО «Пони Экспресс» является официальным филиалом международной торговой марки «PONY EXPRESS»
+                            <div>
+                                <a href="http://www.ponyexpress-ua.com/" class="btn btn-default" target="blank">Pony Express >></a>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div> <!-----правая часть End----->

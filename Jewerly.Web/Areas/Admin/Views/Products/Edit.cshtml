@@ -1,0 +1,298 @@
+﻿@model Jewerly.Domain.Product
+
+@{
+    ViewBag.Title = "Товары";
+    Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
+}
+
+<h2>Редактировать</h2>
+
+<!-- Modal -->
+<div id='myModal' class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="form-horizontal">
+                <h4>Товар</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.ProductId)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SeoName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.SeoName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SeoName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FullDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FullDescription, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FullDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } }) [USD]
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Published, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.Published)
+                            @Html.ValidationMessageFor(model => model.Published, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PictureId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("PictureId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PictureId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MarkupId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("MarkupId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MarkupId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DiscountId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("DiscountId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.DiscountId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Сохранить" class="btn btn-default" />
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            @*--------------------------------*@
+            <div class="absolute_img pull-right">
+                <img src='@Html.DisplayFor(model => model.Picture.Path)' class="img-responsive shadow"/>
+            </div>
+            @*-------------------------------------*@
+        </div>
+
+    </div>
+}
+
+
+
+@if (Model.MappingProductSpecificationAttributeToProducts.Any())
+{
+    <table class="table">
+
+        @foreach (var attr in Model.MappingProductSpecificationAttributeToProducts)
+        {
+            <tr>
+                <td>@attr.ProductSpecificationAttribute.Name</td>
+                <td>@attr.SpecificationAttributeOption.Name</td>
+                <td>
+                    <a class="add-attr-link" href="@Url.Action("DeleteAttributeFromProduct",
+                                                    new
+                                                    {
+                                                        id=attr.MappingProductSpecificationAttributeToProductId,
+
+                                                    })">Удалить</a>
+                </td>
+            </tr>
+        }
+
+
+    </table>
+
+
+}
+
+@if (Model.MappingProductChoiceAttributeToProducts.Any())
+{
+    <table class="table">
+
+        @foreach (var attr in Model.MappingProductChoiceAttributeToProducts)
+        {
+            <tr>
+                <td>@attr.ProductChoiceAttribute.Name</td>
+                <td>
+                    @foreach (var option in attr.AllowSpecificationAttributeOptionToProduct)
+                    {
+                        <div>@option.ChoiceAttributeOption.Name</div>
+                    }
+
+                </td>
+                <td>
+                    <a class="add-attr-link" href="@Url.Action("DeleteChoiceAttributeFromProduct",
+                                                    new
+                                                    {
+                                                        id=attr.MappingProductChoiceAttributeToProductId,
+
+                                                    })">Удалить</a>
+                </td>
+            </tr>
+        }
+
+
+
+    </table>
+
+
+}
+
+
+
+
+<div id="ModalBtn">
+    <div>
+        <a href="@Url.Action("ProductSpecificationAttributes", "Products", new {prodId = Model.ProductId})" data-toggle="modal" data-prodid="@Model.ProductId"
+           data-target="#myModal">Добавить специальный атрибут</a>
+    </div>
+    <div>
+        <a href="@Url.Action("ProductChoiceAttributes", "Products", new {prodId = Model.ProductId})" data-toggle="modal" data-prodid="@Model.ProductId"
+           data-target="#myModal">Добавить атрибут выбора</a>
+    </div>
+</div>
+
+
+
+
+
+<div>
+    <a href="@Url.Action("Index", "Products")" class="btn btn-default">Назад</a>
+</div>
+
+
+@section scripts {
+
+    <script>
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            $("#ModalBtn a[data-toggle]").on("click", function (e) {
+                // hide dropdown if any (this is used wehen invoking modal from link in bootstrap dropdown )
+                //$(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
+                $('#myModalContent').load(this.href, function () {
+                    $('#myModal').modal({
+                        /*backdrop: 'static',*/
+                        keyboard: true
+                    }, 'show');
+                    bindForm(this);
+                });
+                return false;
+            });
+        });
+
+
+        function bindForm(dialog) {
+            $('form', dialog).submit(function () {
+                //$("form button[type='submit']").click(function() {
+                //    var form = $(this).parent("form");
+                //    alert("form"+form);
+                //    var errorForm = form.children(".input-validation-error");
+                //    alert("errorForm"+errorForm);
+                //    var error = errorForm.size();
+                //    alert(error);
+                //});
+                var error = $(".input-validation-error").size();
+
+
+                if (error === 0) {
+                    $.ajax({
+                        url: this.action,
+                        type: this.method,
+                        data: $(this).serialize(),
+                        success: function (result) {
+                            if (result.success) {
+                                $('#myModal').modal('hide');
+                                // location.reload();
+                               // alert(result.url);
+                                  location.replace(result.url);
+                            } else {
+                                $('#myModalContent').html(result);
+                                bindForm(dialog);
+                            }
+                        }
+                    });
+                }
+                return false;
+            });
+
+
+
+        }
+        $(".add-attr-link").click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("href"),
+                traditional: true
+
+            }).done(function (data) {
+                if (data.success === true) {
+                    window.location.replace(data.url);
+                } else {
+                    alert(data.errorMessage);
+                }
+            }).fail(function (e) {
+                alert('Ошибка загрузки изображения');
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,24 @@
+﻿@using Jewerly.Web.Utils
+
+
+<nav class="navbar navbar-collapse" role=navigation id="top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <button type="button" class="navbar-toggle collapsed btn-default width" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                Меню
+            </button>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav nav-pills nav-justified">
+                    @Html.LiActionLink("О магазине","Index","About")
+                    @Html.LiActionLink("Продукция", "Index", "Store")
+                    @Html.LiActionLink("Доставка", "Delivery", "About")
+                    @Html.LiActionLink("Отзывы", "Index", "Reviews")
+                    @Html.LiActionLink("Контакты", "Contacts", "About")
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </div><!-- /.container-fluid -->
+</nav>
+ 

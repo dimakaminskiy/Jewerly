@@ -1,0 +1,84 @@
+﻿@using Jewerly.Web.Utils
+@model Jewerly.Domain.Product
+
+@{
+    ViewBag.Title = "Товары";
+    Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
+}
+
+<h2>Удаление</h2>
+
+<h3>Подтвердите удаление</h3>
+<div>
+    <h4>Товар</h4>
+    <hr/>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Picture.Path)
+              </div>
+            <div class="col-md-10">
+               
+                <img class="img-responsive" src="@Model.Picture.Preview()" alt="@Model.Name" title="@Model.Name" />
+             </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.SeoName)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.SeoName)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.ShortDescription)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.ShortDescription)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.FullDescription)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.FullDescription)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Price)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Price)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Published)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Published)
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-primary" />
+            <a href="@Url.Action("Index", "Products")" class="btn btn-default">Назад</a>
+        </div>
+    }
+</div>

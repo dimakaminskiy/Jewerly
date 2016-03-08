@@ -1,0 +1,73 @@
+﻿@model Jewerly.Domain.Category
+
+@{
+    ViewBag.Title = "Категории товаров";
+    Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
+}
+
+<h2>Удаление</h2>
+
+<h3>Подтвердите удаление</h3>
+<div>
+    <h4>Категория товаров</h4>
+    <hr />
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.CategoryPicture.Path)
+            </div>
+            <div class="col-md-10">
+                <img class="img-responsive" src="@Html.DisplayFor(model => model.CategoryPicture.Path)" alt="@Html.DisplayFor(model => model.CategoryPicture.AltAttribute)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.SeoName)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.SeoName)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Published)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Published)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.ShowOnHomePage)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.ShowOnHomePage)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.ParentCategoryId)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.ParentCategoryId)
+            </div>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-primary" />
+            <a href="@Url.Action("Index", "Categories")" class="btn btn-default">Назад</a>
+        </div>
+    }
+</div>

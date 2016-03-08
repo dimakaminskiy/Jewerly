@@ -1,0 +1,341 @@
+﻿@model Jewerly.Domain.Picture
+
+@{
+    ViewBag.Title = "Изображение";
+    Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+
+    
+    <div class="form-horizontal">
+    <h4>Picture</h4>
+    <hr />
+
+
+    <div id="avatar-crop-box">
+        <div class="jc-demo-box">
+            <div>
+                <img src="" id="crop-avatar-target" alt="Uploaded image" style="display: none" />
+                <div id="preview-pane" style="display: none;">
+                    <div class="preview-container">
+                        <img src="" class="jcrop-preview" id="crop-avatar-target-preview"
+                             alt="Preview" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div id="UploadImage" style="float: left">Выберите изображение</div>
+                <div style="clear: both"></div>
+                <div class="danger" style="display: none"></div>
+            </div>
+
+            </div>
+            </div>
+
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Caption, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Caption, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Caption, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            
+
+           
+
+            <div>
+                <button id="Save" class="btn btn-default" onclick="SaveWithChek()">
+                    Сохранить
+                </button>
+                <span class="field-validation-valid text-danger" data-valmsg-replace="true" data-valmsg-for="Image"></span>
+
+            </div>
+        </div>
+        
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+
+        @section Scripts {
+            <link href="~/Scripts/fine-uploader/fineuploader.css" rel="stylesheet" />
+            <script src="~/Scripts/jquery-1.10.2.js"></script>
+            <script src="~/Scripts/jquery-ui-1.10.4.custom.min.js"></script>
+            @Scripts.Render("~/bundles/jqueryval")
+            @Scripts.Render("~/bundles/file_uploader")
+            <script src="~/Scripts/jquery.form.min.js"></script>
+
+            <link href="~/Scripts/jcrop/jquery.Jcrop.css" rel="stylesheet" />
+            <link href="~/Scripts/jcrop/jquery.Jcrop.custum.css" rel="stylesheet" />
+            <script src="~/Scripts/jcrop/jquery.Jcrop.js"></script>
+
+            <script type="text/javascript">
+
+                var fileIndex = null;
+                var jcrop_api,
+                    boundx,
+                    boundy,
+                    xsize,
+                    ysize;
+                var IsFirstImage = true;
+                $().ready(function () {
+                    fileIndex = new FileIndex();
+                    fileIndex.init();
+                });
+
+
+                function exists(selector) {
+                    return ($(selector).length > 0);
+                };
+
+                var maxSize = 10 * 1024 * 1024;//8 мб
+                var minSize = 5 * 1024;
+
+                function FileIndex() {
+                    _this = this;
+                    this.ajaxFileUpload = "/Admin/Pictures/UploadPreImage";
+                    this.init = function () {
+                        $('#UploadImage').fineUploader({
+                            request:
+                                {
+                                    endpoint: _this.ajaxFileUpload
+                                },
+
+                            validation:
+                                {
+                                    allowedExtensions: ['jpeg', 'jpg', 'gif', 'png', 'JPEG', "JPG"],
+                                    sizeLimit: maxSize,
+                                    itemLimit: 1,
+                                    minSizeLimit: minSize,
+                                },
+                            multiple: false,
+                            dragAndDrop:
+                                {
+                                    disableDefaultDropzone: true //отключаем дроп-зону
+                                },
+                            messages:
+                                { //русифицируем некоторые сообщения и кнопки
+                                    typeError: "{file}: неверный тип файла. Принимаются только файлы форматов: {extensions}."
+                                },
+                            text:
+                                {
+                                    uploadButton: 'Выберите фото',
+                                    failUpload: 'Не закачан!',
+                                    cancelButton: 'Отмена'
+                                },
+
+
+                        })
+                            .on('error', function (event, id, name, reason) {
+                                //do something
+                            })
+                        .on('complete', function (event, id, name, responseJson) {
+                            if (responseJson.success) { // все хорошо ))
+
+                                if (IsFirstImage) {
+                                    $("#crop-avatar-target").attr('src', responseJson.url);
+                                    $("#crop-avatar-target-preview").attr('src', responseJson.url);
+                                    var img = $('#crop-avatar-target');
+                                    $('#avatar-crop-box').removeClass('hidden');
+                                    initAvatarCrop(img);
+                                }
+
+
+                                if (IsFirstImage == false) {
+
+                                    jcrop_api.setImage(responseJson.fileName, function () {
+                                        $("#crop-avatar-target-preview").removeAttr("style");
+                                        $("#crop-avatar-target-preview").attr('src', responseJson.fileName);
+                                        $("#crop-avatar-target").attr("src", responseJson.fileName);
+                                        var bounds = jcrop_api.getBounds();
+                                        $("#crop-avatar-target").attr('width', bounds[0]);
+                                        $("#crop-avatar-target").attr('height', bounds[1]);
+
+                                        boundx = bounds[0];
+                                        boundy = bounds[1];
+                                        jcrop_api.animateTo([0, 0, 640, 800]);
+                                        jcrop_api.focus();
+
+                                    });
+                                }
+
+
+                                //var i = new Image();
+                                //i.src = responseJson.fileName;
+                                //i.onload = function() {
+                                //   /// alert(i.width);
+                                //    $('crop-avatar-target-preview').attr("width", w).attr("height", h);
+                                //}
+
+
+
+
+
+
+
+
+
+
+
+
+                                if (IsFirstImage) IsFirstImage = false;
+
+                                // удалим сообщение о успешной загрузке файла
+                                setTimeout(function () {
+                                    $('.qq-upload-list li:last-child').remove();
+                                }, 2000);
+                            }
+                        });
+                    };
+                }
+
+
+                function initAvatarCrop(img) {
+                    img.Jcrop({
+                        onChange: updatePreviewPane,
+                        onSelect: updatePreviewPane,
+                        // aspectRatio: xsize / ysize,
+                        aspectRatio: 200 / 250,
+                        minSize: [640, 800],
+                        maxSize: [640, 800]
+                    }, function () {
+                        var bounds = this.getBounds();
+                        boundx = bounds[0];
+                        boundy = bounds[1];
+
+                        jcrop_api = this;
+                        jcrop_api.animateTo([0, 0, 640, 800]);
+                        jcrop_api.setOptions({ allowSelect: true });
+                        jcrop_api.setOptions({ allowMove: true });
+                        jcrop_api.setOptions({ allowResize: true });
+                        jcrop_api.setOptions({ aspectRatio: 200 / 250 });
+
+                        var pcnt = $('#preview-pane .preview-container');
+                        xsize = pcnt.width();
+                        ysize = pcnt.height();
+
+                        $('#preview-pane').appendTo(jcrop_api.ui.holder);
+
+                        jcrop_api.focus();
+                    });
+                }
+
+                function updatePreviewPane(c) {
+                    if (parseInt(c.w) > 0) {
+                        var rx = xsize / c.w;
+                        var ry = ysize / c.h;
+
+                        $('#preview-pane .preview-container img').css({
+                            width: Math.round(rx * boundx) + 'px',
+                            height: Math.round(ry * boundy) + 'px',
+                            marginLeft: '-' + Math.round(rx * c.x) + 'px',
+                            marginTop: '-' + Math.round(ry * c.y) + 'px'
+                        });
+                    }
+                }
+
+
+
+
+
+
+                function saveImage() {
+                    var img = $('#preview-pane .preview-container img');
+                    //$('#avatar-crop-box button').addClass('disabled');
+                    var caption = $("#Caption").val();
+                  
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/Pictures/Save",
+                        traditional: true,
+                        data: {
+                            w: img.css('width'),
+                            h: img.css('height'),
+                            l: img.css('marginLeft'),
+                            t: img.css('marginTop'),
+                            url: img.attr('src'),
+                            caption: caption,
+                          
+
+                        }
+                    }).done(function (data) {
+                        if (data.success === true) {
+                            window.location.replace("/Admin/Pictures/");
+                        }
+                        else {
+                            alert(data.errorMessage);
+                        }
+                    }).fail(function (e) {
+                        alert('Ошибка загрузки изображения');
+                    });
+                }
+
+                function SaveWithChek() {
+                    var fName = chekName();
+                    var fImage = chekImage();
+                    console.log("fName =" + fName + " fImage= " + fImage);
+
+                    if (fName && fImage) {
+                        saveImage();
+                    }
+                }
+                function chekName() {
+                    var i = ($("#Caption").val()).trim().length;
+                    var erroreMessageName = $("[data-valmsg-for='Caption']");
+                    if (i == 0) {
+                        console.log(i);
+                        $("#Caption").addClass("input-validation-error");
+                        var str = $("#Caption").attr("data-val-required");
+                        $(erroreMessageName).text(str); // текст ошибки
+                        $(erroreMessageName).removeClass("field-validation-valid").addClass("field-validation-error");
+                        $("#Caption").focus();
+                        return false;
+                    }
+                    if ($("#Caption").hasClass("input-validation-error")) {
+                        $("#Caption").removeClass("input-validation-error");
+                        $("[data-valmsg-for='Name']").text("");
+                        erroreMessageName.removeClass("field-validation-error").addClass("field-validation-valid");
+
+                    }
+                    return true;
+                }
+
+                function chekImage() {
+                    var img = $('#preview-pane .preview-container img');
+                    var erroreMessageImage = $("[data-valmsg-for='Image']");
+                    var s = img.attr('src'); // картинка
+                    if (s == "" || s == undefined) {
+                        erroreMessageImage.text("Необходимо выбрать изображение");
+                        erroreMessageImage.removeClass("field-validation-valid").addClass("field-validation-error");
+
+                        //$('.qq-upload-button').focus();
+                        return false;
+                    }
+                    $("[data-valmsg-for='Save']").text("");
+                    erroreMessageImage.removeClass("field-validation-error").addClass("field-validation-valid");
+                    return true;
+                }
+
+
+
+
+            </script>
+        }
+
+        <style>
+            .qq-upload-button {
+                margin: 10px 0;
+            }
+
+            .hidden {
+                display: none;
+            }
+        </style>

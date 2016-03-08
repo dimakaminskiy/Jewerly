@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Jewerly.Web.Models.ProductSpecificationAttribiteViewModel>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel"><img src="/Content/img/LogoTrandBig2.png" class="img-responsive" alt="TrandyCats" /></h4>
+</div>
+
+
+    <div class="modal-body">
+    <h4>Специальный атрибут</h4>
+    <hr />
+
+    <div class="form-horizontal text-left">
+
+            @foreach (var item in Model)
+            {
+                <div class="form-group">
+                    <label for="attr-@item.AttributeId" class="control-label col-md-2">@item.Name</label>
+                    <div class="col-md-10">
+                        @if (item.Options.Any())
+                        {
+                            @Html.DropDownList("attr-" + @item.AttributeId, item.Options, new { @class = "attr-option" })
+                            <a class="add-attr-link" data-prodid="@ViewBag.prodId" id="lk-@item.AttributeId" href="@Url.Action("AddAttributeToProduct", new {prodId = @ViewBag.prodId, attrId = item.AttributeId, attrOptionId = item.Options.SelectedValue})"><span class="glyphicon glyphicon-plus-sign"></span></a>
+                        }
+                        else
+                        {
+                            <span>Нет опций</span>
+                        }
+                    </div>
+
+                </div>
+
+            }
+        </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+    </div>
+
+
+    <script>
+        $(".attr-option").on("change", function () {
+            var g = $(this).attr("id");
+            g = g.replace("attr-", "");
+            var href = "@Url.Action("AddAttributeToProduct")";
+            var link = "#lk-" + g;
+            var prodId = $(link).attr("data-prodid");
+            var attrOptionId = $(this).val();
+            $(link).attr("href", href + "?prodId=" + prodId + "&attrId=" + g + "&attrOptionId=" + attrOptionId);
+
+        });
+
+        $(".add-attr-link").click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("href"),
+                traditional: true
+
+            }).done(function (data) {
+                if (data.success === true) {
+                    window.location.replace(data.url);
+                }
+                else {
+                    alert(data.errorMessage);
+                }
+            }).fail(function (e) {
+                alert('Ошибка загрузки изображения');
+            });
+
+        });
+
+    </script>

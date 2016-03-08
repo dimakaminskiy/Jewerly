@@ -1,0 +1,52 @@
+﻿@model Jewerly.Domain.SpecificationAttributeOption
+
+@{
+    ViewBag.Title = "Опции специальных атрибутов";
+    Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
+}
+
+<h2>Удаление</h2>
+
+<h3>Подтвердите удаление</h3>
+<div>
+    <h4>Опция специального атрибута</h4>
+    <hr/>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.ProductSpecificationAttribute.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.ProductSpecificationAttribute.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.DisplayOrder)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.DisplayOrder)
+            </div>
+        </div>
+
+    </div>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <div class="form-actions no-color">
+                <input type="submit" value="Удалить" class="btn btn-primary" />
+                <a href="@Url.Action("Index", "SpecificationAttributeOptions")" class="btn btn-default">Назад</a>
+            </div>
+        </div>
+    }
+</div>

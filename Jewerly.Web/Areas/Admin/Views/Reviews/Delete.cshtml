@@ -1,0 +1,44 @@
+﻿@model Jewerly.Domain.Review
+
+@{
+    ViewBag.Title = "Отзывы";
+    Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
+}
+
+<h2>Удаление</h2>
+
+<h3>Подтвердите удаление</h3>
+<div>
+    <h4>Отзывы</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-primary" />
+            <a href="@Url.Action("Index", "Reviews")" class="btn btn-default">Назад</a>
+        </div>
+    }
+</div>
