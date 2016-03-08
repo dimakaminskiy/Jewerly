@@ -57,8 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataManager.cs" />
+    <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\Review.cs" />
+    <Compile Include="Migrations\201603081429259_add-users-info.cs" />
+    <Compile Include="Migrations\201603081429259_add-users-info.Designer.cs">
+      <DependentUpon>201603081429259_add-users-info.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Db\ApplicationUser.cs" />
@@ -78,6 +83,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201602271309213_Initialize.resx">
       <DependentUpon>201602271309213_Initialize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081429259_add-users-info.resx">
+      <DependentUpon>201603081429259_add-users-info.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

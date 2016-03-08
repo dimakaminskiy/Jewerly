@@ -15,9 +15,9 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var choiceAttributeOptions = DataManager.ChoiceAttributeOptions.GetAll()
-                .OrderBy(t => t.ProductChoiceAttribute.DisplayOrder)
-                .ThenBy(t => t.ProductChoiceAttribute.Name)
-                .ThenBy(t=>t.DisplayOrder).ToList();
+                 .OrderBy(t => t.ProductChoiceAttribute.Name)
+                 .ThenBy(t => t.ProductChoiceAttribute.DisplayOrder)
+                .ThenBy(t=>t.Name).ToList();
             return View(choiceAttributeOptions);
         }
 

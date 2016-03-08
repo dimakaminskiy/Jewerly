@@ -23,9 +23,9 @@ namespace Jewerly.Domain
         [Display(Name = "Название")]
         [Required]
         public string Caption { get; set; }
-        [Display(Name = "Текст к атрибуте Alt")]
+        [Display(Name = "Текст к атрибуту Alt")]
         public string AltAttribute { get; set; }
-        [Display(Name = "Текст к атрибуте Title")]
+        [Display(Name = "Текст к атрибуту Title")]
         public string TitleAttribute { get; set; }
 
     }

@@ -7,6 +7,7 @@
     <link rel="icon" href="@Url.Content("~/Content/img/Ico.ico")" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    
 </head>
 <body>
     <div class="container">
@@ -74,7 +75,8 @@
                                aria-expanded="false">Разное<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>@Html.ActionLink("Отзывы", "Index", "Reviews")</li>
-                               
+                                <li role="separator" class="divider"></li>
+                                <li>@Html.ActionLink("Страны", "Index", "Countries")</li>
                             </ul>
                         </li>
 
@@ -138,6 +140,24 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+        $("a.dropdown-toggle").click(function (ev) {
+            var t = $(this);
+            var g = t.next(".dropdown-menu");
+            var tPadding = t.css('padding-left');
+            var tPaddingNumber = parseFloat(tPadding);
+            var width = t.width();
+            var twidth = width + tPaddingNumber * 2;
+            var gwidth = g.width();
+            var result = ((twidth - gwidth) / 2) + "px";
+            g.css("left", result);
+        });
+    });
+    </script>
+
+
 
 </body>
 </html>

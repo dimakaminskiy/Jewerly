@@ -5,6 +5,7 @@ using Jewerly.Domain;
 using Jewerly.Web.Controllers;
 using Jewerly.Web.Models;
 using Jewerly.Web.Utils;
+using Ninject.Infrastructure.Language;
 
 namespace Jewerly.Web.Areas.Default.Controllers
 {
@@ -51,10 +52,33 @@ namespace Jewerly.Web.Areas.Default.Controllers
           var result = DataManager.Categories.SearchFor(t => t.Published && t.ShowOnHomePage).OrderBy(t => t.Name).ToList();
           return result;
         }
+
+
+        private IQueryable<Product> GetProductByCategoryId(int catId)
+        {
+            var category = DataManager.Categories.GetById(catId);
+            if (category.ParentCategoryId == null)
+            {
+                var childcategories = DataManager.Categories.SearchFor(t => t.ParentCategoryId == category.Id && t.Published).Select(t=>t.Id).ToEnumerable();
+                var products = DataManager.Products.SearchFor(t => childcategories.Any(g => g == t.CategoryId));
+                return products;
+            }
+            else
+            {
+               return DataManager.Products.SearchFor(t => t.CategoryId == catId && t.Published);
+            }
+
+
+        }
+
+
+
+
+
         public IQueryable<Product> GetProducts(int categoryId, string sort)
         {
-            IQueryable<Product> queryableSet =
-                DataManager.Products.SearchFor(t => t.CategoryId == categoryId && t.Published);
+            IQueryable<Product> queryableSet = GetProductByCategoryId(categoryId);
+                //DataManager.Products.SearchFor(t => t.CategoryId == categoryId && t.Published);
             switch (sort)
             {
                 case "novelty" :
@@ -66,7 +90,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
               Default :
                          queryableSet=  queryableSet.OrderBy(t => t.ProductId); break;
              }
-
+            
             return queryableSet;
         }
         private Dictionary<string, string> GetSortOptions()
@@ -108,16 +132,16 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 page = 1;
             }
 
-            var products = GetProducts(id, string.IsNullOrEmpty(sort) ? orderOptions.SortByDefult : sort);
-            var productsViewModel = new PageableProducts(products, page, itemPerPage);
-            
-            model.Products = productsViewModel;
             model.Menu = new CategoriesMenuViewModel()
             {
                 CurentCategoryId = id,
                 MenuCategories = GetListMenuCategories()
             };
-          
+
+            var products = GetProducts(id, string.IsNullOrEmpty(sort) ? orderOptions.SortByDefult : sort);
+            var productsViewModel = new PageableProducts(products, page, itemPerPage);
+            model.Products = productsViewModel;
+            
             model.ProductsOrderOption = orderOptions;
            return View(model);
         }

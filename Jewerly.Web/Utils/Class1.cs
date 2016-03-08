@@ -35,6 +35,7 @@ namespace Jewerly.Web.Utils
     //    }
     //}
 
+
     public class PageableProducts
     {
         protected static int ItemPerPageDefault = 12;
