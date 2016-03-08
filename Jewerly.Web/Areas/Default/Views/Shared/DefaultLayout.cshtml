@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="@Url.Content("~/Content/img/Ico.ico")" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+</head>
+<body>
+
+
+<div class="container">
+
+    <!-- Modal -->
+    <div class="modal fade" id="myAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content shadow">
+                <div class="modal-body">
+                    Товар добавлен в корзину!
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @Html.Partial("_LoginPartial")
+    <!-- Modal -->
+    <div id='myModal' class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+    <!---аккаунтEnd--->
+    <div class="clearfix"></div>
+    <div class="row text-center">
+        <!---Title--->
+        <div class="col-sm-4">
+            <div>@Html.Partial("_ShoppingCartPartialView")</div>
+        </div>
+
+        <div class="col-sm-4">
+                <a href="@Url.Action("Index", "Store")" style="display: inline-block;">
+                    <img src="/Content/img/LogoTrandBig2.png" class="img-responsive" alt="Название" style="margin: auto" />
+                </a>
+        </div>
+        <div class="col-sm-4">
+            <form role="search">
+                <input type="text" class="form-control" placeholder="Поиск..." style="margin: 0.5em auto">
+            </form>
+        </div>
+
+    </div><!---TitleEnd--->
+    <!-- // меню -->
+    @Html.Partial("_NavMenuPartialView")
+
+
+    <div class="row">
+        @RenderBody()
+    </div>
+    <div id="top-link" class="up text-center">
+        <a href="#top"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
+    </div>
+
+</div>
+
+@Scripts.Render("~/bundles/bootstrap")
+<script src="~/Scripts/modalform.js"></script>
+@RenderSection("scripts", required: false)
+<script src="~/Scripts/site.js"></script>
+</body>
+
+</html>

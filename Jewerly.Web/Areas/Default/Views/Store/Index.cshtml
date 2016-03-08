@@ -1,0 +1,148 @@
+﻿@using Jewerly.Web.Models
+@using Jewerly.Web.Utils
+@model Jewerly.Web.Models.StoreViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+
+
+    <div class="col-sm-4 col-md-3">
+
+        @Html.Partial("_SiteNavigationMenu", Model.Menu)
+
+    </div> <!--левая часть End--->
+
+    <div class="col-sm-8 col-md-9">
+
+        <div class="row text-center product-filter shadow mgo">
+            <div class="col-sm-6">
+
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Сортировка
+                        <span class="caret"></span>
+                    </button>
+
+
+                    <ul class="dropdown-menu">
+                        @foreach (var t in Model.ProductsOrderOption.SortOptions)
+                        {
+                            <li>
+                                @if (t.Selected)
+                                {
+                                    @Html.ActionLink(t.Text, "Index", new
+                        {
+                            id = Model.CurentCategoryId,
+                            name = Model.CurentCategorySeoName,
+                            page = Model.Products.PageNo,
+                            sort = t.Value
+
+                        },new {@class="active"})
+                                }
+                                else
+                                {
+                                    @Html.ActionLink(t.Text, "Index", new
+                        {
+                            id = Model.CurentCategoryId,
+                            name = Model.CurentCategorySeoName,
+                            page = Model.Products.PageNo,
+                            sort = t.Value
+
+                        })
+                                }
+                            </li>
+                   }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div>
+                    <button type="button" class="btn btn-default exchange" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">
+                        <div id="exchange">
+                            <span>Валюта</span> /
+                            <span>грн</span>
+                        </div>
+                    </button>
+
+                    <div id="popover_content_exchange" style="display: none">
+                        <div>Выберите валюту</div>
+                        <button class="btn btn-default btn-md" type="button">грн</button>
+                        <button class="btn btn-default btn-md" type="button">грн</button>
+                        <button class="btn btn-default btn-md" type="button">грн</button>
+
+                        <button class="btn btn-default btn-sm pull-right" type="button">Принять</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row text-center mgo">
+
+            @{
+                int count = 0;
+            }
+
+            @foreach (var item in Model.Products.List)
+            {
+                <div class="col-md-3 col-xs-6">
+                    <div class="product-wrapper sale">
+                        <div class="product-image">
+                            @if (item.Discount != 0)
+                            {
+                                <div class="discount-img"></div>
+                                <div class="discount-nm"><span>@item.Discount</span>%<br/>скидка
+                                </div>
+                            }
+                            <img class="img-responsive" src="@item.Picture.Preview()" title="@item.Name" alt="@item.Name"/>
+                        </div>
+                        <div class="product-info text-center">
+                            <a href="@Url.Action("Details", new {id = item.Id, name = item.SeoName})">@item.Name </a>
+                            <div class="price">
+                                @item.Price
+                            </div>
+                            <button class="btn btn-default btn-sm" type="button" data-toggle="modal" data-target="#myAlert">Купить</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                count++;
+
+                if (count == 2)
+                {
+                    <div class="clearfix visible-xs"></div>
+                }
+                else if (count == 4)
+                {
+                    count = 0;
+                    <div class="clearfix visible-md"></div>
+                    <div class="clearfix visible-xs"></div>
+
+                }
+
+            }
+
+
+
+        </div>
+
+        <div class="text-center">
+           
+            @if (Model.Products.CountPage > 1)
+            {
+                @Html.PageLinks(Model.Products.PageNo, Model.Products.CountPage, x => Url.Action("Index", "Store",
+                        new
+                        {
+                            name = Model.CurentCategorySeoName,
+                            id = Model.CurentCategoryId,
+                            sort=Model.CurentSort,
+                            page = x
+                        }))
+            }
+
+
+        </div>
+        
+    </div>

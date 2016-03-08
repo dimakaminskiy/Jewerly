@@ -1,0 +1,16 @@
+﻿@using Jewerly.Web.Utils
+@model Jewerly.Web.Models.MainPageViewModal
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+    <div class="col-sm-4 col-md-3">
+        <!--левая часть--->
+        @Html.Partial("_SiteNavigationMenu", Model.Menu)
+    </div> <!--левая часть End--->
+
+    <div class="col-sm-8 col-md-9">
+        <div class="row mgo text-center">
+                @Html.GridCategories(Model.HomePageCategories)
+        </div>
+    </div>

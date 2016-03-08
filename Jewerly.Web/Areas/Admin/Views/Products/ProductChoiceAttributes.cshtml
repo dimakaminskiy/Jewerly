@@ -1,0 +1,121 @@
+﻿@using Jewerly.Domain
+@model Jewerly.Web.Models.ProductChoiceAttributesViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel"><img src="/Content/img/LogoTrandBig2.png" class="img-responsive" alt="TrandyCats" /></h4>
+</div>
+
+
+@using (Html.BeginForm("AddChoiceAttributesToProduct", "Products"))
+
+{
+    <div class="hidden">
+        @Html.HiddenFor(m => m.ProductId)
+    </div>
+
+    <div class="modal-body">
+        <h4>Атрибут выбора</h4>
+        <hr/>
+        <div class="form-horizontal text-left">
+            <div class="form-group">
+
+                @*@Html.DropDownList("ProductChoiceAttribute", new SelectList(Model.ProductChoiceAttributes, "ProductChoiceAttributeId", "Name"), new { @class = "attr-option" })*@
+
+                @Html.DropDownListFor(models => models.ProductChoiceAttributeId,
+                new SelectList(Model.ProductChoiceAttributes, "ProductChoiceAttributeId", "Name"), new { @class = "attr-option" })
+            </div>
+
+            <div id="replace-options" class="form-group">
+
+                @for (int i = 0; i < Model.ChoiceAttributeOptions.Count(); i++)
+                {
+                    <div>
+                        <label>
+                            @Html.CheckBoxFor(m => m.ChoiceAttributeOptions[i].Available)
+                            @Html.HiddenFor(m => m.ChoiceAttributeOptions[i].ChoiceAttributeOptionId)
+                            @Model.ChoiceAttributeOptions[i].Name
+                        </label>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Добавить</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+    </div>
+}
+
+<script>
+    $(".attr-option").on("change", function () {
+        var attrId = $(this).val();
+        var link = "@Url.Action("ProductChoiceAttributeOptions")";
+
+
+        $.ajax({
+            type: "GET",
+            url: link,
+            traditional: true,
+            data: {
+                prodAttrId:attrId
+            }
+         }).done(function (data) {
+             if (data.success === true) {
+
+
+                 var _html = "";
+
+                 for (var i = 0; i < data.result.length; i++) {
+                     
+                     _html += "<div><label>" +"" +
+                         "<input data-val=\"true\" data-val-required=\"Требуется поле Available.\"" +
+                         "id=\"ChoiceAttributeOptions_"+i+"__Available\""+"" +
+                         "name=\"ChoiceAttributeOptions[" + i + "].Available\" type=\"checkbox\" value=\"true\">" +
+                         "<input name=\"ChoiceAttributeOptions[" + i + "].Available\" type=\"hidden\" value=\"false\">" +
+                         " <input data-val=\"true\" data-val-number=\"Значением поля ChoiceAttributeOptionId должно быть число.\" data-val-required=\"Требуется поле ChoiceAttributeOptionId.\"" +
+                         "id=\"ChoiceAttributeOptions_" + i + "__ChoiceAttributeOptionId\"" +
+                         "name=\"ChoiceAttributeOptions[" + i + "].ChoiceAttributeOptionId\" type=\"hidden\" value=\"" + data.result[i].Id + "\">" +
+                         data.result[i].Name+
+                         "</label>" +
+                         "</div>";
+                    
+
+                 }
+
+                 $("#replace-options").html(_html);
+             }
+            else {
+                alert(data.errorMessage);
+            }
+        }).fail(function (e) {
+            alert('Ошибка операции');
+        });
+             
+       
+
+    });
+
+    $(".add-attr-link").click(function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $(this).attr("href"),
+            traditional: true
+
+        }).done(function (data) {
+            if (data.success === true) {
+                alert("9");
+                window.location.replace(data.url);
+            }
+            else {
+                alert(data.errorMessage);
+            }
+        }).fail(function (e) {
+            alert('Ошибка операции');
+        });
+
+    });
+
+</script>

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Jewerly.Domain.ProductSpecificationAttribute>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AllowFiltering)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisplayOrder)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AllowFiltering)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DisplayOrder)
+        </td>
+        <td>
+           <button id="Сохранить" prodid="ViewBag.ProductId" attrid="item.ProductSpecificationAttributeId" class="btn btn-default" onclick="addAttrToProduct()"></button>
+        </td>
+    </tr>
+}
+
+</table>
+
+<script>
+
+
+    function addAttrToProduct() {
+
+        var prodId = $(this).attr("prodid");
+        var attrId = $(this).attr("attrid");
+
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Products/AddProductSpecificationAttributesToProduct/",
+            traditional: true,
+            data: {
+                prodId:prodId,
+                attrId: attrId
+            }
+        }).done(function (data) {
+            if (data.success === true) {
+                window.location.replace("/Admin/Products/Edit/"+@ViewBag.ProductId);
+            }
+            else {
+                alert(data.errorMessage);
+            }
+        }).fail(function (e) {
+            alert('Ошибка выполнения операции');
+        });
+    }
+
+
+</script>
+

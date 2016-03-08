@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Jewerly.Domain.Review>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+
+
+
+    <div class="col-md-12">
+        <div class="content_silver">
+            @if (TempData["message"] != null)
+            {
+                <div class="alert alert-success">@TempData["message"]</div>
+            }
+            <p>
+                <div id="ModalBtn">
+                    <a href="@Url.Action("Create", "Reviews", new {area = "Default"})" 
+                       data-toggle="modal" class="btn btn-default" data-target="#myModal">Добавить комментарий</a>
+                </div>
+            </p>
+            <table class="table">
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div>@Html.DisplayFor(modelItem => item.Name)</div>
+                            <div>@Html.DisplayFor(modelItem => item.Date)</div>
+                        </td>
+                        <td>
+                            <p class="speech" style="color: #000">@item.Text</p>
+                        </td>
+                   </tr>
+                }
+
+            </table>
+        </div>
+    </div>

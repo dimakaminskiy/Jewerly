@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Contacts";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+
+    <div class="col-md-12">
+        <div class="content_silver">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <form action="#" method="post">
+                        <div>
+                            <h2>Написать нам</h2>
+                            <p>Постарайтесь описать суть Вашего вопроса</p>
+                            <p>
+                                <textarea class="form-control" cols="60" data-val="true" data-val-required="Введите текст сообщения" id="TextArea1" name="Text" placeholder="Ваше сообщение" rows="5"></textarea>
+                            </p>
+                            <p class="btn-absolute"><span class="field-validation-valid text-danger" data-valmsg-for="Text" data-valmsg-replace="true"></span></p>
+                            <p>Мы хотим знать, как к Вам обращаться</p>
+                            <p>
+                                <input class="form-control text-box single-line" data-val="true" data-val-required="Введите Ф.И.О" id="FullName" name="FullName" placeholder="Ф.И.О." type="text" value="" />
+                            </p>
+                            <p class="btn-absolute">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="FullName" data-valmsg-replace="true"></span>
+                            </p>
+                            <p>На указанный E-mail придёт ответ на Ваш вопрос</p>
+                            <p>
+                                <input class="form-control text-box single-line" data-val="true" data-val-email="Неверный E-mail" data-val-required="Введите E-mail" id="Email" name="Email" placeholder="Ваш E-mail" type="email" value="dimakaminskiy@gmail.com" />
+                            </p>
+                            <p class="btn-absolute">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+                            </p>
+                            <input class="btn btn-default button_submit" id="Submit1" type="submit" value="Отправить" />
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-md-6 text-center">
+                    <h2 class="text-primary">Связаться с нами</h2>
+                    <p>kapitoshka0777@gmail.com</p>
+                    <p>+38(068)90-52-307</p>
+                    <p>+38(066)16-39-309</p>
+                    <img class="img-responsive" src="/Content/img/contc.png" />
+                    @*<h2 class="text-primary">Реквизиты для оплаты</h2>
+                        <p>Карта Приват Банка</p>
+                        <p>4149 4978 4148 5545</p>
+                        <p>Варивода Руслан Викторович</p></div>*@
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>

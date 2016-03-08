@@ -1,0 +1,89 @@
+﻿@using Jewerly.Web.Utils
+@model Jewerly.Web.Models.ProductDetailViewModel
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+
+
+<div class="col-sm-4 col-md-3">
+    <!--левая часть--->
+    @Html.Partial("_SiteNavigationMenu", Model.Menu)
+</div> <!--левая часть End--->
+
+<div class="col-sm-8 col-md-9">
+    <div class="row mgo">
+        <div class="content_silver text-center">
+
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="product-image">
+                        @if (Model.Product.Discount != 0)
+                        {
+                            <div class="discount-img"></div>
+                            <div class="discount-nm">
+                                <span>@Model.Product.Discount</span>%<br />скидка
+                            </div>
+                        }
+                        <img class="img-responsive" src="@Model.Product.Picture.Image()" alt="@Model.Product.Name" title="@Model.Product.Name">
+                    </div>
+                </div>
+                <div class="col-md-5">
+
+                    <div class="product-info shadow text-center">
+                        Артикул + !!!!!!!!!!!
+
+                        <h1>@Model.Product.Name</h1>
+                        <div class="product-price">
+                            Цена
+                            <span class="price">@Model.Product.Price</span>
+                            Валюта @Model.Product.Currency
+                         </div>
+                        <div class="product-cart">
+                            <div>
+                                <a href="#"><span class="glyphicon glyphicon-minus-sign"></span></a>
+                                <input type="number" class="inp_count" value="1">
+                                <a href="#"><span class="glyphicon glyphicon-plus-sign"></span></a>
+                                <button class="btn btn-default btn-sm" type="button" data-toggle="modal" data-target="#myAlert">Купить</button>
+                            </div>
+                        </div>
+
+
+                        <div>
+
+                            @foreach (var a in Model.Product.SpecificationAttributes)
+                            {
+                                <div><span>@a.Key</span> <span>@a.Value</span></div>
+
+                            }
+                        </div>
+
+
+                        @for (int i = 0; i < Model.Product.ChoiceAttributes.Count; i++)
+                        {
+                            <div>
+                                @Model.Product.ChoiceAttributes[i].Name
+                            </div>
+                            <div>
+
+                                @Html.DropDownListFor(m => m.Product.ChoiceAttributes[i].ChoiceAttributeOptions,
+                                    new SelectList(Model.Product.ChoiceAttributes[i].ChoiceAttributeOptions, "ChoiceAttributeOptionId", "Name"))
+
+                            </div>
+                        }
+
+
+
+                        <div class="product-description">
+                            @Model.Product.FullDescription
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+           </div> 
+    </div>
+</div>
+
