@@ -179,6 +179,7 @@
     <Compile Include="Areas\Admin\Controllers\CategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryPicturesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ChoiceAttributeOptionsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CountriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\CurrenciesController.cs" />
     <Compile Include="Areas\Admin\Controllers\DiscountsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
@@ -191,13 +192,14 @@
     <Compile Include="Areas\Admin\Controllers\ReviewsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SpecificationAttributeOptionsController.cs" />
     <Compile Include="Areas\Default\Controllers\AboutController.cs" />
+    <Compile Include="Areas\Default\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Default\Controllers\ManageController.cs" />
     <Compile Include="Areas\Default\Controllers\ReviewsController.cs" />
     <Compile Include="Areas\Default\Controllers\ShoppingCartController.cs" />
     <Compile Include="Areas\Default\Controllers\StoreController.cs" />
     <Compile Include="Areas\Default\DefaultAreaRegistration.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Areas\Default\Models\AccountViewModels.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="extensions\Class1.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -209,6 +211,7 @@
     <Compile Include="Models\StoreViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utils\AjaxOnlyAttribute.cs" />
     <Compile Include="Utils\Class1.cs" />
     <Compile Include="Utils\EmailSettings.cs" />
     <Compile Include="Utils\HtmlMenuHeler.cs" />
@@ -318,6 +321,11 @@
     <Content Include="Areas\Admin\Views\Reviews\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Reviews\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Reviews\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Countries\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Countries\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Countries\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Countries\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Countries\Index.cshtml" />
     <None Include="Areas\Admin\Views\Shared\Admin _Layout.cshtml" />
     <Content Include="Areas\Default\Views\Shared\DefaultLayout.cshtml" />
     <Content Include="Areas\Default\Views\Store\Index.cshtml" />
@@ -339,6 +347,17 @@
     <Content Include="Areas\Default\Views\Store\Details.cshtml" />
     <Content Include="Areas\Default\Views\Reviews\Index.cshtml" />
     <Content Include="Areas\Default\Views\Reviews\Create.cshtml" />
+    <Content Include="Areas\Default\Views\Account\Index.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_SiteAccountMenu.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_RegisterPartial.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_MustConfirmEmail.cshtml" />
+    <Content Include="Areas\Default\Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Areas\Default\Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Areas\Default\Views\Account\ResetPassword.cshtml" />
+    <Content Include="Areas\Default\Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Areas\Default\Views\Manage\Index.cshtml" />
+    <Content Include="Areas\Default\Views\Manage\ChangePassword.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />
@@ -387,33 +406,13 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_NavMenuPartialView.cshtml" />
     <Content Include="Views\Shared\_ShoppingCartPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Models\" />
-    <Folder Include="Areas\Default\Models\" />
     <Folder Include="Areas\Default\Views\ShoppingCart\" />
     <Folder Include="Content\images\category\" />
     <Folder Include="Content\images\gallery\" />

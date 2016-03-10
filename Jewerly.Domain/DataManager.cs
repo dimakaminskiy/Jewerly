@@ -22,6 +22,7 @@ namespace Jewerly.Domain
        public IGenericRepository<Discount> Discounts { get; private set; }
        public IGenericRepository<Markup> Markups { get;  private set; }
        public IGenericRepository<Review> Reviews { get; set; }
+       public IGenericRepository<Country> Countries { get; set; }
 
        public DataManager
            (
@@ -39,7 +40,10 @@ namespace Jewerly.Domain
            ,IGenericRepository<ChoiceAttributeOption> choiceAttributeOptions
            ,IGenericRepository<Discount> discounts
            ,IGenericRepository<Markup> markups
-          , IGenericRepository<Review> reviews 
+           ,IGenericRepository<Review> reviews
+           ,IGenericRepository<Country> countries 
+
+           
            )
        {
            Categories = categories;
@@ -57,6 +61,7 @@ namespace Jewerly.Domain
            Discounts = discounts;
            Markups = markups;
            Reviews = reviews;
+           Countries = countries;
        }
     }
 }

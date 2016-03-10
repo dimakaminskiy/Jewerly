@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Мой аккаунт";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-sm-4 col-md-3">
+        <!--левая часть--->
+        <div class="row">
+
+            <nav class="navbar navbar-collapse" role=navigation>
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <button type="button" class="navbar-toggle collapsed btn-default width" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
+                            Аккаунт
+                        </button>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+                            <div id="menu-left" class="text-center shadow">
+                                <!--Список---->
+                                <div class="panel panel-danger">
+                                    <div class="panel-heading">
+                                        <h4 class="img-rounded text-uppercase">
+                                            <span class="glyphicon glyphicon-cog"></span> Аккаунт <span class="glyphicon glyphicon-cog"></span>
+                                        </h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                            <div class="row">
+                                                <!---категории--->
+                                                <ul class="nav nav-divider nav-pills">
+                                                    <li><a href="@Url.Action("Myinfo")">Мои данные</a></li>
+                                                    <li><a href="@Url.Action("OrderHistory")">История заказов</a></li>
+                                                    <li><a href="@Url.Action("ResetPassword")">Сброс пароля</a></li>
+
+
+                                                </ul>
+                                            </div><!---категории End--->
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer"><span class="glyphicon glyphicon-option-horizontal"></span></div>
+                                </div>
+
+                            </div> <!--Список End---->
+                        </div><!-- /.navbar-collapse -->
+                    </div>
+                </div><!-- /.container-fluid -->
+            </nav>
+
+
+
+
+
+
+
+        </div>
+    </div> <!--левая часть End--->
+
+    <div class="col-sm-8 col-md-9">
+        <!-----правая часть----->
+        <div class="container-fluid">
+        </div>
+    </div> <!-----правая часть End----->
+</div>
+
+

@@ -16,6 +16,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             var specificationAttributeOptions =
                 DataManager.SpecificationAttributeOptions.GetAll()
                     .OrderBy(t => t.ProductSpecificationAttribute.Name)
+                    .ThenBy(t => t.Name)
                     .ThenBy(t => t.DisplayOrder)
                     .ToList();
             return View(specificationAttributeOptions);

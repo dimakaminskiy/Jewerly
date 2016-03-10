@@ -86,6 +86,8 @@ namespace Jewerly.Web.App_Start
             kernel.Bind<IGenericRepository<Markup>>().To<GenericRepository<Markup>>();
 
             kernel.Bind<IGenericRepository<Review>>().To<GenericRepository<Review>>();
+            kernel.Bind<IGenericRepository<Country>>().To<GenericRepository<Country>>();
+            
         }        
     }
 }

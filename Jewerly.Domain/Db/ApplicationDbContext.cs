@@ -38,6 +38,9 @@ namespace Jewerly.Domain
         public DbSet<Markup> Markups { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
+
+        public DbSet<Country> Countries { get; set; }
+        
         
 
     }
