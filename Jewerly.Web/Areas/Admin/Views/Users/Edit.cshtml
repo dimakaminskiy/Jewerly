@@ -26,10 +26,6 @@
         @Html.HiddenFor(model => model.UserName)
         @Html.HiddenFor(model => model.LockoutEnabled)
 
-
-
-
-
         <div class="form-group">
             <label class="control-label col-md-2">Пользователь</label>  
             <div class="col-md-10">
@@ -37,7 +33,12 @@
             </div>
         </div>
 
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Email)
+            </div>
+        </div>
 
 
         <div class="form-group">
@@ -65,7 +66,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CountryId, "CountryId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.CountryId, null, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CountryId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
@@ -73,7 +74,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CurrencyId, "CurrencyId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.CurrencyId, null, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CurrencyId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CurrencyId, "", new { @class = "text-danger" })
@@ -97,14 +98,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DisplayFor(model => model.Email)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmailConfirmed, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label for="EmailConfirmed" class="control-label col-md-2">E-mail подтвержден</label>
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.EmailConfirmed)
@@ -116,7 +110,7 @@
         
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label for="PhoneNumber" class="control-label col-md-2">Телефон</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
@@ -124,19 +118,6 @@
         </div>
 
         
-
-       
-
-       
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
 
         <div class="form-group">
             <div class="col-md-10"> Пользователь состоит в группе @ViewBag.Role</div>
@@ -154,20 +135,18 @@
             <p>Registered - Зарегистрированные пользователи, нет доступа на сайт и к оптовым ценам.</p>
             <p>Member - Оптовик, есть доступ к оптовым ценам.</p>
             <p>Banned - Заблокированные пользователи, нет доступа ко входу на сайт.</p>
-            <p>Administrator - <span style="color: red">Администратор, есть полный доступ к сайту, давать осторожно!!!</span></p>
+            <p class="text-primary">Administrator - Администратор, есть полный доступ к сайту, давать осторожно!!!</p>
         </div>
 
 
 
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="col-md-12">
+                <input type="submit" value="Сохранить" class="btn btn-default"/>
+                <a href="@Url.Action("Index", "Users")" class="btn btn-default">Назад</a>
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
