@@ -5,6 +5,8 @@ using Jewerly.Domain;
 using Jewerly.Web.Controllers;
 using Jewerly.Web.Models;
 using Jewerly.Web.Utils;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Ninject.Infrastructure.Language;
 
 namespace Jewerly.Web.Areas.Default.Controllers
@@ -101,9 +103,55 @@ namespace Jewerly.Web.Areas.Default.Controllers
              result.Add("expensive","от дорогих к дешевым");
              result.Add("novelty","новинки");
             return result;
-        } 
+        }
+
+
+        void InitializeRoles()
+        {
+            var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+
+
+            if (!roleManager.RoleExists("Registered"))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Registered";
+                roleManager.Create(role);
+             }
+            if (!roleManager.RoleExists("Member"))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Member";
+                roleManager.Create(role);
+
+            }
+            if (!roleManager.RoleExists("Administrator"))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Administrator";
+                roleManager.Create(role);
+            }
+            if (!roleManager.RoleExists("Banned"))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Banned";
+                roleManager.Create(role);
+
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
         public ActionResult Index(int page=0,int id = 0, string name = "", string sort = "")
         {
+            InitializeRoles();
 
             if (string.IsNullOrEmpty(name) && id==0)
             {

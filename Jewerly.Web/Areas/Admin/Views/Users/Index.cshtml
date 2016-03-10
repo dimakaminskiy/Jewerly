@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Jewerly.Domain.ApplicationUser>
+
+@{
+    ViewBag.Title = "Пользователи";
+    Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
+}
+
+<h2>Пользователи</h2>
+
+<div>
+    <form action="@Url.Action("Index")" method="get">
+        <div class="form-group">
+            <label class="col-md-2">
+                Поиск по группе
+            </label>
+            <div class="col-md-10">
+                @Html.DropDownList("roleName", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">
+                Поиск по Фамилии
+            </label>
+            <div class="col-md-10">
+                @Html.Editor("userName", new { @class="form-control"})
+             
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Найти" class="btn btn-default" />
+            </div>
+        </div>
+    </form>
+
+    <div>
+
+        @if (ViewBag.role != null)
+        {
+            <div>@ViewBag.role</div>
+        }
+        @if (ViewBag.userName != null)
+        {
+            <div>@ViewBag.userName</div>
+        }
+      </div>
+
+
+    @if (!Model.Any())
+{
+    <p>Нет пользователей</p>
+}
+
+
+
+</div>
+<table class="table">
+    <tr>
+        <th>
+            ФИО
+                </th>
+        <th>
+            E-mail
+        </th>
+        <th>
+            Номер телефона
+         </th>
+        <th>
+            
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+            @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.MiddleName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+
+
+        <td>
+            @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new { @class = "editLink" })
+        </td>    </tr>
+}
+
+</table>

@@ -40,6 +40,8 @@ namespace Jewerly.Domain
         public DbSet<Review> Reviews { get; set; }
 
         public DbSet<Country> Countries { get; set; }
+
+      
         
         
 
