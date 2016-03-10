@@ -96,5 +96,10 @@ namespace Jewerly.Domain.Repository
             {
                 return await DbSet.Where(predicate).CountAsync();
             }
+
+            public int Count(Expression<Func<TEntity, bool>> predicate)
+            {
+                return  DbSet.Where(predicate).Count();
+            }
         }
 }

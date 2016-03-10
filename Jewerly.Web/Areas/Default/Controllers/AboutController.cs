@@ -56,9 +56,8 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
         public ActionResult Index()
         {
-            var model =  new CategoriesMenuViewModel();
-            model.CurentCategoryId = null;
-            model.MenuCategories = GetListMenuCategories();
+            var model = new MenuCategories(null,GetListMenuCategories());
+  
             return View(model);
         }
 

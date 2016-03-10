@@ -184,6 +184,9 @@
     <Compile Include="Areas\Admin\Controllers\DiscountsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\MarkupsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MethodOfDeliveriesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MethodOfPaymentsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Areas\Admin\Controllers\PicturesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductChoiceAttributesController.cs" />
     <Compile Include="Areas\Admin\Controllers\Products1Controller.cs" />
@@ -208,8 +211,12 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\ProductSpecificationAttribiteViewModel.cs" />
-    <Compile Include="Models\StoreViewModel.cs" />
+    <Compile Include="Models\Store\CategoryModel.cs" />
+    <Compile Include="Models\Store\MainPageViewModal.cs" />
+    <Compile Include="Models\Store\ProductOrderModel.cs" />
+    <Compile Include="Models\Store\ProductSpecificationAttribiteViewModel.cs" />
+    <Compile Include="Models\Store\ShoppingCart.cs" />
+    <Compile Include="Models\Store\StoreViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\AjaxOnlyAttribute.cs" />
@@ -225,6 +232,8 @@
     <Content Include="Content\bg-footer.jpg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\bg_dark.png" />
+    <Content Include="Content\images\loading.gif" />
     <Content Include="Content\img\bg.gif" />
     <Content Include="Content\img\bg.png" />
     <Content Include="Content\img\bg2.png" />
@@ -325,6 +334,21 @@
     <Content Include="Areas\Admin\Views\Countries\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Countries\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Countries\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MethodOfDeliveries\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\MethodOfDeliveries\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\MethodOfDeliveries\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\MethodOfDeliveries\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\MethodOfDeliveries\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MethodOfPayments\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\MethodOfPayments\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\MethodOfPayments\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\MethodOfPayments\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\MethodOfPayments\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Orders\Index.cshtml" />
     <None Include="Areas\Admin\Views\Shared\Admin _Layout.cshtml" />
     <Content Include="Areas\Default\Views\Shared\DefaultLayout.cshtml" />
     <Content Include="Areas\Default\Views\Store\Index.cshtml" />
@@ -362,6 +386,7 @@
     <Content Include="Areas\Admin\Views\Users\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_ProductsSortOptions.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />
@@ -411,9 +436,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_NavMenuPartialView.cshtml" />
-    <Content Include="Views\Shared\_ShoppingCartPartialView.cshtml" />
-    <Content Include="Views\Shared\_СhoiceExangePartialView.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_NavMenuPartialView.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_ShoppingCartPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

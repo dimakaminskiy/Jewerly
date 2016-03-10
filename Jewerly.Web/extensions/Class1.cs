@@ -37,6 +37,7 @@ namespace Jewerly.Web.extensions
             }
             return builder.ToString();
         }
+
     }
 
     public static class SelectListHelperExtensions

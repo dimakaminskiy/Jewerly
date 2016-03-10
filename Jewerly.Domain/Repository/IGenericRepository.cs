@@ -27,9 +27,11 @@ namespace Jewerly.Domain.Repository
         void Edit(TEntity entity);
         void Insert(TEntity entity);
         void Delete(TEntity entity);
+        
+        
         Task<int> CountAsync();
-
         Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
+        int Count(Expression<Func<TEntity, bool>> predicate);
 
     }
 }

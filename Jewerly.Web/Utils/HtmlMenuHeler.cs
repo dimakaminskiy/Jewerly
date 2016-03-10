@@ -50,7 +50,41 @@ namespace Jewerly.Web.Utils
 
         }
 
-     
+        public static MvcHtmlString SortOptions(this HtmlHelper html, ProductSortModel model,
+            string catId, string catName)
+        {
+             var urlHelper = new UrlHelper(html.ViewContext.RequestContext);
+            StringBuilder builder = new StringBuilder();
+
+            builder.AppendLine("<ul class=\"dropdown-menu\">");
+            StringBuilder lineBuilder= new StringBuilder();
+
+            foreach (var option in model.SortOptions)
+            {
+               
+                if (string.IsNullOrEmpty(model.Sort))
+                {
+                    lineBuilder.AppendFormat(
+                            "<li><a {0} href=\"{1}\">{2}</a></li>",                          
+                            option.Value == model.SortByDefult? "class=\"active\"":"",
+                            urlHelper.Action("Index", "Store", new { id = catId, name = catName, sort = option.Value }),
+                            option.Name);   
+                 }
+                else
+                {
+                    lineBuilder.AppendFormat(
+                             "<li><a {0} href=\"{1}\">{2}</a></li>",
+                             option.Value == model.Sort ? "class=\"active\"" : "",
+                             urlHelper.Action("Index", "Store", new { id = catId, name = catName, sort = option.Value }),
+                             option.Name);    
+                }
+
+                builder.AppendLine(lineBuilder.ToString());
+                lineBuilder.Clear();
+            }
+            builder.AppendLine("</ul>");
+            return new MvcHtmlString(builder.ToString());
+        }
 
 
 
@@ -84,13 +118,13 @@ namespace Jewerly.Web.Utils
             return new MvcHtmlString(str);
         }
 
-        public static MvcHtmlString MenuCategoriesLinks(this HtmlHelper html, CategoriesMenuViewModel menu)
+        public static MvcHtmlString MenuCategoriesLinks(this HtmlHelper html, MenuCategories menu)
         {
             var builder = new StringBuilder();
 
             var urlHelper = new UrlHelper(html.ViewContext.RequestContext);
 
-            foreach (var category in menu.MenuCategories)
+            foreach (var category in menu.Categories)
             {
                 builder.AppendLine("<li role='presentation'><span><a href=\"" 
                     + urlHelper.Action("Index","Store", new {id = category.Id, name = category.SeoName})+ "\">" + category.Name + "</a></span>");
@@ -98,7 +132,7 @@ namespace Jewerly.Web.Utils
                                    category.Id + "' aria-expanded=\"true\" aria-controls='" + category.Id + "'>" + "<span class='glyphicon glyphicon-resize-full'></span>" + "</a>");
 
 
-                if (category.Id == menu.TopCategoryId)
+                if (menu.TopCategory!=null && category.Id == menu.TopCategory.Id)
                 {
                     builder.AppendLine("<div id='" + category.Id + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='headingOne'>");      
                 }
@@ -106,15 +140,14 @@ namespace Jewerly.Web.Utils
                 {
                     builder.AppendLine("<div id='" + category.Id + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='headingOne'>"); 
                 }
-              
-
+               
                 builder.AppendLine("<div class=\"panel-body\"> <ul class=\"nav nav-pills nav-stacked\">");
 
 
                 foreach (var subCategory in category.SubCategories)
                 {
 
-                    if (subCategory.Id == menu.CurentCategoryId)
+                    if (menu.CurrentCategory!=null && subCategory.Id == menu.CurrentCategory.Id)
                     {
                         builder.AppendLine("<li class=\"active\">");
                     }

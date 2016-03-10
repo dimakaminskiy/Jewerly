@@ -36,13 +36,18 @@ namespace Jewerly.Domain
         public DbSet<CategoryPicture> CategoryPictures { get; set; }
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Markup> Markups { get; set; }
-
         public DbSet<Review> Reviews { get; set; }
-
         public DbSet<Country> Countries { get; set; }
 
-      
-        
+
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<MethodOfDelivery> MethodOfDeliveries { get; set; }
+        public DbSet<MethodOfPayment> MethodOfPayments { get; set; }
+
+        public DbSet<Cart> Carts { get; set; } 
         
 
     }

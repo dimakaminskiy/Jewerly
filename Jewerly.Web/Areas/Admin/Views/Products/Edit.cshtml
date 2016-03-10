@@ -1,8 +1,9 @@
-﻿@model Jewerly.Domain.Product
+﻿@using Jewerly.Web.Utils
+@model Jewerly.Domain.Product
 
 @{
     ViewBag.Title = "Товары";
-    Layout = "~/Areas/Admin/Views/Shared/Admin _Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
 }
 
 <h2>Редактировать</h2>
@@ -90,7 +91,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.PictureId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("PictureId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("PictureId", null, htmlAttributes: new { @class = "form-control pic-change" })
                         @Html.ValidationMessageFor(model => model.PictureId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -125,7 +126,7 @@
         <div class="col-sm-2">
             @*--------------------------------*@
             <div class="absolute_img pull-right">
-                <img src='@Html.DisplayFor(model => model.Picture.Path)' class="img-responsive shadow"/>
+                <img src='@Model.Picture.Preview()' class="img-responsive shadow" id="prodPic" />
             </div>
             @*-------------------------------------*@
         </div>
@@ -220,13 +221,14 @@
 @section scripts {
 
     <script>
-        $(function () {
+        
+        $(function() {
             $.ajaxSetup({ cache: false });
 
-            $("#ModalBtn a[data-toggle]").on("click", function (e) {
+            $("#ModalBtn a[data-toggle]").on("click", function(e) {
                 // hide dropdown if any (this is used wehen invoking modal from link in bootstrap dropdown )
                 //$(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
-                $('#myModalContent').load(this.href, function () {
+                $('#myModalContent').load(this.href, function() {
                     $('#myModal').modal({
                         /*backdrop: 'static',*/
                         keyboard: true
@@ -239,7 +241,7 @@
 
 
         function bindForm(dialog) {
-            $('form', dialog).submit(function () {
+            $('form', dialog).submit(function() {
                 //$("form button[type='submit']").click(function() {
                 //    var form = $(this).parent("form");
                 //    alert("form"+form);
@@ -256,12 +258,12 @@
                         url: this.action,
                         type: this.method,
                         data: $(this).serialize(),
-                        success: function (result) {
+                        success: function(result) {
                             if (result.success) {
                                 $('#myModal').modal('hide');
                                 // location.reload();
-                               // alert(result.url);
-                                  location.replace(result.url);
+                                // alert(result.url);
+                                location.replace(result.url);
                             } else {
                                 $('#myModalContent').html(result);
                                 bindForm(dialog);
@@ -273,9 +275,38 @@
             });
 
 
-
         }
-        $(".add-attr-link").click(function (e) {
+
+        $(".pic-change").on("change", function() {
+            var picId = $(this).val();
+            var link = "@Url.Action("ProductPicturebyId")";
+            if (picId < 1) {
+                $("#prodPic").attr("src", "/Content/img/NoImage.gif");
+                return;
+            }
+
+            $.ajax({
+                type: "GET",
+                url: link,
+                traditional: true,
+                data: {
+                    id: picId
+                }
+            }).done(function(data) {
+                if (data.success === true) {
+                    $("#prodPic").attr("src", data.name);
+                } else {
+                    alert(data.errorMessage);
+                }
+            }).fail(function(e) {
+                alert('Ошибка операции');
+            });
+
+
+        });
+
+
+        $(".add-attr-link").click(function(e) {
             e.preventDefault();
 
             $.ajax({
@@ -283,13 +314,13 @@
                 url: $(this).attr("href"),
                 traditional: true
 
-            }).done(function (data) {
+            }).done(function(data) {
                 if (data.success === true) {
                     window.location.replace(data.url);
                 } else {
                     alert(data.errorMessage);
                 }
-            }).fail(function (e) {
+            }).fail(function(e) {
                 alert('Ошибка загрузки изображения');
             });
         });

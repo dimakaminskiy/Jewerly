@@ -5,28 +5,63 @@ using Jewerly.Web.Models;
 
 namespace Jewerly.Web.Utils
 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static class ProductExtentions
     {
-        public static ProductViewModel ToProductViewModel(this Product product)
+        public static ProductViewModel ToProductViewModel(this Product product, Currency currency)
         {
+
+            var price = product.Price*currency.Rate;
+
+            if (product.Discount != null)
+            {
+                price = price - ((price/100)*product.Discount.Value);
+            }
+
             var model = new ProductViewModel();
             model.Name = product.Name;
             model.SeoName = product.SeoName;
             model.Id = product.ProductId;
             model.Picture = product.Picture;
-            model.Price = product.Price;
+            model.Price = price;
+            model.Currency = currency.Name;
             model.Discount = product.DiscountId == null ? 0 : product.Discount.Value;
             return model;
         }
 
-        public static ProductDetailModel ToProductDetailModel(this Product product)
+        public static ProductDetailModel ToProductDetailModel(this Product product, Currency currency)
         {
             var model = new ProductDetailModel();
-            
+
+
+            var oldprice = product.Price * currency.Rate;
+            decimal price = oldprice;
+            if (product.Discount != null)
+            {
+                price = price - ((price / 100) * product.Discount.Value);
+            }
+
             model.Name = product.Name;
             model.Id = product.PictureId;
             model.Picture = product.Picture;
-            model.Price = product.Price;
+
+            model.Price = price;
+            model.OldPrice = oldprice;
+            model.Currency = currency.CurrencyCode;
             model.FullDescription = product.FullDescription;
             model.Discount = product.DiscountId == null ? 0 : product.Discount.Value;
             model.SpecificationAttributes = new Dictionary<string, string>();

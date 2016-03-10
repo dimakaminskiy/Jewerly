@@ -1,0 +1,49 @@
+﻿@model Jewerly.Domain.Entities.MethodOfPayment
+
+@{
+    ViewBag.Title = "Способы оплаты";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Удаление</h2>
+
+<h3>Подтвердите удаление</h3>
+<div>
+    <h4>Способ оплаты</h4>
+    <hr/>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Available)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Available)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.DisplayOrder)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.DisplayOrder)
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-primary" />
+            <a href="@Url.Action("Index", "MethodOfPayments")" class="btn btn-default">Назад</a>
+        </div>
+    }
+</div>

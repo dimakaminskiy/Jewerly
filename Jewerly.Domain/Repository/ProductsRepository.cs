@@ -144,5 +144,10 @@ namespace Jewerly.Domain.Repository
         {
             return await db.Products.Where(predicate).CountAsync();
         }
+
+       public int Count(Expression<Func<Product, bool>> predicate)
+       {
+           return db.Products.Where(predicate).Count();
+       }
     }
 }

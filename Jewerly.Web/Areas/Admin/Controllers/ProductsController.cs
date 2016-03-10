@@ -4,8 +4,9 @@ using System.Net;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Web.Controllers;
-using Jewerly.Web.extensions;
 using Jewerly.Web.Models;
+using Jewerly.Web.Utils;
+using SelectListHelperExtensions = Jewerly.Web.extensions.SelectListHelperExtensions;
 
 namespace Jewerly.Web.Areas.Admin.Controllers
 {
@@ -33,14 +34,13 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             if (id == 0)
             {
                 list =
-                    new SelectList(DataManager.Pictures.SearchFor(t=>selectedPic.All(g=>g!=t.Id)).OrderBy(x => x.Caption), "Id", "Caption")
-                        .PreAppend("-----------", "", true);
+                    new SelectList(DataManager.Pictures.SearchFor(t=>selectedPic.All(g=>g!=t.Id)).OrderBy(x => x.Caption),
+                        "Id", "Caption").PreAppend( "-----------", "", true);
             }
             else
             {
                 list =
-                    new SelectList(DataManager.Pictures.GetAll().OrderBy(x => x.Caption), "Id", "Caption", id)
-                        .PreAppend("-----------", "", false);
+                   new SelectList(DataManager.Pictures.GetAll().OrderBy(x => x.Caption), "Id", "Caption", id).PreAppend("-----------", "", false);
             }
             return list;
         }
@@ -52,14 +52,12 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             if (id == null)
             {
                 list =
-                    new SelectList(DataManager.Discounts.GetAll().OrderBy(x => x.Name), "Id", "Name")
-                        .PreAppend("-----------", "", true);
+                    new  SelectList(DataManager.Discounts.GetAll().OrderBy(x => x.Name), "Id", "Name").PreAppend("-----------", "", true);
             }
             else
             {
                 list =
-                    new SelectList(DataManager.Discounts.GetAll().OrderBy(x => x.Name), "Id", "Name", id)
-                        .PreAppend("-----------", "", false);
+                   new SelectList(DataManager.Discounts.GetAll().OrderBy(x => x.Name), "Id", "Name", id).PreAppend( "-----------", "", false);
             }
             return list;
         }
@@ -72,14 +70,12 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             if (id == 0)
             {
                 list =
-                    new SelectList(categories, "Id", "Name", categories.First().Id)
-                        .PreAppend("-----------", "", false);
+                 new SelectList(categories, "Id", "Name", categories.First().Id).PreAppend( "-----------", "", false);
             }
             else
             {
                 list =
-                    new SelectList(categories, "Id", "Name", id)
-                        .PreAppend("-----------", "", false);
+                  new SelectList(categories, "Id", "Name", id).PreAppend("-----------", "", false);
             }
             return list;
         }
@@ -246,7 +242,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return PartialView(model);
 
         }
-
         public ActionResult ProductSpecificationAttributeOptions(int prodSpecAttrId)
         {
 
@@ -260,7 +255,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
         [HttpPost]
         public ActionResult AddAttributeToProduct(int prodId, int attrId, int attrOptionId)
         {
@@ -302,7 +296,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             });
 
         }
-
         [HttpPost]
         public ActionResult DeleteAttributeFromProduct(int id)
         {
@@ -319,8 +312,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                 url = Url.Action("Edit", new {id = attr.ProductId})
             });
         }
-
-
         public ActionResult ProductChoiceAttributes(int prodId)
         {
             var attributes = DataManager.ProductChoiceAttributes.GetAll()
@@ -393,6 +384,22 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                        }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ProductPicturebyId(int id)
+        {
+            var picture = DataManager.Pictures.GetById(id);
+            //if (picture == null)
+            //{
+                
+            //}
+
+            //string pic = result.Preview();
+            return Json(
+                       new
+                       {
+                           success = true,
+                           name = (picture==null)? "/Content/img/NoImage.gif" : picture.Preview(),
+                       }, JsonRequestBehavior.AllowGet);
+        }
 
 
         [HttpPost]

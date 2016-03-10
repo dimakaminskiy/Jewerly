@@ -9,7 +9,7 @@
 
     <div class="col-sm-4 col-md-3">
 
-        @Html.Partial("_SiteNavigationMenu", Model.Menu)
+        @Html.Partial("_SiteNavigationMenu", Model.MenuCategories)
 
     </div> <!--левая часть End--->
 
@@ -23,66 +23,45 @@
                         Сортировка
                         <span class="caret"></span>
                     </button>
-
-
-                    <ul class="dropdown-menu">
-                        @foreach (var t in Model.ProductsOrderOption.SortOptions)
-                        {
-                            <li>
-                                @if (t.Selected)
-                                {
-                                    @Html.ActionLink(t.Text, "Index", new
-                        {
-                            id = Model.CurentCategoryId,
-                            name = Model.CurentCategorySeoName,
-                            page = Model.Products.PageNo,
-                            sort = t.Value
-
-                        },new {@class="active"})
-                                }
-                                else
-                                {
-                                    @Html.ActionLink(t.Text, "Index", new
-                        {
-                            id = Model.CurentCategoryId,
-                            name = Model.CurentCategorySeoName,
-                            page = Model.Products.PageNo,
-                            sort = t.Value
-
-                        })
-                                }
-                            </li>
-                   }
-                    </ul>
+                    @Html.SortOptions(Model.ProductSortModel, Model.CurentCategoryId, Model.CurentCategorySeoName)
                 </div>
-            </div>
+                </div>
             <div class="col-sm-6">
 
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Сумма 179,99">
                         <div id="exchange">
                             <span>Валюта</span> /
-                            <span>грн</span>
+                            <span>@Model.Currencies.CurrentCurrency.CurrencyCode</span>
                         </div>
                     </button>
 
 
-
+                  
                     <div class="dropdown-menu popover popover-content">
                         <div>
                             <div>Выберите валюту</div>
-                            <button class="btn btn-default btn-md" type="button">грн</button>
-                            <button class="btn btn-default btn-md" type="button">грн</button>
-                            <button class="btn btn-default btn-md" type="button">грн</button>
 
-                            <button class="btn btn-default btn-sm pull-right" type="button">Принять</button>
-                        </div>
+                            <form id="form-currency" action="@Url.Action("Index")" method="POST">
+                                <input class="hidden" name="CurrencyId" id="CurrencyId" value="@Model.Currencies.CurrentCurrencyId" type="text"/>
+                            </form>
+                             @foreach (var item in Model.Currencies.Currencies)
+                                {
+                                    <input class="btn btn-default btn-md currency"
+                                           data-currency="@item.CurrencyId " value="@item.CurrencyCode" type="button"/>
+                                }
+
+                            <script>
+                                $('.currency').click(function () {
+                                    var t = $(this).attr("data-currency");
+                                    $("#CurrencyId").val(t);
+                                    $("#form-currency").submit();
+                                });
+                            </script>
+                          </div>
                     </div>
-
-
+                    </div>
                 </div>
-
-            </div>
         </div>
 
         <div class="row text-center mgo">
@@ -105,9 +84,9 @@
                             <img class="img-responsive" src="@item.Picture.Preview()" title="@item.Name" alt="@item.Name"/>
                         </div>
                         <div class="product-info text-center">
-                            <a href="@Url.Action("Details", new {id = item.Id, name = item.SeoName})">@item.Name </a>
+                            <a href="@Url.Action("Details", new {id = item.Id, name = item.SeoName})">@item.FullName </a>
                             <div class="price">
-                                @item.Price
+                                @item.PriceString @Model.Currencies.CurrentCurrency.CurrencyCode
                             </div>
                             <button class="btn btn-default btn-sm" type="button" data-toggle="modal" data-target="#myAlert">Купить</button>
                         </div>

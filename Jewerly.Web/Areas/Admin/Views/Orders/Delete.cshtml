@@ -1,0 +1,129 @@
+﻿@model Jewerly.Domain.Entities.Order
+
+@{
+    ViewBag.Title = "Заказы";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Удаление</h2>
+
+<h3>Подтвердите удаление</h3>
+<div>
+    <h4>Заказ</h4>
+    <hr/>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Country.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Country.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.MethodOfDelivery.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.MethodOfDelivery.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.MethodOfPayment.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.MethodOfPayment.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.OrderStatus.Name)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.OrderStatus.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.OrderDate)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.FirstName)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.LastName)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.LastName)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.MiddleName)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.MiddleName)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Phone)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Phone)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Email)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Total)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Total)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.City)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.City)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.TextInfo)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.TextInfo)
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-primary" />
+            <a href="@Url.Action("Index", "Orders")" class="btn btn-default">Назад</a>
+        </div>
+    }
+</div>

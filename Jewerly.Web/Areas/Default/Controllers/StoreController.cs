@@ -13,18 +13,41 @@ namespace Jewerly.Web.Areas.Default.Controllers
 {
     public class StoreController : BaseController
     {
+
+        #region HomepageModel
+
+        private MainPageViewModal GetMainPageViewModal()
+        {
+            return new MainPageViewModal()
+            {
+                HomePageCategories = GetListShowOnHomePageCategories(),
+                MenuCategories = new MenuCategories(null, GetListMenuCategories())
+            };
+        }
+
+        #endregion
+
+        #region MenuCategoryModel
+
+        private List<Category> GetListShowOnHomePageCategories()
+        {
+            var result =
+                DataManager.Categories.SearchFor(t => t.Published && t.ShowOnHomePage).OrderBy(t => t.Name).ToList();
+            return result;
+        }
+
         private List<CategoryModel> GetListMenuCategories()
         {
             List<CategoryModel> result = new List<CategoryModel>();
 
             foreach (var c in DataManager.Categories.SearchFor(t => t.ParentCategoryId == null && t.Published)
-                    .OrderBy(t => t.Name).Select(t => new CategoryModel()
-                    {
-                        Id = t.Id,
-                        Name = t.Name,
-                        SeoName = t.SeoName,
-                        ParentCategoryId = t.ParentCategoryId                        
-                    }).ToList())
+                .OrderBy(t => t.Name).Select(t => new CategoryModel()
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    SeoName = t.SeoName,
+                    ParentCategoryId = t.ParentCategoryId
+                }).ToList())
             {
                 result.Add(c);
             }
@@ -33,13 +56,13 @@ namespace Jewerly.Web.Areas.Default.Controllers
             foreach (var c in result)
             {
                 List<CategoryModel> subcategories = new List<CategoryModel>();
-                foreach (var s in  DataManager.Categories.SearchFor(t => t.ParentCategoryId == c.Id && t.Published)
+                foreach (var s in DataManager.Categories.SearchFor(t => t.ParentCategoryId == c.Id && t.Published)
                     .OrderBy(t => t.Name).Select(t => new CategoryModel()
                     {
                         Id = t.Id,
                         Name = t.Name,
                         SeoName = t.SeoName,
-                        ParentCategoryId = t.ParentCategoryId   
+                        ParentCategoryId = t.ParentCategoryId
                     }).ToList())
                 {
                     subcategories.Add(s);
@@ -49,13 +72,15 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
             return result;
         }
-        private List<Category> GetListShowOnHomePageCategories()
-        {
-          var result = DataManager.Categories.SearchFor(t => t.Published && t.ShowOnHomePage).OrderBy(t => t.Name).ToList();
-          return result;
-        }
+
+        #endregion
 
 
+
+
+
+ 
+        
         private IQueryable<Product> GetProductByCategoryId(int catId)
         {
             var category = DataManager.Categories.GetById(catId);
@@ -72,11 +97,6 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
   
         }
-
-
-
-
-
         public IQueryable<Product> GetProducts(int categoryId, string sort)
         {
             IQueryable<Product> queryableSet = GetProductByCategoryId(categoryId);
@@ -95,17 +115,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
             
             return queryableSet;
         }
-        private Dictionary<string, string> GetSortOptions()
-        {
-             var result = new Dictionary<string,string>();
-
-             result.Add("cheap","от дешевых к дорогим");
-             result.Add("expensive","от дорогих к дешевым");
-             result.Add("novelty","новинки");
-            return result;
-        }
-
-
+      
         void InitializeRoles()
         {
             var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
@@ -141,70 +151,70 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
         }
 
-
-
-
-
-
-
-
-
-        public ActionResult Index(int page=0,int id = 0, string name = "", string sort = "")
+        public CurrencyModel GetCurrencyModel()
         {
-            InitializeRoles();
+            var list = DataManager.Currencies.GetAll().OrderBy(t => t.DisplayOrder).ToList();
+            int id = GetCurrentCurrency();
+            return  new CurrencyModel( list,id);
+        }
 
-            if (string.IsNullOrEmpty(name) && id==0)
+        
+        public ActionResult Index(int? page = 0,int id = 0, string name = "", string sort = "")
+        {
+            var gg = Request.Form;
+            if (Request.HttpMethod == "POST")
             {
-
-                var mainPageViewModal = new MainPageViewModal
+                var currencyParam =  Request.Form["CurrencyId"];
+                if (currencyParam != null && DataManager.Currencies.Count(t => t.Published && t.CurrencyId.ToString() == currencyParam) > 0)
                 {
-                  Menu   =  new CategoriesMenuViewModel()
-                  {
-                      CurentCategoryId = null,
-                      MenuCategories =  GetListMenuCategories(),
-                  },
-                    HomePageCategories = GetListShowOnHomePageCategories()
-                };
-                return View("Home", mainPageViewModal);
-            }
-            var model = new StoreViewModel();
-            var dic = GetSortOptions();
-            var itemPerPage = 12; 
-
-            if (!string.IsNullOrEmpty(sort) && !dic.ContainsKey(sort))
-                sort = "";
-            var orderOptions = new ProductsOrderByModel(dic, sort);
-
-            if (page == 0)
-            {
-                page = 1;
+                    SetCookie("Currency", currencyParam);
+                    return RedirectToAction("Index", new { page = (page == 0) ? null : page, id, name, sort });
+                }
             }
 
-            model.Menu = new CategoriesMenuViewModel()
-            {
-                CurentCategoryId = id,
-                MenuCategories = GetListMenuCategories()
-            };
 
-            var products = GetProducts(id, string.IsNullOrEmpty(sort) ? orderOptions.SortByDefult : sort);
-            var productsViewModel = new PageableProducts(products, page, itemPerPage);
-            model.Products = productsViewModel;
-            
-            model.ProductsOrderOption = orderOptions;
+
+            if (id == 0)
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    return View("Home", GetMainPageViewModal());
+                }
+                var routeValues = Request.RequestContext.RouteData.Values;
+                routeValues.Remove("name");
+                routeValues.Remove("id");
+                return RedirectToAction("Index");
+            }
+            if (DataManager.Categories.Count(t=>t.Published && t.Id==id)==0)
+            {
+                var routeValues = Request.RequestContext.RouteData.Values;
+                routeValues.Remove("name");
+                routeValues.Remove("id");
+                return RedirectToAction("Index");
+            }
+
+
+           var model = new StoreViewModel();
+           var itemPerPage = 12;
+           var sortOptions = new ProductSortModel(sort);          
+           model.MenuCategories = new MenuCategories(id, GetListMenuCategories());
+           model.Currencies=GetCurrencyModel();
+           var products = GetProducts(id, string.IsNullOrEmpty(sort) ? sortOptions.SortByDefult : sort);
+           var productsViewModel = new PageableProducts(products,
+               model.Currencies.CurrentCurrency, (page== null||page==0)? 1: page.Value, itemPerPage);
+           model.Products = productsViewModel;
+           model.ProductSortModel = sortOptions;
            return View(model);
         }
 
         public ActionResult Details(int id, string name)
         {
-            var product = DataManager.Products.GetById(id);
-            var model = new ProductDetailViewModel();
-            model.Product = product.ToProductDetailModel();
-            model.Menu = new CategoriesMenuViewModel()
-            {
-                CurentCategoryId = product.CategoryId,
-                MenuCategories = GetListMenuCategories()
-            };
-            return View(model);
+           var product = DataManager.Products.GetById(id);
+           var model = new ProductDetailViewModel();
+           var c= DataManager.Currencies.GetById(GetCurrentCurrency());
+           model.Product = product.ToProductDetailModel(c);
+           model.MenuCategories = new MenuCategories(product.CategoryId,GetListMenuCategories());
+           return View(model);
         }
 
 

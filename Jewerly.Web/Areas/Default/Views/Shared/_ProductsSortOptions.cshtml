@@ -1,0 +1,42 @@
+﻿@using Jewerly.Web.Utils
+@model Jewerly.Web.Models.ProductSortModel
+
+
+<div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Сортировка
+        <span class="caret"></span>
+    </button>
+  
+
+    @*<ul class="dropdown-menu">
+        @foreach (var t in Model.SortOptions)
+        {
+            <li>
+                @if (t.Selected)
+                {
+                    @Html.ActionLink(t.Text, "Index","Store", new
+                        {
+                            id = Model.CurentCategoryId,
+                            name = Model.CurentCategorySeoName,
+                            page = Model.Products.PageNo,
+                            sort = t.Value
+
+                        }, new { @class = "active" })
+                }
+                else
+                {
+                    @Html.ActionLink(t.Text, "Index", new
+                        {
+                            id = Model.CurentCategoryId,
+                            name = Model.CurentCategorySeoName,
+                            page = Model.Products.PageNo,
+                            sort = t.Value
+
+                        })
+                }
+            </li>
+        }
+    </ul>*@
+</div>
+

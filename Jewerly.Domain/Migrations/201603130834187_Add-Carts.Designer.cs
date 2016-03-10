@@ -7,13 +7,13 @@ namespace Jewerly.Domain.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class addusersinfo : IMigrationMetadata
+    public sealed partial class AddCarts : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addusersinfo));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddCarts));
         
         string IMigrationMetadata.Id
         {
-            get { return "201603081429259_add-users-info"; }
+            get { return "201603130834187_Add-Carts"; }
         }
         
         string IMigrationMetadata.Source

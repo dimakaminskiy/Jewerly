@@ -9,15 +9,22 @@ namespace Jewerly.Web.Areas.Default.Models
 
         public class ForgotViewModel
         {
+            [Display(Name = "E-mail")]
             public string Email { get; set; }
         }
 
         public class LoginViewModel
         {
+            [Required]
             [EmailAddress]
+            [Display(Name = "E-mail")]
             public string Email { get; set; }
+              [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Пароль")]
             public string Password { get; set; }
+
+            [Display(Name = "Запомнить меня")]
             public bool RememberMe { get; set; }
         }
 
@@ -28,26 +35,37 @@ namespace Jewerly.Web.Areas.Default.Models
                 AgreeWithConditions = true;
             }
             [Required]
+            [Display(Name = "Фамилия")]
             public string LastName { get; set; }
             [Required]
+            [Display(Name = "Имя")]
             public string FirstName { get; set; }
-              [Required]
+            [Required]
+            [Display(Name = "Отчество")]
             public string MiddleName { get; set; }
               [Required]
+              [Display(Name = "Страна")]
             public int CountryId { get; set; }
               [Required]
-            public string City { get; set; }
+              [Display(Name = "Город")]
+              public string City { get; set; }
               [Required]
-            public string Phone { get; set; }
+              [Display(Name = "Телефон")]
+              public string Phone { get; set; }
             //    [RegularExpression(@"^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$", ErrorMessageResourceType = typeof(GlobalResource), ErrorMessageResourceName = "ErrorMessageRegularExpressionEmail")]
+            [Display(Name = "E-mail")]
             public string Email { get; set; }
               [Required]
+            [Display(Name = "Пароль")]
             public string Password { get; set; }
               [Required]
-            public string ConfirmPassword { get; set; }
+              [Display(Name = "Подтверждение пароля")]
+              public string ConfirmPassword { get; set; }
               [Required]
-            public string KindOfActivity { get; set; }
+              [Display(Name = "Вид деятяльности")]
+              public string KindOfActivity { get; set; }
             [Required]
+            [Display(Name = "Согласен с условиями регистрации")]
             public bool AgreeWithConditions { get; set; }
 
         }
@@ -62,7 +80,7 @@ namespace Jewerly.Web.Areas.Default.Models
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Пароль")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]

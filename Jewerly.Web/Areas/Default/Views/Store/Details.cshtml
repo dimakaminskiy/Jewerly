@@ -31,14 +31,21 @@
                 <div class="col-md-5">
 
                     <div class="product-info shadow text-center">
-                        Артикул + !!!!!!!!!!!
-
-                        <h1>@Model.Product.Name</h1>
+                       
+                        <h1>@Model.Product.FullName</h1>
                         <div class="product-price">
                             Цена
-                            <span class="price">@Model.Product.Price</span>
+                            <span class="price">@Model.Product.PriceString</span>
                             Валюта @Model.Product.Currency
-                         </div>
+                        </div>
+
+                        <div class="product-price">
+                            Старая цена Цена
+                            <span class="price">@Model.Product.OldPriceString</span>
+                            Валюта @Model.Product.Currency
+                        </div>
+
+
                         <div class="product-cart">
                             <div>
                                 <a href="#"><span class="glyphicon glyphicon-minus-sign"></span></a>

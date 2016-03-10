@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Jewerly.Domain.Entities.MethodOfDelivery>
+
+@{
+    ViewBag.Title = "Методы доставки";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Методы доставки</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Available)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisplayOrder)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Available)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DisplayOrder)
+        </td>
+        <td>
+            <a href="@Url.Action("Edit", new {id = item.Id})"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="@Url.Action("Delete", new {id = item.Id})"><span class="glyphicon glyphicon-trash"></span></a>
+        </td>
+    </tr>
+}
+
+</table>

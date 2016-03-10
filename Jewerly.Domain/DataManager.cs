@@ -23,6 +23,10 @@ namespace Jewerly.Domain
        public IGenericRepository<Markup> Markups { get;  private set; }
        public IGenericRepository<Review> Reviews { get; set; }
        public IGenericRepository<Country> Countries { get; set; }
+       public IGenericRepository<OrderStatus> OrderStatuses { get; set; }
+       public IGenericRepository<Order> Orders { get; set; }
+       public IGenericRepository<OrderDetail> OrderDetails { get; set; }
+       public IGenericRepository<Cart> Carts { get; set; }
 
        public DataManager
            (
@@ -41,7 +45,12 @@ namespace Jewerly.Domain
            ,IGenericRepository<Discount> discounts
            ,IGenericRepository<Markup> markups
            ,IGenericRepository<Review> reviews
-           ,IGenericRepository<Country> countries 
+           ,IGenericRepository<Country> countries
+
+           , IGenericRepository<OrderStatus> orderStatuses
+           , IGenericRepository<Order> orders
+           , IGenericRepository<OrderDetail> orderDetails
+           , IGenericRepository<Cart> carts 
 
            
            )
@@ -62,6 +71,10 @@ namespace Jewerly.Domain
            Markups = markups;
            Reviews = reviews;
            Countries = countries;
+           OrderStatuses = orderStatuses;
+           Orders = orders;
+           OrderDetails = orderDetails;
+           Carts = carts;
        }
     }
 }
