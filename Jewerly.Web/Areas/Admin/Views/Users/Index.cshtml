@@ -23,26 +23,21 @@
             </label>
             <div class="col-md-10">
                 @Html.Editor("userName", new { @class="form-control"})
-             
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Найти" class="btn btn-default" />
             </div>
         </div>
+
     </form>
 
     <div>
-
+        Фильтр:
         @if (ViewBag.role != null)
         {
-            <div>@ViewBag.role</div>
+            <span>По группе: @ViewBag.role ;</span>
         }
-        @if (ViewBag.userName != null)
+        @if (ViewBag.userName != null && !string.IsNullOrEmpty(ViewBag.userName))
         {
-            <div>@ViewBag.userName</div>
+            <span>По фамилии: @ViewBag.userName .</span>
         }
       </div>
 
@@ -86,8 +81,9 @@
 
 
         <td>
-            @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new { @class = "editLink" })
-        </td>    </tr>
+            <a href="@Url.Action("Edit", new {id = item.Id})"><span class="glyphicon glyphicon-pencil"></span></a>
+        </td>
+    </tr>
 }
 
 </table>

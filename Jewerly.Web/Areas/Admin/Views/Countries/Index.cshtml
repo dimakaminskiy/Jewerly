@@ -1,15 +1,16 @@
 ﻿@model IEnumerable<Jewerly.Domain.Entities.Country>
 
 @{
-    ViewBag.Title = "Index";
+
+    ViewBag.Title = "Страны";
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Страны</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+                      <p>
+                          @Html.ActionLink("Создать", "Create")
+                      </p>
 <table class="table">
     <tr>
         <th>
@@ -24,9 +25,8 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <a href="@Url.Action("Edit", new {id = item.Id})"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="@Url.Action("Delete", new {id = item.Id})"><span class="glyphicon glyphicon-trash"></span></a>
         </td>
     </tr>
 }
