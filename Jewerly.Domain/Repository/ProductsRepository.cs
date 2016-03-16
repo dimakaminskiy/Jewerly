@@ -120,7 +120,7 @@ namespace Jewerly.Domain.Repository
         public void Edit(Product entity)
         {
             db.Entry(entity).State = EntityState.Modified;
-            db.SaveChangesAsync();
+            db.SaveChanges();
         }
 
         public void Insert(Product entity)

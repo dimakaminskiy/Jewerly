@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using System.Web.Routing;
 using Jewerly.Domain;
 using Jewerly.Web.Models;
 
@@ -12,6 +14,42 @@ namespace Jewerly.Web.Utils
 {
     public  static class HtmlMenuHeler
     {
+
+
+        public static string ActionWithOldQuery(this UrlHelper helper, string controller, string action, object routeValues, string oldQuery)
+        {
+            RouteValueDictionary newRoute = new RouteValueDictionary(routeValues);
+
+            var current = helper.RequestContext.RouteData.Values;
+
+            // Merge the new values INTO the current values, overwriting any existing values/querystrings
+            foreach (var item in newRoute)
+                current[item.Key] = item.Value;
+
+            string h =  helper.Action(action, controller)  + oldQuery;
+            return h;
+        }
+
+
+
+
+        public static string RouteValueChange(this UrlHelper url, object routeValues)
+        {
+            // Convert new route values to a dictionary
+            RouteValueDictionary newRoute = new RouteValueDictionary(routeValues);
+
+            // Get the route data of the current Url
+            var current = url.RequestContext.RouteData.Values;
+
+            // Merge the new values INTO the current values, overwriting any existing values/querystrings
+            foreach (var item in newRoute)
+                current[item.Key] = item.Value;
+
+            // Generate the new Url
+           
+            return url.RouteUrl(current);
+        }
+
 
         public static MvcHtmlString GridCategories(this HtmlHelper html, List<Category> list)
         {
@@ -67,7 +105,7 @@ namespace Jewerly.Web.Utils
                     lineBuilder.AppendFormat(
                             "<li><a {0} href=\"{1}\">{2}</a></li>",                          
                             option.Value == model.SortByDefult? "class=\"active\"":"",
-                            urlHelper.Action("Index", "Store", new { id = catId, name = catName, sort = option.Value }),
+                            urlHelper.Action("Index", "Store", new { id = catId, name = catName, sort = option.Value,page=1}),
                             option.Name);   
                  }
                 else
@@ -75,7 +113,7 @@ namespace Jewerly.Web.Utils
                     lineBuilder.AppendFormat(
                              "<li><a {0} href=\"{1}\">{2}</a></li>",
                              option.Value == model.Sort ? "class=\"active\"" : "",
-                             urlHelper.Action("Index", "Store", new { id = catId, name = catName, sort = option.Value }),
+                             urlHelper.Action("Index", "Store", new { id = catId, name = catName, sort = option.Value,page=1 }),
                              option.Name);    
                 }
 

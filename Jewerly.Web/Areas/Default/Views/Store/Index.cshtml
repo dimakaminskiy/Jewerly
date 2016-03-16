@@ -1,4 +1,5 @@
 ﻿@using Jewerly.Web.Models
+@using Jewerly.Web.Models.Store
 @using Jewerly.Web.Utils
 @model Jewerly.Web.Models.StoreViewModel
 @{
@@ -10,7 +11,7 @@
     <div class="col-sm-4 col-md-3">
 
         @Html.Partial("_SiteNavigationMenu", Model.MenuCategories)
-
+         @Html.Partial("_FiltersPartialView",Model.Filters)
     </div> <!--левая часть End--->
 
     <div class="col-sm-8 col-md-9">
@@ -23,7 +24,7 @@
                         Сортировка
                         <span class="caret"></span>
                     </button>
-                    @Html.SortOptions(Model.ProductSortModel, Model.CurentCategoryId, Model.CurentCategorySeoName)
+                    @Html.SortOptions(Model.ProductSortModel, Model.CurrentCategoryId, Model.CurrentCategorySeoName)
                 </div>
                 </div>
             <div class="col-sm-6">
@@ -116,19 +117,148 @@
 
         <div class="text-center">
            
+            @*@if (Model.Products.CountPage > 1)
+            {
+                @Html.PageLinks(Model.Products.PageNo, Model.Products.CountPage, x => Url.Action("Index", "Store",
+                        new
+                        {
+                            name = Model.CurrentCategorySeoName,
+                            id = Model.CurrentCategoryId,
+                            sort=Model.CurrentSort,
+                            page = x,
+                          }))
+            }*@
+
+
+
             @if (Model.Products.CountPage > 1)
             {
                 @Html.PageLinks(Model.Products.PageNo, Model.Products.CountPage, x => Url.Action("Index", "Store",
                         new
                         {
-                            name = Model.CurentCategorySeoName,
-                            id = Model.CurentCategoryId,
-                            sort=Model.CurentSort,
-                            page = x
-                        }))
+                            name = Model.CurrentCategorySeoName,
+                            id = Model.CurrentCategoryId,
+                            sort = Model.CurrentSort,
+                            page = x,
+
+                        })+ string.Join("&",((List<QueryFilter>)ViewBag.queryFilters).Select(h =>"&"+h.AttributeName+"="+h.AttributeOptionId)));
             }
+
+
+
+
+
+
+
+
+
 
 
         </div>
         
     </div>
+
+
+@section scripts {
+    <script>
+
+        $(document).ready(function () {
+
+
+            $(".btn.btn-default.dropdown-toggle").click(function(e) {
+                var height_document = $(document).height();
+                var height_client = document.body.clientHeight;
+
+
+                console.log(height_document + " " + height_client);
+
+                if (height_document > height_client) {
+                    $('body').css({ 'margin-right': "-15px", "overflow-x":"hidden"});
+                }
+            });
+
+            $(".btn.btn-default.dropdown-toggle").focusout(function () {
+                    $('body').css({ 'margin-right': 0, "overflow-x": "auto" });
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+            $(".filter-option").click(function (event) {
+                event.preventDefault();
+
+               
+
+
+                var filterOptionId = $(this).attr("attr-option");
+                var filterOptionName = $(this).text();
+                var filterId = $(this).attr("attr-id");
+                var queryFilter = "#filter-name-" + filterId;
+                var filter = $(queryFilter);
+                var filterName = filter.attr("attr-name");
+
+                console.log(filterOptionId); // комениты
+
+                if (filterOptionId == undefined||filterOptionId !== "") {
+                    if (!filter.hasClass("selected")) {
+                        filter.addClass("selected");
+                    }
+                    filter.attr("attr-option", filterOptionId);
+
+                    filter.html(filterName + " / " + filterOptionName);
+
+                } else {
+                    if (filter.hasClass("selected")) {
+                        filter.removeClass("selected");
+                    }
+                    filter.attr("attr-option", "");
+                    filter.html(filterName );
+                }
+
+             $("div.btn-group.open").removeClass("open");
+             return false;
+
+            });
+
+
+            $("#execute-filter-btn").click(function () {
+                var orgLink = "@Request.Url.LocalPath";
+
+                var attributes = $("#filter span[id^='filter-name-']").filter('.selected');
+
+                //?tir=77&tap=88
+
+                for (var i = 0; i < attributes.length; i++) {
+                    var line = "";
+                    //if (i == 0) {
+                    //    line = "?attr-" + $(attributes[i]).attr("attr-id") + "&" + "option" + $(attributes[i]).attr("attr-option");
+                    //} else {
+                    //    line = "&attr-" + $(attributes[i]).attr("attr-id") + "&" + "option" + $(attributes[i]).attr("attr-option");
+                    //}
+
+                    line += (i != 0) ? "&" : "?";
+
+                    line += $(attributes[i]).attr("attr-other-name") + "=" + $(attributes[i]).attr("attr-option");
+
+                    orgLink += line;
+
+                }
+                
+                document.location.href = orgLink;
+
+            });
+
+
+        });
+
+
+    </script>
+}

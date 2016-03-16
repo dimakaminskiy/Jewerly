@@ -54,9 +54,9 @@ namespace Jewerly.Web.Utils
             {
                 price = price - ((price / 100) * product.Discount.Value);
             }
-
-            model.Name = product.Name;
             model.Id = product.PictureId;
+            model.Name = product.Name;
+           // model.SeoName = product.SeoName;
             model.Picture = product.Picture;
 
             model.Price = price;

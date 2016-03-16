@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Jewerly.Web.Models.ProductFilter>
+
+
+@if (!Model.Any())
+{
+    return;
+}
+
+<div class="panel panel-default text-center" id="filter">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Фильтр</div>
+    <a class="hidden" href=""></a>
+    <div class="panel-body">
+        <!-- List group -->
+        @foreach (var filter in Model)
+        {
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+
+                    @if (filter.CurrentOption != null)
+                    {
+                        <span id="filter-name-@filter.Id" attr-id="@filter.Id" attr-name="@filter.Name" attr-other-name="@filter.SeoName"
+                              attr-option="@filter.CurrentOptionId" class="selected">@filter.Name / @filter.CurrentOption.Name</span>
+                    }
+                    else
+                    {
+                        <span id="filter-name-@filter.Id" attr-id="@filter.Id" attr-name="@filter.Name" attr-other-name="@filter.SeoName"
+                               attr-option="">@filter.Name</span>
+                    }
+
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+
+
+                    @if (filter.CurrentOption == null)
+                    {
+                        <li class="filter-option active" attr-id="@filter.Id" attr-option=""><a href="#">Все</a></li>
+                    }
+                    else
+                    {
+                        <li class="filter-option" attr-id="@filter.Id" attr-option=""><a href="#">Все</a></li>
+                    }
+
+
+                   
+
+                    
+                    @foreach (var option in filter.Options)
+                    {
+
+                        if (filter.CurrentOption != null && filter.CurrentOption.Id == option.Id)
+                        {
+                            <li><a class="filter-option active" attr-id="@filter.Id" attr-option="@option.Id" href="#">@option.Name</a></li>
+                        }
+                        else
+                        {
+                            <li><a class="filter-option" attr-id="@filter.Id" attr-option="@option.Id" href="#">@option.Name</a></li>
+                        }
+
+
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+    <div class="panel-heading text-center">
+        <button id="execute-filter-btn" class="btn btn-default btn-sm" type="button">Применить фильтр</button>
+    </div>
+
+    <div>
+        @Html.ActionLink("77","Index","Store", new {id="8",name ="123",tir="77",tap="88"},null)
+    </div>
+</div>
+
+
+
+
+

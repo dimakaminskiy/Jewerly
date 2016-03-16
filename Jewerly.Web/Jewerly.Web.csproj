@@ -212,9 +212,13 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Store\CategoryModel.cs" />
+    <Compile Include="Models\Store\CurrencyModel.cs" />
     <Compile Include="Models\Store\MainPageViewModal.cs" />
+    <Compile Include="Models\Store\ProductDetailViewModel.cs" />
+    <Compile Include="Models\Store\ProductFilter.cs" />
     <Compile Include="Models\Store\ProductOrderModel.cs" />
     <Compile Include="Models\Store\ProductSpecificationAttribiteViewModel.cs" />
+    <Compile Include="Models\Store\QueryFilter.cs" />
     <Compile Include="Models\Store\ShoppingCart.cs" />
     <Compile Include="Models\Store\StoreViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -387,6 +391,7 @@
     <Content Include="Areas\Admin\Views\Users\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_ProductsSortOptions.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_FiltersPartialView.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />

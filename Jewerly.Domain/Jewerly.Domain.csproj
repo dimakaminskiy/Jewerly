@@ -64,6 +64,18 @@
     <Compile Include="Migrations\201603130834187_Add-Carts.Designer.cs">
       <DependentUpon>201603130834187_Add-Carts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603151618320_change attributes.cs" />
+    <Compile Include="Migrations\201603151618320_change attributes.Designer.cs">
+      <DependentUpon>201603151618320_change attributes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603151621487_change attributes1.cs" />
+    <Compile Include="Migrations\201603151621487_change attributes1.Designer.cs">
+      <DependentUpon>201603151621487_change attributes1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603151628416_change attributes2.cs" />
+    <Compile Include="Migrations\201603151628416_change attributes2.Designer.cs">
+      <DependentUpon>201603151628416_change attributes2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Db\ApplicationUser.cs" />
@@ -86,6 +98,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603130834187_Add-Carts.resx">
       <DependentUpon>201603130834187_Add-Carts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603151618320_change attributes.resx">
+      <DependentUpon>201603151618320_change attributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603151621487_change attributes1.resx">
+      <DependentUpon>201603151621487_change attributes1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603151628416_change attributes2.resx">
+      <DependentUpon>201603151628416_change attributes2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
