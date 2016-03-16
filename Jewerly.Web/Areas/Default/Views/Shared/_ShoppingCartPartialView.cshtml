@@ -2,101 +2,42 @@
 
 
 <div class="btn-group cart" role="group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Сумма 179,99">
-        <div id="cart">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" title="Корзина">
+            <div id="cart">
             <span class="glyphicon glyphicon-shopping-cart"></span>
-            Корзина
+             Корзина
             <span class="glyphicon glyphicon-ok"></span>
-            <span class="countProduct">1</span>
+            <span id ="top-card-count">1</span>
             <br/>
-            <span class="glyphicon glyphicon-usd">59,99</span>
+            <span id="top-card-totals" class="glyphicon glyphicon-usd">59,99</span>
         </div>
     </button>
 
-
-
-    <div class="dropdown-menu popover popover-content">
-        <div>
-            <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-sm pull-left">Оформить заказ</a>
-            <a href="@Url.Action("Index", "ShoppingCart")" class="btn btn-default btn-sm pull-right">Подробнее</a>
-            <table class="table table-hover">
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close" title="удалить"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-                <tr>
-                    <td>Название</td>
-                    <td>* 1</td>
-                    <td>59,99</td>
-                    <td><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
-                </tr>
-
-            </table>
+    <div id="mini-shopping-cart" class="dropdown-menu popover popover-content">
+        <div id="mini-shopping-cart-items">
+            <div class="items">
+                <div class="item">
+                    <div class="picture">
+                        <a title="Show details for Fahrenheit 451 by Ray Bradbury" href="/fahrenheit-451-by-ray-bradbury">
+                            <img title="Show details for Fahrenheit 451 by Ray Bradbury" src="http://localhost:15536/content/images/thumbs/0000066_fahrenheit-451-by-ray-bradbury_70.jpeg" alt="Picture of Fahrenheit 451 by Ray Bradbury">
+                        </a>
+                    </div>
+                    <div class="product">
+                        <div class="name">
+                            <a href="/fahrenheit-451-by-ray-bradbury">Fahrenheit 451 by Ray Bradbury</a>
+                        </div>
+                        <div class="price">Unit price: <span>$27.00</span></div>
+                        <div class="quantity">Quantity: <span>4</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="totals">Sub-Total: <strong>$108.00</strong></div>
+            <div class="buttons">
+                <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-sm pull-left">Оформить заказ</a>
+            </div>
         </div>
     </div>
-
 
 </div>
 

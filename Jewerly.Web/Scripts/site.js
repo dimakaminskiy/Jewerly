@@ -22,16 +22,16 @@ $('#top-link a').click(function() {
     return false;
 });
 
-//счетчик товаров
-$('.product-info button').click(function () {
-    var countT = $(".countProduct").text();
-    var countN = parseFloat(countT);
-    var number = countN + 1;
-    $(".countProduct").text(number);
-    $('.countProduct').css('opacity', 0).animate({
-        opacity: 1
-    });
-});
+////счетчик товаров
+//$('.product-info button').click(function () {
+//    var countT = $(".countProduct").text();
+//    var countN = parseFloat(countT);
+//    var number = countN + 1;
+//    $(".countProduct").text(number);
+//    $('.countProduct').css('opacity', 0).animate({
+//        opacity: 1
+//    });
+//});
 
 $(function () {
     $('#myAlert').on('show.bs.modal', function () {
@@ -51,21 +51,33 @@ $(function () {
 
 
 
+
+//$(window).load(function () {
+//    SetDiscountValueOnProductPicture();
+//    $('#myAlert').on('shown.bs.modal', function () {
+//        SetScrollPadding();
+//    });
+//});
+
+//$(window).resize(function () {
+//    SetDiscountValueOnProductPicture();
+//    $('#myAlert').on('shown.bs.modal', function () {
+//        SetScrollPadding();
+//    });
+//});
+
+//скролл для модальных окон и попавер
+//function SetScrollPadding() {
+
+//    var height_document = $(document).height();
+//    var height_client = document.body.clientHeight;
+
+//    if (height_document > height_client) {
+//        $('body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom').css({ 'margin-right': 0 });
+//    }
+//}
+
 //скидка
-$(window).load(function () {
-    SetDiscountValueOnProductPicture();
-    $('#myAlert').on('shown.bs.modal', function () {
-        SetScrollPadding();
-    });
-});
-
-$(window).resize(function () {
-    SetDiscountValueOnProductPicture();
-    $('#myAlert').on('shown.bs.modal', function () {
-        SetScrollPadding();
-    });
-});
-
 function SetDiscountValueOnProductPicture() {
     var mg = $(".product-image").width();
     var mgr = $(".product-image img").width();
@@ -74,16 +86,6 @@ function SetDiscountValueOnProductPicture() {
     $(".discount-nm").css("right", result);
 }
 
-//скролл для модальных окон и попавер
-function SetScrollPadding() {
-
-    var height_document = $(document).height();
-    var height_client = document.body.clientHeight;
-
-    if (height_document > height_client) {
-        $('body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom').css({ 'margin-right': 0 });
-    }
-}
 
 //dropdown center
 

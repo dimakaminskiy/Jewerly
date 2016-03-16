@@ -10,24 +10,34 @@ namespace Jewerly.Web.Models
 {
     public class ShoppingCart
     {
-        private ShoppingCart(DataManager dataManager)
-        {
-            DataManager = dataManager;
-        }
-
         string ShoppingCartId { get; set; }
         public const string CartSessionKey = "CartId";
         private DataManager DataManager { get; set; }
+
+        #region Ctor
+
         public static ShoppingCart GetCart(HttpContextBase context, DataManager dataManager)
         {
             var cart = new ShoppingCart(dataManager);
             cart.ShoppingCartId = cart.GetCartId(context);
             return cart;
         }
+
         public static ShoppingCart GetCart(Controller controller, DataManager dataManager)
         {
             return GetCart(controller.HttpContext, dataManager);
         }
+
+        private ShoppingCart(DataManager dataManager)
+        {
+            DataManager = dataManager;
+        }
+
+        #endregion
+
+
+        #region Private
+
         private string GetCartId(HttpContextBase context)
         {
             if (context.Session[CartSessionKey] == null)
@@ -48,8 +58,11 @@ namespace Jewerly.Web.Models
             }
             return context.Session[CartSessionKey].ToString();
         }
+
+        #endregion
+
        
-        private Cart GetCartItem(int productId)
+        public Cart GetCartItemByProductId(int productId)
         {
             Cart cartItem = null;
             cartItem =
@@ -57,83 +70,13 @@ namespace Jewerly.Web.Models
                     .SingleOrDefault(t => t.ProductId == productId);
             return cartItem;
         }
-        private Cart GetCartById(int id)
-        {
-            return DataManager.Carts.SearchFor(t => t.Id == id).FirstOrDefault();
-        }
-
-        public void AddProductTocart(int productId, int count, string attr)
-        {
-            
-
-        }
-
-        private List<Cart> GetCartsByProductId(int id)
-        {
-            var carts = GetCartItems();
-            var products = carts.Where(t => t.ProductId == id).ToList();
-            return products;
-        }
-
-//        private List<ProductChoiceAttribute>  
+        //public  void Insert
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-        private Cart AddNewCart(int productId, int count, bool trade = false)
-        {
-            //if (!DataManager.Products.SearchFor(x => x.ProductId == productId).Any())
-            //{
-            //    throw new Exception("Товар не найден");
-            //}
-            //var product = DataManager.Products.SearchFor(x => x.ProductId == productId).Single();
-            //int markup = 0;
-            //double price = 0;
-            //if (product.MarkupId != null && DataManager.Markups.SearchFor(t => t.Id == product.MarkupId).Any())
-            //{
-            //    if (trade)
-            //    {
-            //        markup = DataManager.Markups.SearchFor(t => t.Id == product.MarkupId).First().TradeMarkup;
-            //    }
-            //    else
-            //    {
-            //        markup = DataManager.Markups.SearchFor(t => t.Id == product.MarkupId).First().RetailMarkup;
-            //    }
-            //}
-            //if (!trade)
-            //{
-            //    price = (product.ShoppingPrice + (product.ShoppingPrice * markup / 100));
-            //}
-            //else
-            //{
-            //    price = product.ShoppingPrice + (product.ShoppingPrice * markup / 100);
-            //}
-
-            //var cart = new Cart()
-            //{
-            //    ProductId = productId,
-            //    Count = count,
-            //    Price = price,
-            //    CartId = ShoppingCartId,
-            //    DateCreated = DateTime.Now
-            //};
-            //DataManager.Carts.Insert(cart);
-            //return cart;
-            return null;
-        }
-        //public Cart AddToCart(int productId, int count, string attr)
+        //public (int productId, int count, bool trade = false)
         //{
         //    Cart cart = GetCartItem(productId);
         //    if (cart == null) // такого товара в корзине нет ... печалька
@@ -142,81 +85,59 @@ namespace Jewerly.Web.Models
         //    }
         //    return SetProductCount(cart, cart.Count + count);
         //}
-        public Cart SetProductCount(int id, int count)
-        {
-            var cart = GetCartById(id);
-            return SetProductCount(cart, count);
-        }
-        public Cart SetProductCount(Cart cart, int count)
-        {
-
-            if (cart == null) throw new ArgumentException("Нет такого товара в корзине");
-            if (count <= 0) throw new ArgumentException("Кол-во товара всегда больше 0");
-            cart.Count = count;
-            DataManager.Carts.Edit(cart);
-            return cart;
-        }
-        public void RemoveCart(int id) // удаление с заказа
-        {
-            var cart = GetCartById(id);
-            if (cart == null) throw new ArgumentException("Нет такого товара в корзине");
-            DataManager.Carts.Delete(cart);
-        }
-        public IEnumerable<Cart> GetCartItems()
-        {
-            return DataManager.Carts.SearchFor(
-                cart => cart.CartId == ShoppingCartId).ToList();
-        }
-        public int GetCountItems()
-        {
-            var sz = DataManager.Carts.SearchFor(
-                cart => cart.CartId == ShoppingCartId).ToList().Select(t => t.Count).Sum().ToString();
-            return int.Parse(sz.ToString());
-        }
-        public double GetTotal()
-        {
-            //var list = DataManager.Carts.SearchFor(i => i.CartId == ShoppingCartId).Include(t => t.Product).ToList();
-            //return (from cart in list select cart.Count * cart.Price).Sum();
-            return 0;
-        }
-        public void EmptyCart()
-        {
-            var cartItems = DataManager.Carts.SearchFor(
-                cart => cart.CartId == ShoppingCartId).ToList();
-            foreach (var cartItem in cartItems)
-            {
-                DataManager.Carts.Delete(cartItem);
-            }
-        }
-
-        public int CreateOrder(Order order)
-        {
-            var c = new OrderDetail();
-
-            order.OrderDate = DateTime.Now;
-            order.OrderStatusId = 1; // новый заказ => статус не обработано
-            order.Total = GetTotal(); // общую сумму пересчитаем!!!
-            DataManager.Orders.Insert(order);  //  запишем заказ в базу данных
-            //----------------------------------------------------------------//
-            // в таблицу OrderDetail запишем подробности нашего заказа
-            var cartItems = GetCartItems();
-            foreach (var orderDetail in cartItems.Select(item => new OrderDetail
-            {
-                OrderId = order.Id,
-                UnitPrice = item.Price,
-                Quantity = item.Count,
-                ProductId = item.ProductId,
-
-            }))
-            {
-                DataManager.OrderDetails.Insert(orderDetail);
-            }
-            //-----------------------------------------------------------------//
-
-            EmptyCart(); // после оформления заказа необходимо очистить корзину !
-            return order.Id;
-        }
 
 
+        private Cart GetCartById(int id)
+        {
+            return DataManager.Carts.SearchFor(t => t.Id == id).FirstOrDefault();
+        }
+
+       
+
+
+
+
+    }
+
+
+    public class ShoppingCartModel
+    {
+        public IList<ShoppingCartItemModel> Items { get; set; }
+
+        public string GetTotal { get; set; }
+    }
+
+
+
+
+    public partial class ShoppingCartItemModel 
+    {
+        public ShoppingCartItemModel()
+        {
+            Picture = new PictureModel();          
+        }
+       
+        public PictureModel Picture { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public string ProductSeName { get; set; }
+        public string AttributeInfo { get; set; }
+        public decimal UnitPrice { get; set; }
+        public int Quantity { get; set; }
+        public string SubTotal { get; set; }
+      
+
+
+    }
+
+    public partial class PictureModel 
+    {
+        public string ImageUrl { get; set; }
+
+        public string FullSizeImageUrl { get; set; }
+
+        public string Title { get; set; }
+
+        public string AlternateText { get; set; }
     }
 }

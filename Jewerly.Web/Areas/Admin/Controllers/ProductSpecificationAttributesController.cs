@@ -32,7 +32,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductSpecificationAttributeId,Name,AllowFiltering,DisplayOrder")] ProductSpecificationAttribute productSpecificationAttribute)
+        public ActionResult Create([Bind(Include = "ProductSpecificationAttributeId,Name,SeoName,AllowFiltering,DisplayOrder")] ProductSpecificationAttribute productSpecificationAttribute)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductSpecificationAttributeId,Name,AllowFiltering,DisplayOrder")] ProductSpecificationAttribute productSpecificationAttribute)
+        public ActionResult Edit([Bind(Include = "ProductSpecificationAttributeId,Name,SeoName,AllowFiltering,DisplayOrder")] ProductSpecificationAttribute productSpecificationAttribute)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +110,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             ProductSpecificationAttribute productSpecificationAttribute = DataManager.ProductSpecificationAttributes.GetById(id);
-
+            DataManager.ProductSpecificationAttributes.Delete(productSpecificationAttribute);
             TempData["message"] = string.Format("Атрибуте \"{0}\" был удален", productSpecificationAttribute.Name);
             return RedirectToAction("Index");
         }

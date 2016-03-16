@@ -59,8 +59,12 @@ namespace Jewerly.Domain
     public class ProductSpecificationAttribute
     {
         public int ProductSpecificationAttributeId { get; set; }
+        [Required]
         [Display(Name = "Название")]
         public string Name { get; set; }
+        [Required]
+        [Display(Name = "Название SEO")]
+        public string SeoName { get; set; }
         [Display(Name = "Разрешить фильтр")]
         public bool AllowFiltering { get; set; }
         [Display(Name = "Порядок фильтров")]
@@ -72,11 +76,13 @@ namespace Jewerly.Domain
     public class SpecificationAttributeOption
     {
         public int SpecificationAttributeOptionId { get; set; }
-         [Display(Name = "Название Атрибута")]
+        [Display(Name = "Название Атрибута")]
         public int ProductSpecificationAttributeId { get; set; }
+        [Required]
         [Display(Name = "Значение")]
         public string Name { get; set; }
-         [Display(Name = "Порядок фильтров")]
+       
+        [Display(Name = "Порядок фильтров")]
         public int DisplayOrder { get; set; }
         public virtual ProductSpecificationAttribute ProductSpecificationAttribute { get; set; }
     }

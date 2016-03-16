@@ -6,7 +6,8 @@ using Jewerly.Domain;
 using Jewerly.Web.Controllers;
 using Jewerly.Web.Models;
 using Jewerly.Web.Utils;
-using SelectListHelperExtensions = Jewerly.Web.extensions.SelectListHelperExtensions;
+using Jewerly.Web.extensions;
+
 
 namespace Jewerly.Web.Areas.Admin.Controllers
 {
@@ -115,6 +116,11 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                product.Name = product.Name.Trim();
+                product.SeoName = string.IsNullOrEmpty(product.SeoName)
+                    ? product.Name.ToTranslit()
+                    : product.SeoName.Trim();
+
                 DataManager.Products.Insert(product);
 
                 TempData["message"] = string.Format("Продукт \"{0}\" был создан", product.Name);
@@ -159,6 +165,12 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                product.Name = product.Name.Trim();
+                product.SeoName = string.IsNullOrEmpty(product.SeoName)
+                    ? product.Name.ToTranslit()
+                    : product.SeoName.Trim();
+
                 DataManager.Products.Edit(product);
 
                 TempData["message"] = string.Format("Изменения в продукте \"{0}\" были сохранены", product.Name);

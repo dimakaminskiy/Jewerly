@@ -55,7 +55,7 @@ namespace Jewerly.Web.extensions
             {
                 value = selectedValue;
             }
-            items.Add(new SelectListItem() {Selected = selected, Text = dataTextField, Value = selectedValue});
+            items.Add(new SelectListItem() { Selected = selected, Text = dataTextField, Value = selectedValue });
             items.AddRange(list);
 
             return new SelectList(items, "Value", "Text", value);

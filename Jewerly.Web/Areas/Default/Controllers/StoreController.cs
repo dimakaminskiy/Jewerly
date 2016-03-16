@@ -1,9 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Data.Entity;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Web.Controllers;
+using Jewerly.Web.extensions;
 using Jewerly.Web.Models;
+using Jewerly.Web.Models.Store;
 using Jewerly.Web.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -75,11 +83,6 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
         #endregion
 
-
-
-
-
- 
         
         private IQueryable<Product> GetProductByCategoryId(int catId)
         {
@@ -97,9 +100,9 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
   
         }
-        public IQueryable<Product> GetProducts(int categoryId, string sort)
+        public IQueryable<Product> GetProducts(IQueryable<Product> queryableSet, string sort)
         {
-            IQueryable<Product> queryableSet = GetProductByCategoryId(categoryId);
+          //  IQueryable<Product> queryableSet = GetProductByCategoryId(categoryId);
                 //DataManager.Products.SearchFor(t => t.CategoryId == categoryId && t.Published);
             switch (sort)
             {
@@ -115,7 +118,6 @@ namespace Jewerly.Web.Areas.Default.Controllers
             
             return queryableSet;
         }
-      
         void InitializeRoles()
         {
             var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
@@ -150,7 +152,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
 
         }
-
+        
         public CurrencyModel GetCurrencyModel()
         {
             var list = DataManager.Currencies.GetAll().OrderBy(t => t.DisplayOrder).ToList();
@@ -158,10 +160,155 @@ namespace Jewerly.Web.Areas.Default.Controllers
             return  new CurrencyModel( list,id);
         }
 
-        
+
+
+        public static NameValueCollection ParseQueryString(string query)
+        {
+            NameValueCollection queryParameters = new NameValueCollection();
+            if (query.Contains("?"))
+            {
+                query = query.Substring(query.IndexOf('?') + 1);
+            }
+            
+            string[] querySegments = query.Split('&');
+            foreach (string segment in querySegments)
+            {
+                string[] parts = segment.Split('=');
+                if (parts.Length > 0)
+                {
+                    string key = parts[0].Trim(new char[] { '?', ' ' });
+                    string val = parts[1].Trim();
+
+                    queryParameters.Add(key, val);
+                }
+            }
+
+
+
+            return queryParameters;
+        }
+
+        public IQueryable<Product> FilterProducts(IQueryable<Product> queryableSet, int attrId, int optionId)
+        {
+            return (from p in queryableSet
+                from m in p.MappingProductSpecificationAttributeToProducts
+                where
+                    p.ProductId == m.ProductId && m.ProductSpecificationAttributeId == attrId &&
+                    m.SpecificationAttributeOptionId == optionId
+                select p);
+
+        }
+
+
+
+        public List<QueryFilter> GetQueryFilters(string query)
+        {
+            if (!query.Contains("?"))
+            {
+                return null;
+            }
+            else
+            {
+                query = query.Substring(query.IndexOf('?') + 1);
+            }
+            string[] querySegments = query.Split('&');
+            
+            List<QueryFilter> filters = new List<QueryFilter>();
+
+            foreach (string segment in querySegments)
+            {
+                string[] parts = segment.Split('=');
+                if (parts.Length == 2)
+                {
+                    string attrString = parts[0].Trim();
+                    string optionString = parts[1].Trim();
+
+                    if (attrString.StartsWith("page"))
+                    {
+                        continue;
+                    }
+
+                    var Attr =
+                        DataManager.ProductSpecificationAttributes.SearchFor(t => t.SeoName == attrString)
+                            .Include(x=>x.SpecificationAttributeOptions).SingleOrDefault();
+                    if (Attr != null)
+                    {
+                       if (Attr.SpecificationAttributeOptions.Any(t=>t.SpecificationAttributeOptionId.ToString()==optionString))
+                        {
+                                filters.Add(new QueryFilter()
+                                {
+                                    AttributeName = attrString,
+                                    AttributeId = Attr.ProductSpecificationAttributeId,
+                                    AttributeOptionId = int.Parse(optionString)
+                                });
+                        }
+                    }
+
+                }
+            }
+            return filters;
+        }
+
+
+        public List<ProductFilter> GetProductFilters(IQueryable<Product> queryableSet)
+        {
+            var filters = new List<ProductFilter>();
+
+            var attributtes = (from Product product in queryableSet
+                               from mapp in product.MappingProductSpecificationAttributeToProducts.ToList()
+                               where mapp.ProductSpecificationAttribute.AllowFiltering
+                               orderby mapp.ProductSpecificationAttribute.DisplayOrder
+                               select mapp.ProductSpecificationAttribute).Distinct().ToList();
+
+            foreach (var attribute in attributtes)
+            {
+                var options =
+                    DataManager.SpecificationAttributeOptions.SearchFor(
+                        t => t.ProductSpecificationAttributeId == attribute.ProductSpecificationAttributeId)
+                        .Select(g => new ProductFilterOption()
+                        {
+                            Id = g.SpecificationAttributeOptionId,
+                            Name = g.Name,
+                        }).ToList();
+
+
+                var filter = new ProductFilter()
+                {
+                    Id = attribute.ProductSpecificationAttributeId,
+                    Name = attribute.Name,
+                    SeoName = attribute.SeoName,
+                    Options = options,
+                };
+
+                filters.Add(filter);
+            }
+
+
+            return filters;
+
+        }
+
+
+
+
+        void initializeSeoName()
+        {
+            foreach (var product in DataManager.Products.GetAll().ToList())
+            {
+                product.SeoName = product.Name.ToTranslit();
+                DataManager.Products.Edit(product);
+
+            }
+
+
+        }
+
+
         public ActionResult Index(int? page = 0,int id = 0, string name = "", string sort = "")
         {
-            var gg = Request.Form;
+           // initializeSeoName();
+
+        
             if (Request.HttpMethod == "POST")
             {
                 var currencyParam =  Request.Form["CurrencyId"];
@@ -172,8 +319,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 }
             }
 
-
-
+            
             if (id == 0)
             {
                 if (string.IsNullOrEmpty(name))
@@ -199,11 +345,166 @@ namespace Jewerly.Web.Areas.Default.Controllers
            var sortOptions = new ProductSortModel(sort);          
            model.MenuCategories = new MenuCategories(id, GetListMenuCategories());
            model.Currencies=GetCurrencyModel();
-           var products = GetProducts(id, string.IsNullOrEmpty(sort) ? sortOptions.SortByDefult : sort);
-           var productsViewModel = new PageableProducts(products,
-               model.Currencies.CurrentCurrency, (page== null||page==0)? 1: page.Value, itemPerPage);
+
+
+
+            IQueryable<Product> queryableSet = GetProductByCategoryId(id);
+            List<QueryFilter> queryFilters;
+            if (!string.IsNullOrEmpty(Request.Url.Query))
+            {
+               //ViewData["query"] = Request.Url.Query.Trim();
+               queryFilters = GetQueryFilters(Request.Url.Query);
+            }
+            else
+            {
+                queryFilters =  new List<QueryFilter>();
+            }
+
+            var filters = GetProductFilters(queryableSet);
+            if (queryFilters != null && queryFilters.Any())
+            {
+                for (int i = 0; i < queryFilters.Count; i++)
+                {
+                    var f = filters.SingleOrDefault(t => t.Id == queryFilters[i].AttributeId);
+                    if (f != null)
+                    {
+                        f.CurrentOptionId = queryFilters[i].AttributeOptionId;
+                       queryableSet= FilterProducts(queryableSet, f.Id, f.CurrentOptionId);
+                    }
+                }
+            }
+            model.Filters = filters;
+            ViewBag.queryFilters = queryFilters;
+          
+
+
+
+
+
+
+
+
+
+           
+
+
+
+
+
+
+           //foreach (var attr in attributtes)
+           //{
+
+           //    var options =
+           //        (from option in DataManager.SpecificationAttributeOptions.GetAll()
+           //            .Where(t => t.ProductSpecificationAttributeId == attr.ProductSpecificationAttributeId)
+           //         from Product product in queryableSet
+           //         from mapp in product.MappingProductSpecificationAttributeToProducts
+           //         where option.SpecificationAttributeOptionId == mapp.SpecificationAttributeOptionId
+           //         select option
+           //            ).Distinct().Select(t => new ProductFilterOption()
+           //            {
+           //                Id = t.SpecificationAttributeOptionId,
+           //                Name = t.Name
+           //            })
+           //            .ToList();
+
+
+
+               //var options = (from Product product in products
+               //               from mapp in product.MappingProductSpecificationAttributeToProducts
+               //               from option in mapp.ProductSpecificationAttribute.SpecificationAttributeOptions
+               //               where mapp.ProductSpecificationAttribute.ProductSpecificationAttributeId ==
+               //               attr.ProductSpecificationAttributeId 
+               //               && mapp.ProductId==product.ProductId
+               //               && mapp.SpecificationAttributeOptionId
+               //               orderby option.DisplayOrder
+               //               select option
+               //    ).Distinct().Select(t => new ProductFilterOption()
+               //    {
+               //        Id = t.SpecificationAttributeOptionId,
+               //        Name = t.Name
+               //    }).ToList();
+
+           //    var filter = new ProductFilter
+           //    {
+           //        Id = attr.ProductSpecificationAttributeId,
+           //        Name = attr.Name,
+           //        SeoName = attr.SeoName,
+           //        Options = options
+
+           //    };
+           //    model.Filters.Add(filter);
+           //}
+
+
+
+
+
+
+
+
+            //if (queryFilters != null && queryFilters.Count != 0)
+            //{
+            //    for (int i = 0; i < queryFilters.Count; i++)
+            //    {
+            //        var filter = queryFilters[i];
+            //        var f = model.Filters.SingleOrDefault(t => t.Id == filter.AttributeId);
+            //        if (f != null)
+            //        {
+            //            f.CurrentOptionId = filter.AttributeOptionId;
+            //            queryableSet = (from p in queryableSet
+            //            from m in p.MappingProductSpecificationAttributeToProducts
+            //            where p.ProductId == m.ProductId && m.SpecificationAttributeOptionId == filter.AttributeId
+            //            select p
+            //             );
+
+
+
+
+            //        }
+            //    }
+            //}
+
+
+
+            var products = GetProducts(queryableSet, string.IsNullOrEmpty(sort) ? sortOptions.SortByDefult : sort);
+
+            var productsViewModel = new PageableProducts(products,
+            model.Currencies.CurrentCurrency, (page == null || page == 0) ? 1 : page.Value, itemPerPage);
+
+
+
+        
            model.Products = productsViewModel;
            model.ProductSortModel = sortOptions;
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+         
+
+
+                     
+
+
+         
+
+
+
+
+
+
            return View(model);
         }
 

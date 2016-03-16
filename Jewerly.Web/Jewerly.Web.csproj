@@ -212,15 +212,19 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Store\CategoryModel.cs" />
+    <Compile Include="Models\Store\CurrencyModel.cs" />
     <Compile Include="Models\Store\MainPageViewModal.cs" />
+    <Compile Include="Models\Store\ProductDetailViewModel.cs" />
+    <Compile Include="Models\Store\ProductFilter.cs" />
     <Compile Include="Models\Store\ProductOrderModel.cs" />
     <Compile Include="Models\Store\ProductSpecificationAttribiteViewModel.cs" />
+    <Compile Include="Models\Store\QueryFilter.cs" />
     <Compile Include="Models\Store\ShoppingCart.cs" />
     <Compile Include="Models\Store\StoreViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\AjaxOnlyAttribute.cs" />
-    <Compile Include="Utils\Class1.cs" />
+    <Compile Include="Utils\PageableProducts.cs" />
     <Compile Include="Utils\EmailSettings.cs" />
     <Compile Include="Utils\HtmlMenuHeler.cs" />
     <Compile Include="Utils\PhotoEditor.cs" />
@@ -266,6 +270,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\AjaxCart.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Default\Views\web.config" />
@@ -387,6 +392,7 @@
     <Content Include="Areas\Admin\Views\Users\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_ProductsSortOptions.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_FiltersPartialView.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />
