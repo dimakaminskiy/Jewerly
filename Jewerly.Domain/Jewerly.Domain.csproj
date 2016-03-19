@@ -76,6 +76,10 @@
     <Compile Include="Migrations\201603151628416_change attributes2.Designer.cs">
       <DependentUpon>201603151628416_change attributes2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603191222528_carts.cs" />
+    <Compile Include="Migrations\201603191222528_carts.Designer.cs">
+      <DependentUpon>201603191222528_carts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Db\ApplicationUser.cs" />
@@ -107,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603151628416_change attributes2.resx">
       <DependentUpon>201603151628416_change attributes2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603191222528_carts.resx">
+      <DependentUpon>201603191222528_carts.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

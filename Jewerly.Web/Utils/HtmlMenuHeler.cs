@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -15,20 +16,54 @@ namespace Jewerly.Web.Utils
     public  static class HtmlMenuHeler
     {
 
-
-        public static string ActionWithOldQuery(this UrlHelper helper, string controller, string action, object routeValues, string oldQuery)
+        public static string ShoppingCartMini (this HtmlHelper html, ShoppingCartMiniModel model)
         {
-            RouteValueDictionary newRoute = new RouteValueDictionary(routeValues);
+            StringBuilder builder = new StringBuilder();
+            StringBuilder lineBuilder = new StringBuilder();
 
-            var current = helper.RequestContext.RouteData.Values;
+            var urlHelper = new UrlHelper(html.ViewContext.RequestContext);
+            builder.AppendLine("<div id=\"mini-shopping-cart-items\">");
+            if (model.Items.Any())
+            {
+                builder.AppendLine("<div class=\"buttons\">");
+                builder.AppendLine(string.Format("<a href =\"{0}\">{1}</a>", urlHelper.Action("Index", "ShoppingCart"), "В корзину"));
+                builder.AppendLine("</div>");
+                builder.AppendLine("<div class=\"items\">");
 
-            // Merge the new values INTO the current values, overwriting any existing values/querystrings
-            foreach (var item in newRoute)
-                current[item.Key] = item.Value;
+                foreach (var item in model.Items)
+                {
 
-            string h =  helper.Action(action, controller)  + oldQuery;
-            return h;
-        }
+                    lineBuilder.AppendLine("<div class=\"item\">");
+                    lineBuilder.AppendLine("<div class=\"picture col-xs-4\">");
+                    lineBuilder.AppendLine(string.Format("<a title=\"{0}\" href=\"{1}\" ><img title =\"{2}\" src=\"{3}\" alt=\"{4}\" class=\"img-responsive\"></a>",                   
+                        item.Name,urlHelper.Action("Details","Store", new {id=item.ProductId,name=item.SeoName}),
+                        item.Name,item.Picture,item.Name));
+                    lineBuilder.AppendLine("</div>");
+
+                    lineBuilder.AppendLine("<div class=\"product col-xs-8\">");
+                    lineBuilder.AppendLine("<div class=\"name\">");
+                    lineBuilder.AppendLine(string.Format("<a href='{0}'>{1}</a>", urlHelper.Action("Details", "Store", new { name = item.SeoName, id = item.Id }), item.Name));
+                    lineBuilder.AppendLine("</div>");
+                    lineBuilder.AppendLine(string.Format("<div>Цена: {0} {1}</div>", item.UnitPrice.ToString("F2"), item.Currency));
+                    lineBuilder.AppendLine(string.Format("<div class=\"quantity\">Количество: <span>{0}</span></div>", item.Quantity));
+                    lineBuilder.AppendLine("</div>");
+                    lineBuilder.AppendLine("</div>");
+
+                    builder.Append(lineBuilder);
+                    lineBuilder.Clear();
+                }
+
+                builder.AppendLine("</div>");
+            }
+            else
+            {
+                builder.AppendLine("<div class = \"count\"> You have no items in your shopping cart. </div>");
+            }
+            builder.AppendLine("</div>");
+            return builder.ToString();
+          }
+
+
 
 
 

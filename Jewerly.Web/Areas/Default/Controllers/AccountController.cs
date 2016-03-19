@@ -235,7 +235,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
                 AddErrors(result);
             }
-
+            ViewBag.CountryId = new SelectList(DataManager.Countries.GetAll().OrderBy(t => t.Name).ToList(), "Id", "Name");
             return PartialView("_RegisterPartial", model);
         }
 

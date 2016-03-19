@@ -54,13 +54,7 @@
     success_process: function (response) {
 
 
-        alert($(AjaxCart.cartcountitems).html());
-        alert($(AjaxCart.cartitems).html());
-        alert($(AjaxCart.carttotalprice).html());
-
-
-
-
+       
 
 
         if (response.cartcountitems) { // обновить кол-во товара в корзине
@@ -69,15 +63,9 @@
         if (response.cartitems) { // обновление списка покупок
             $(AjaxCart.cartitems).replaceWith(response.cartitems);
         }
-        if (response.carttotalprice) { // обновление списка покупок
-            $(AjaxCart.carttotalprice).replaceWith(response.carttotalprice);
+        if (response.carttotalprice) { // общая цена
+            $(AjaxCart.carttotalprice).html(response.carttotalprice);
         }
-
-
-
-
-
-
 
         if (response.message) {
             //display notification

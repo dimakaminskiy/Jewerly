@@ -10,20 +10,23 @@
             <span class="glyphicon glyphicon-ok"></span>
             <span id ="top-card-count">1</span>
             <br/>
-            <span id="top-card-totals" class="glyphicon glyphicon-usd">59,99</span>
+            <span id="top-card-totals">59,99</span>
         </div>
     </button>
 
     <div id="mini-shopping-cart" class="dropdown-menu popover popover-content">
         <div id="mini-shopping-cart-items">
+            <div class="buttons">
+                <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-sm pull-left">В корзину</a>
+            </div>
             <div class="items">
                 <div class="item">
-                    <div class="picture">
+                    <div class="picture col-xs-4">
                         <a title="Show details for Fahrenheit 451 by Ray Bradbury" href="/fahrenheit-451-by-ray-bradbury">
-                            <img title="Show details for Fahrenheit 451 by Ray Bradbury" src="http://localhost:15536/content/images/thumbs/0000066_fahrenheit-451-by-ray-bradbury_70.jpeg" alt="Picture of Fahrenheit 451 by Ray Bradbury">
+                            <img title="Show details for Fahrenheit 451 by Ray Bradbury" src="http://localhost:15536/content/images/thumbs/0000066_fahrenheit-451-by-ray-bradbury_70.jpeg" alt="Picture of Fahrenheit 451 by Ray Bradbury" class="img-responsive">
                         </a>
                     </div>
-                    <div class="product">
+                    <div class="product col-xs-8">
                         <div class="name">
                             <a href="/fahrenheit-451-by-ray-bradbury">Fahrenheit 451 by Ray Bradbury</a>
                         </div>
@@ -31,10 +34,6 @@
                         <div class="quantity">Quantity: <span>4</span></div>
                     </div>
                 </div>
-            </div>
-            <div class="totals">Sub-Total: <strong>$108.00</strong></div>
-            <div class="buttons">
-                <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-sm pull-left">Оформить заказ</a>
             </div>
         </div>
     </div>

@@ -147,7 +147,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                     TempData["message"] = string.Format("Изображение \"{0}\" было сохранено", categoryPicture.Caption);
                     return RedirectToAction("Index");
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
                     ModelState.AddModelError(string.Empty, "Произошла ошибка при попытке загрузки изображени.");
                 }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Domain.Entities;
+using Jewerly.Web.Utils;
 
 namespace Jewerly.Web.Models
 {
@@ -60,8 +61,6 @@ namespace Jewerly.Web.Models
         }
 
         #endregion
-
-       
         public Cart GetCartItemByProductId(int productId)
         {
             Cart cartItem = null;
@@ -70,42 +69,95 @@ namespace Jewerly.Web.Models
                     .SingleOrDefault(t => t.ProductId == productId);
             return cartItem;
         }
-        //public  void Insert
-
-
-
-
-
-        //public (int productId, int count, bool trade = false)
-        //{
-        //    Cart cart = GetCartItem(productId);
-        //    if (cart == null) // такого товара в корзине нет ... печалька
-        //    {
-        //        return AddNewCart(productId, count, trade);
-        //    }
-        //    return SetProductCount(cart, cart.Count + count);
-        //}
-
-
-        private Cart GetCartById(int id)
+        public List<Cart> GetCarts()
         {
-            return DataManager.Carts.SearchFor(t => t.Id == id).FirstOrDefault();
+           return DataManager.Carts.SearchFor(t => t.CartId == ShoppingCartId).ToList();
         }
 
+        public void AddProductToCart(int productId, int count)
+        {
+            var cart = GetCartItemByProductId(productId);
+            if (cart == null) // новый товар
+            {
+                cart = new Cart()
+                {
+                    ProductId = productId,
+                    Count = count,
+                    CartId = ShoppingCartId,
+                    DateCreated = DateTime.Now
+                };
+                DataManager.Carts.Insert(cart);
+            }
+            else
+            {
+                SetProductCount(cart, cart.Count + count);
+            }
+
+        }
+
+        public Cart SetProductCount(Cart cart, int count)
+        {
+            cart.Count = count;
+            DataManager.Carts.Edit(cart);
+            return cart;
+        }
        
 
 
-
-
     }
 
 
-    public class ShoppingCartModel
+    public class CartModel
     {
-        public IList<ShoppingCartItemModel> Items { get; set; }
-
-        public string GetTotal { get; set; }
+        public int Id { get; set; }
+        public int ProductId { get; set; }
+        public string Name { get; set; }
+        public string SeoName { get; set; }
+        public string Picture { get; set; }
+        public decimal UnitPrice { get; set; }
+        public int Quantity { get; set; }
+        public decimal TotalPrice { get; set; }
+        public string Currency { get; set; }
     }
+
+    public class ShoppingCartMiniModel
+    {
+        public ShoppingCartMiniModel(List<CartModel> cartItems)
+        {
+            Items = cartItems;
+           TotalPrice = cartItems.Sum(t => t.UnitPrice*t.Quantity).ToString("F2");
+        }
+        public IList<CartModel> Items { get; set; }
+        public string TotalPrice { get; set; }
+
+    }
+
+    public class CartMiniModel
+    {
+        public string Name { get; set; }
+        public string SeoName { get; set; }
+        public int ProductId { get; set; }
+        public string Picture { get; set; }
+        public string UnitPrice { get; set; }
+        public int Quantity { get; set; }
+
+    }
+
+
+
+
+
+
+    //public class ShoppingCartModel
+    //{
+    //    public IList<ShoppingCartItemModel> Items { get; set; }
+
+    //    public string GetTotal { get; set; }
+    //}
+
+
+
+
 
 
 

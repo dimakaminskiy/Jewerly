@@ -116,8 +116,6 @@ namespace Jewerly.Domain.Entities
             public int ProductId { get; set; }
             public DateTime DateCreated { get; set; }
             public int Count { get; set; }
-            public double Price { get; set; }
-            public string TotalPrice { get { return String.Format("{0:0.00}", (Count * Price)); } }
             public virtual Product Product { get; set; }
 
         }

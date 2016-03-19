@@ -7,13 +7,14 @@ using Jewerly.Domain;
 using Jewerly.Domain.Entities;
 using Jewerly.Web.Controllers;
 using Jewerly.Web.Models;
+using Jewerly.Web.Utils;
 
 namespace Jewerly.Web.Areas.Default.Controllers
 {
     public class ShoppingCartController : BaseController
     {
-        //public ActionResult Index()
-        //{
+        public ActionResult Index()
+        {
         //    //var cart = ShoppingCart.GetCart(this, DataManager);
         //    //try
         //    //{
@@ -30,8 +31,10 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
 
         //    //}
-        //    //return View(new ShoppingCartViewModel { CartItems = new List<Cart>() });
-        //}
+            //return View(new ShoppingCartViewModel { CartItems = new List<Cart>() });
+            return Json(new
+            {});
+        }
 
         [HttpPost]
         public ActionResult AddProductToCart(int productId)
@@ -53,17 +56,56 @@ namespace Jewerly.Web.Areas.Default.Controllers
             {
                 return Json(new
                 {
-                    redirect = @Url.Action("Details", "Store", new { id = productId, name =product.SeoName})
+                    redirect = @Url.Action("Details", "Store", new { id = productId, name = product.SeoName})
                 });
              }
+            int currencyId = GetCurrentCurrency();
+            var currency = DataManager.Currencies.SearchFor(t => t.CurrencyId == currencyId).Single();
 
+           var cart = ShoppingCart.GetCart(this, DataManager);
+            cart .AddProductToCart(productId,1);
+           var cartItems=  cart.GetCarts();
+            List<CartModel> carts = new List<CartModel>();
+            foreach (var item in cartItems)
+            {
+                var price = product.Price*currency.Rate;
 
-
+                if (product.Markup != null)
+                {
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        price = price + ((price/100)*product.Markup.Trade);
+                    }
+                    else
+                    {
+                        price = price + ((price / 100) * product.Markup.Retail);
+                    }
+                }
+                
+                
+                if (product.Discount != null)
+                {
+                    price = price - ((price/100)*product.Discount.Value);
+                }
+                carts.Add(new CartModel
+                {
+                    Id = item.Id,
+                    Name = item.Product.Name,
+                    SeoName = item.Product.SeoName,
+                    Picture = item.Product.Picture.Preview(),
+                    ProductId = item.ProductId,
+                    Quantity = item.Count,
+                    UnitPrice = price,
+                    Currency = currency.CurrencyCode
+                });
+            }
+            var model = new ShoppingCartMiniModel(carts);
+            var helper = new HtmlHelper(new ViewContext(), new ViewPage());
             return Json(new
             {
-                carttotalitems = 10,
-                carttotalprice = "135 USD",
-                cartitems = "<div>Мама мия</div>",
+                cartcountitems = model.Items.Count,
+                carttotalprice = model.TotalPrice +" "+currency.CurrencyCode,
+                cartitems =  helper.ShoppingCartMini(model),
                 message = "Товар добавлен в корзину",
                 success = true 
             });
