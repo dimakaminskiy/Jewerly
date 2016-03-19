@@ -17,6 +17,13 @@ body {
     border-color: #2B1F53;
     text-transform: uppercase;
 }
+.table-hover, .item {
+    margin-top: 0.5em;
+}
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+  color: #000;
+}
 input.inp_count {
     width: 5em;
 }

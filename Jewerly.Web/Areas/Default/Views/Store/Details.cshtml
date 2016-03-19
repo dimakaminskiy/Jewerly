@@ -36,13 +36,15 @@
                         <div class="product-price">
                             Цена
                             <span class="price">@Model.Product.PriceString</span>
-                            Валюта @Model.Product.Currency
+                            @Model.Product.Currency
                         </div>
 
                         <div class="product-price">
-                            Старая цена Цена
-                            <span class="price">@Model.Product.OldPriceString</span>
-                            Валюта @Model.Product.Currency
+                            Старая цена
+                            <span style='color: #fff; text-decoration: line-through'>
+                                <span class="price" style='color: #9275F1'>@Model.Product.OldPriceString</span>
+                            </span>
+                            @Model.Product.Currency
                         </div>
 
 
@@ -57,12 +59,15 @@
 
 
                         <div>
-
-                            @foreach (var a in Model.Product.SpecificationAttributes)
-                            {
-                                <div><span>@a.Key</span> <span>@a.Value</span></div>
-
-                            }
+                            <table class="table table-responsive table-hover">
+                                @foreach (var a in Model.Product.SpecificationAttributes)
+                                {
+                                    <tr>
+                                        <td>@a.Key</td>
+                                        <td>@a.Value</td>
+                                    </tr>
+                                }
+                            </table>
                         </div>
 
 

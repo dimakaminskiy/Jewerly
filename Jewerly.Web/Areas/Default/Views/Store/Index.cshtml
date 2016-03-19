@@ -69,24 +69,27 @@
             {
                 <div class="col-md-3 col-xs-6">
                     <div class="product-wrapper sale">
-                        <div class="product-image">
+                        <a href="@Url.Action("Details", new {id = item.Id, name = item.SeoName})">
+                            <div class="product-image">
                             @if (item.Discount != 0)
                             {
                                 <div class="discount-img"></div>
-                                <div class="discount-nm"><span>@item.Discount</span>%<br/>скидка
+                                <div class="discount-nm">
+                                    <span>@item.Discount</span>%<br />скидка
                                 </div>
                             }
-                            <img class="img-responsive" src="@item.Picture.Preview()" title="@item.Name" alt="@item.Name"/>
+                            <img class="img-responsive" src="@item.Picture.Preview()" title="@item.Name" alt="@item.Name" />
                         </div>
+                    </a>
+
                         <div class="product-info text-center">
-                            <a href="@Url.Action("Details", new {id = item.Id, name = item.SeoName})">@item.FullName </a>
+                            <a href="@Url.Action("Details", new {id = item.Id, name = item.SeoName})">@item.FullName</a>
                             <div class="price">
                                 @item.PriceString @Model.Currencies.CurrentCurrency.CurrencyCode
                             </div>
-                            <button onclick="AjaxCart.addproducttocart_catalog('@Url.Action("AddProductToCart", "ShoppingCart", new {productId=@item.Id})');return false;"
+                            <button onclick="AjaxCart.addproducttocart_catalog('@Url.Action("AddProductToCart", "ShoppingCart", new {productId = @item.Id})');return false;"
                                     class="btn btn-default btn-sm" type="button"
-                                    @*data-toggle="modal" data-target="#myAlert"*@
-                                    >
+                                    @*data-toggle="modal" data-target="#myAlert"*@>
                                 Купить
                             </button>
                         </div>

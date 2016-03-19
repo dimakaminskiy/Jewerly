@@ -95,10 +95,10 @@ namespace Jewerly.Web.Utils
             for (int i = 0; i < list.Count ; i++)
             {
                 lineBuilder.AppendFormat(
-                    "<div class=\"col-sm-6 text-center\"><img style=\"margin:auto;\" class=\"img-responsive img-thumbnail\" src=\"{0}\" alt=\"{1}\" title=\"{1}\">",
-                    list[i].CategoryPicture.Path, list[i].Name);
-
-                lineBuilder.AppendFormat("<a class=\"name_category hidden-xs\" href=\"{0}\"><span>{1}</span></a>", urlHelper.Action("Index", "Store", new {id = list[i].Id, name = list[i].SeoName}), list[i].Name);
+                    "<div class=\"col-sm-6 text-center\"><a href=\"{0}\"><img style=\"margin:auto;\" class=\"img-responsive img-thumbnail\" src=\"{1}\" alt=\"{2}\" title=\"{2}\">",
+                    urlHelper.Action("Index", "Store", new { id = list[i].Id, name = list[i].SeoName }), list[i].CategoryPicture.Path, list[i].Name);
+                lineBuilder.AppendLine("</a>");
+                lineBuilder.AppendFormat("<a class=\"name_category hidden-xs\" href=\"{0}\"><span>{1}</span></a>", urlHelper.Action("Index", "Store", new { id = list[i].Id, name = list[i].SeoName }), list[i].Name);
                 lineBuilder.AppendFormat("<a class=\"name_category_mini visible-xs\" href=\"{0}\"><span>{1}</span></a></div>", urlHelper.Action("Index", "Store", new { id = list[i].Id, name = list[i].SeoName }), list[i].Name);
                 if (c % 2 == 0)
                 {

@@ -96,8 +96,13 @@ $(document).ready(function () {
        var tPadding = t.css('padding-left');
        var tPaddingNumber = parseFloat(tPadding);
        var width = t.width();
-       var twidth = width + tPaddingNumber*2;
-       var gwidth = g.width();
+       var twidth = width + tPaddingNumber * 2;
+
+       var gPadding = g.css('padding-left');
+       var gPaddingNumber = parseFloat(gPadding);
+       var ggwidth = g.width();
+       var gwidth = ggwidth + gPaddingNumber * 2;
+
          var result = ((twidth - gwidth) / 2) + "px";
             g.css("left", result);
     });
