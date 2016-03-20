@@ -6,8 +6,7 @@
         <div id="cart">
             <span class="glyphicon glyphicon-shopping-cart"></span>
             Корзина
-            <span class="glyphicon glyphicon-ok"></span>
-            <span id="top-card-count">@Model.Count</span><br />
+            <span id="top-card-count">(@Model.Count)</span><br />
             @if (Model.Items.Any())
             {
                 <span id="top-card-totals">@Model.TotalPrice @Model.Currency</span>

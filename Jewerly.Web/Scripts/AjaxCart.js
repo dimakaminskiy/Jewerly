@@ -1,8 +1,8 @@
-п»їvar AjaxCart = {
+var AjaxCart = {
     loadWaiting: false,
-    cartcountitems: '', //РєРѕР»-РІРѕ С‚РѕРІР°СЂРѕРІ Рє РєРѕСЂР·РёРЅРµ
-    carttotalprice: '', // РѕР±С‰Р°СЏ С†РµРЅР°
-    cartitems:'', // СЃРїРёСЃРѕРє РїРѕРєСѓРїРѕРє
+    cartcountitems: '', //кол-во товаров к корзине
+    carttotalprice: '', // общая цена
+    cartitems:'', // список покупок
    
     init: function (cartcountitems, carttotalprice, cartitems) {
         this.loadWaiting = false;
@@ -57,13 +57,13 @@
        
 
 
-        if (response.cartcountitems) { // РѕР±РЅРѕРІРёС‚СЊ РєРѕР»-РІРѕ С‚РѕРІР°СЂР° РІ РєРѕСЂР·РёРЅРµ
-            $(AjaxCart.cartcountitems).html(response.cartcountitems);
+        if (response.cartcountitems) { // обновить кол-во товара в корзине
+            $(AjaxCart.cartcountitems).html("("+response.cartcountitems+")").css('opacity', 0).animate({opacity: 1});;
         }
-        if (response.cartitems) { // РѕР±РЅРѕРІР»РµРЅРёРµ СЃРїРёСЃРєР° РїРѕРєСѓРїРѕРє
+        if (response.cartitems) { // обновление списка покупок
             $(AjaxCart.cartitems).replaceWith(response.cartitems);
         }
-        if (response.carttotalprice) { // РѕР±С‰Р°СЏ С†РµРЅР°
+        if (response.carttotalprice) { // общая цена
             $(AjaxCart.carttotalprice).html(response.carttotalprice);
         }
 
@@ -93,7 +93,7 @@
     },
 
     ajaxFailure: function () {
-        alert("РќРµ СѓРґР°Р»РѕСЃСЊ РґРѕР±Р°РІРёС‚СЊ РїСЂРѕРґСѓРєС‚. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РѕР±РЅРѕРІРёС‚Рµ СЃС‚СЂР°РЅРёС†Сѓ Рё РїРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰Рµ СЂР°Р·.");
+        alert("Не удалось добавить продукт. Пожалуйста, обновите страницу и попробуйте еще раз.");
     }
 };
 
@@ -154,6 +154,5 @@ function displayBarNotification(message, messagetype, timeout) {
         }, timeout);
     }
 }
-
 
 
