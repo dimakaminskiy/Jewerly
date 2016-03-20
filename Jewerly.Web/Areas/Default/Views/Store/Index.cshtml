@@ -89,7 +89,7 @@
                             </div>
                             <button onclick="AjaxCart.addproducttocart_catalog('@Url.Action("AddProductToCart", "ShoppingCart", new {productId = @item.Id})');return false;"
                                     class="btn btn-default btn-sm" type="button"
-                                    data-toggle="modal" data-target="#myAlert">
+                                    @*data-toggle="modal" data-target="#myAlert"*@>
                                 Купить
                             </button>
                         </div>
