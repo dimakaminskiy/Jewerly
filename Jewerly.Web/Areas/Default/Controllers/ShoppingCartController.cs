@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Domain.Entities;
@@ -15,26 +16,59 @@ namespace Jewerly.Web.Areas.Default.Controllers
     {
         public ActionResult Index()
         {
-        //    //var cart = ShoppingCart.GetCart(this, DataManager);
-        //    //try
-        //    //{
-        //    //    var viewModel = new ShoppingCartViewModel
-        //    //    {
-        //    //        CartItems = cart.GetCartItems(),
-        //    //        CartTotal = cart.GetTotal()
-        //    //    };
-        //    //    return System.Web.UI.WebControls.View(viewModel);
-        //    //}
-        //    //catch (Exception)
-        //    //{
-        //    //    cart.EmptyCart();
+            int currencyId = GetCurrentCurrency();
+            var currency = DataManager.Currencies.SearchFor(t => t.CurrencyId == currencyId).Single();
+            var cart = ShoppingCart.GetCart(this, DataManager);
+            var cartItems = cart.GetCarts();
+            var model = GetShoppingCartMiniModel(cartItems, currency);
 
-
-        //    //}
-            //return View(new ShoppingCartViewModel { CartItems = new List<Cart>() });
-            return Json(new
-            {});
+            return View(model);
         }
+
+
+        public ShoppingCartMiniModel GetShoppingCartMiniModel(IEnumerable<Cart> cartItems, Currency currency)
+        {
+            List<CartModel> carts = new List<CartModel>();
+            foreach (var item in cartItems)
+            {
+                var price = item.Product.Price * currency.Rate;
+
+                if (item.Product.Markup != null)
+                {
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        price = price + ((price / 100) * item.Product.Markup.Trade);
+                    }
+                    else
+                    {
+                        price = price + ((price / 100) * item.Product.Markup.Retail);
+                    }
+                }
+
+
+                if (item.Product.Discount != null)
+                {
+                    price = price - ((price / 100) * item.Product.Discount.Value);
+                }
+                var temp =new CartModel
+                {
+                    Id = item.Id,
+                    Name = item.Product.Name,
+                    SeoName = item.Product.SeoName,
+                    Picture = item.Product.Picture.Preview(),
+                    ProductId = item.ProductId,
+                    Quantity = item.Count,
+                    UnitPrice = price,
+                    Currency = currency.CurrencyCode
+                };
+                temp.TotalPrice = temp.UnitPrice*temp.Quantity;
+                carts.Add(temp);
+            }
+            var model = new ShoppingCartMiniModel(carts);
+            model.Currency = currency.CurrencyCode;
+            return model;
+        }
+
 
         [HttpPost]
         public ActionResult AddProductToCart(int productId)
@@ -65,43 +99,8 @@ namespace Jewerly.Web.Areas.Default.Controllers
            var cart = ShoppingCart.GetCart(this, DataManager);
            cart .AddProductToCart(productId,1);
            var cartItems=  cart.GetCarts();
-           List<CartModel> carts = new List<CartModel>();
-           foreach (var item in cartItems)
-           {
-                var price = item.Product.Price*currency.Rate;
 
-                if (item.Product.Markup != null)
-                {
-                    if (User.Identity.IsAuthenticated)
-                    {
-                        price = price + ((price/100)*item.Product.Markup.Trade);
-                    }
-                    else
-                    {
-                        price = price + ((price / 100) * item.Product.Markup.Retail);
-                    }
-                }
-                
-                
-                if (item.Product.Discount != null)
-                {
-                    price = price - ((price/100)*item.Product.Discount.Value);
-                }
-                carts.Add(new CartModel
-                {
-                    Id = item.Id,
-                    Name = item.Product.Name,
-                    SeoName = item.Product.SeoName,
-                    Picture = item.Product.Picture.Preview(),
-                    ProductId = item.ProductId,
-                    Quantity = item.Count,
-                    UnitPrice = price,
-                    Currency = currency.CurrencyCode
-                });
-            }
-            var model = new ShoppingCartMiniModel(carts);
-
-//            var helper = new HtmlHelper(new ViewContext(ControllerContext,  new WebFormView("omg"), new ViewDataDictionary(), new TempDataDictionary()), new ViewPage());
+            var model = GetShoppingCartMiniModel(cartItems, currency);
 
 
             var html = RenderViewToString(ControllerContext, "_ShoppingCartItemsPartialView", model);
@@ -125,7 +124,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
 
         [HttpPost]
-        public ActionResult AddToCard(int id, int count)
+        public ActionResult ChangeCart(int id, int count)
         {
             try
             {

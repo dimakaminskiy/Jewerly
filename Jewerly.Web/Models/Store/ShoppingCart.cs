@@ -135,28 +135,6 @@ namespace Jewerly.Web.Models
 
     }
 
-    public class CartMiniModel
-    {
-        public string Name { get; set; }
-        public string SeoName { get; set; }
-        public int ProductId { get; set; }
-        public string Picture { get; set; }
-        public string UnitPrice { get; set; }
-        public int Quantity { get; set; }
-
-    }
-
-
-
-
-
-
-    //public class ShoppingCartModel
-    //{
-    //    public IList<ShoppingCartItemModel> Items { get; set; }
-
-    //    public string GetTotal { get; set; }
-    //}
 
 
 
@@ -165,34 +143,7 @@ namespace Jewerly.Web.Models
 
 
 
-    public partial class ShoppingCartItemModel 
-    {
-        public ShoppingCartItemModel()
-        {
-            Picture = new PictureModel();          
-        }
-       
-        public PictureModel Picture { get; set; }
-        public int ProductId { get; set; }
-        public string ProductName { get; set; }
-        public string ProductSeName { get; set; }
-        public string AttributeInfo { get; set; }
-        public decimal UnitPrice { get; set; }
-        public int Quantity { get; set; }
-        public string SubTotal { get; set; }
-      
 
 
-    }
 
-    public partial class PictureModel 
-    {
-        public string ImageUrl { get; set; }
-
-        public string FullSizeImageUrl { get; set; }
-
-        public string Title { get; set; }
-
-        public string AlternateText { get; set; }
-    }
 }

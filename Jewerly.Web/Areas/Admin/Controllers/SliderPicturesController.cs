@@ -152,7 +152,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                     var newPath = UrlToLocal("~\\Content\\images\\slider\\" + imgName);
                     System.IO.File.Move(oldPath, newPath);
 
-                    sliderPicture.Path = "\\Content\\images\\slider\\" + imgName;
+                    sliderPicture.Path = "/Content/images/slider/" + imgName;
                     DataManager.SliderPictures.Insert(sliderPicture);
                     TempData["message"] = string.Format("Изображение \"{0}\" было сохранено", sliderPicture.Caption);
                     return RedirectToAction("Index");

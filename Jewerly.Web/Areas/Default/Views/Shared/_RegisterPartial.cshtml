@@ -67,7 +67,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Phone, htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.Phone, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder ="+380931234567"} })
                             @Html.ValidationMessageFor(model => model.Phone, "", new {@class = "text-danger"})
                         </div>
                     </div>
@@ -106,9 +106,17 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.AgreeWithConditions, htmlAttributes: new { @class = "control-label" })
-                            @Html.CheckBoxFor(model => model.AgreeWithConditions, new {htmlAttributes = new {@class = "form-control"}})
-                            @Html.ValidationMessageFor(model => model.AgreeWithConditions, "", new {@class = "text-danger"})
-                            <button type="submit" class="btn btn-primary" id="btn-reg" disabled="disabled">Зарегистрироваться</button>
+
+                                @Html.CheckBoxFor(model => model.AgreeWithConditions, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.AgreeWithConditions, "", new { @class = "text-danger" })
+                            @if (Model.AgreeWithConditions)
+                            {
+                                <button type="submit" class="btn btn-primary" id="btn-reg" >Зарегистрироваться</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-primary" id="btn-reg" disabled="disabled">Зарегистрироваться</button>
+                            }
                         </div>
                     </div>
                 </div>

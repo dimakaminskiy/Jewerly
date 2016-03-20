@@ -150,12 +150,21 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,LastName,FirstName,MiddleName,CountryId,CurrencyId,City,KindOfActivity,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser applicationUser)
+        public ActionResult Edit([Bind(Include = "Id,LastName,FirstName,MiddleName,CountryId,CurrencyId,City," +
+                                                 "KindOfActivity,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber," +
+                                                 "PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled," +
+                                                 "AccessFailedCount,UserName")] ApplicationUser applicationUser, string roleName)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(applicationUser).State = EntityState.Modified;
                 db.SaveChanges();
+                var oldRole = GetRoleByUserId(applicationUser.Id);
+                if (oldRole != roleName)
+                {
+                    UserManager.RemoveFromRole(applicationUser.Id, oldRole);
+                    UserManager.AddToRole(applicationUser.Id, roleName);
+                }
                 return RedirectToAction("Index");
             }
             var role = GetRoleByUserId(applicationUser.Id);

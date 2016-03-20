@@ -142,7 +142,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                     var newPath = UrlToLocal("~\\Content\\images\\category\\" + imgName);
                     System.IO.File.Move(oldPath, newPath);
 
-                    categoryPicture.Path = "\\Content\\images\\category\\" + imgName;
+                    categoryPicture.Path = "/Content/images/category/" + imgName;
                     DataManager.CategoryPictures.Insert(categoryPicture);
                     TempData["message"] = string.Format("Изображение \"{0}\" было сохранено", categoryPicture.Caption);
                     return RedirectToAction("Index");

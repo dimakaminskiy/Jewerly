@@ -177,7 +177,22 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 ViewBag.CountryId = new SelectList(countries, "Id", "Name");
             }
 
-            return PartialView("_RegisterPartial");
+            var model = new RegisterViewModel
+            {
+                AgreeWithConditions = true,
+                City = "Odessa",
+                ConfirmPassword = "123123",
+                Password = "123123",
+                Email = "rt@ua.fm",
+                FirstName = "dima",
+                MiddleName = "dima",
+                LastName = "dima",
+                KindOfActivity = "123"
+            };
+
+
+
+            return PartialView("_RegisterPartial",model);
         }
 
         [HttpPost]
@@ -211,7 +226,8 @@ namespace Jewerly.Web.Areas.Default.Controllers
                     City = model.City,
                     CountryId = model.CountryId,
                     PhoneNumber = model.Phone,
-                    KindOfActivity = model.KindOfActivity
+                    KindOfActivity = model.KindOfActivity,
+                    CurrencyId = DefaultCurrency
 
                 };
 

@@ -401,6 +401,8 @@
     <Content Include="Areas\Admin\Views\SliderPictures\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\SliderPictures\Index.cshtml" />
     <Content Include="Areas\Default\Views\About\_SliderPictures.cshtml" />
+    <Content Include="Areas\Default\Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Areas\Default\Views\ShoppingCart\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />
@@ -456,7 +458,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Models\" />
-    <Folder Include="Areas\Default\Views\ShoppingCart\" />
     <Folder Include="Content\images\category\" />
     <Folder Include="Content\images\gallery\" />
     <Folder Include="Content\images\temp\" />

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,15 +15,37 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Jewerly.Web.Models;
+using Jewerly.Web.Utils;
 
 namespace Jewerly.Web
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            // Подключите здесь службу электронной почты для отправки сообщения электронной почты.
-            return Task.FromResult(0);
+
+            EmailSettings settings = new EmailSettings();
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = settings.ServerName;
+            smtp.Port = settings.ServerPort;
+            smtp.EnableSsl = settings.UseSsl;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new NetworkCredential(settings.MailFromAddress, settings.password);
+
+            using (var msg = new MailMessage(settings.MailFromAddress, message.Destination))
+            {
+                msg.Subject = message.Subject;
+
+
+                msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(message.Body, null, MediaTypeNames.Text.Html));
+                await smtp.SendMailAsync(msg);
+            }
+            //  return Task.FromResult(0);
+
+
+
+         //   return Task.FromResult(0);
         }
     }
 
