@@ -33,20 +33,20 @@ $('#top-link a').click(function() {
 //    });
 //});
 
-$(function () {
-    $('#myAlert').on('show.bs.modal', function () {
-        var myAlert = $(this);
-        clearTimeout(myAlert.data('hideInterval'));
-        myAlert.data('hideInterval', setTimeout(function () {
-            myAlert.modal('hide');
-        }, 1500));
-    });
-});
-$(function () {
-    $('#myAlert').on('shown.bs.modal', function () {
-        SetScrollPadding();
-    });
-});
+//$(function () {
+//    $('#myAlert').on('show.bs.modal', function () {
+//        var myAlert = $("#myAlert");
+//        clearTimeout(myAlert.data('hideInterval'));
+//        myAlert.data('hideInterval', setTimeout(function () {
+//            myAlert.modal('hide');
+//        }, 1500));
+//    });
+//});
+//$(function () {
+//    $('#myAlert').on('shown.bs.modal', function () {
+//        SetScrollPadding();
+//    });
+//});
 
 
 

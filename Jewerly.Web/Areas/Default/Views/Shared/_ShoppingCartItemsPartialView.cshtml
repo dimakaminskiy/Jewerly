@@ -14,17 +14,18 @@
         @foreach (var item in Model.Items)
         {
             <div class="item row mgo">
-                <div class="picture col-xs-3" style="padding: 0;">
-                    <a title="@item.Name" href="@Url.Action("Details","Store", new {id=item.ProductId, name= item.SeoName})">
+                <div class="picture col-xs-3" style="padding: 0">
+                    <a title="@item.Name" href="@Url.Action("Details", "Store", new {id = item.ProductId, name = item.SeoName})">
                         <img title="@item.Name" src="@item.Picture" alt="@item.Name" class="img-responsive">
                     </a>
                 </div>
-                <div class="product col-xs-9">
+                <div class="product col-xs-9" style="padding: 2px">
                     <div class="name">
-                        <a href="@Url.Action("Details","Store", new {id=item.ProductId, name= item.SeoName})">@item.Name</a>
+                        <a href="@Url.Action("Details", "Store", new {id = item.ProductId, name = item.SeoName})">@item.Name</a>
                     </div>
-                    <div class="price">Цена: <span>@item.UnitPrice.ToString("F2") @item.Currency</span></div>
+                    <div>Цена: <span class="price">@item.UnitPrice.ToString("F2") @item.Currency</span></div>
                     <div class="quantity">Количество: <span>@item.Quantity</span></div>
+                    <hr />
                 </div>
             </div>
           }
@@ -32,6 +33,6 @@
         }
         else
         {
-            <div>tyiur679r6</div>
+            <div class="text-center">В корзине нет товаров.</div>
         }
     </div>

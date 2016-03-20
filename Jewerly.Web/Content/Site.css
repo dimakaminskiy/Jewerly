@@ -17,7 +17,7 @@ body {
     border-color: #2B1F53;
     text-transform: uppercase;
 }
-.table-hover, .item {
+.table-hover, .items {
     margin-top: 0.5em;
 }
 .table-hover > tbody > tr:hover > td,
@@ -289,8 +289,8 @@ button:focus {
     width: 300px;
     top: 100%;
 }
-.dropdown-menu.popover-content .close {
-    color: #000;
+.popover-content {
+    padding: 0.3em;
 }
 .modal-content {
     background: url("img/bg_silver.png");
@@ -406,7 +406,7 @@ border-radius: 5px;
     display: none;
 }
 .price {
-    font-size: 1.2em;
+    font-size: 1.4em;
     color: #9275F1;
 }
 .discount-img {
@@ -422,6 +422,7 @@ border-radius: 5px;
     top: 2px;
     right: 2px;
     background: none;
+    color: #fff;
     -moz-transform: rotate(45deg); /* Äëÿ Firefox */
     -ms-transform: rotate(45deg); /* Äëÿ IE */
     -webkit-transform: rotate(45deg); /* Äëÿ Safari, Chrome, iOS */
