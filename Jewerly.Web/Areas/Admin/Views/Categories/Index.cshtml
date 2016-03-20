@@ -36,7 +36,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            <img class="img-responsive" src="@Html.DisplayFor(modelItem => item.CategoryPicture.Path)" alt="@Html.DisplayFor(modelItem => item.CategoryPicture.AltAttribute)" />
+            <img class="img-responsive" src="@Html.DisplayFor(modelItem => item.CategoryPicture.Path)" alt="@Html.DisplayFor(modelItem => item.CategoryPicture.AltAttribute)"/>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)

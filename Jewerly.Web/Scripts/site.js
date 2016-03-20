@@ -22,16 +22,7 @@ $('#top-link a').click(function() {
     return false;
 });
 
-////счетчик товаров
-//$('.product-info button').click(function () {
-//    var countT = $(".countProduct").text();
-//    var countN = parseFloat(countT);
-//    var number = countN + 1;
-//    $(".countProduct").text(number);
-//    $('.countProduct').css('opacity', 0).animate({
-//        opacity: 1
-//    });
-//});
+//товар добавлен в корзину
 
 //$(function () {
 //    $('#myAlert').on('show.bs.modal', function () {
@@ -42,40 +33,55 @@ $('#top-link a').click(function() {
 //        }, 1500));
 //    });
 //});
-//$(function () {
-//    $('#myAlert').on('shown.bs.modal', function () {
-//        SetScrollPadding();
-//    });
-//});
 
 
+$(window).load(function () {
+    SetDiscountValueOnProductPicture();
+
+    //сдвиг при модальном окне
+    function getScrollBarMargin() {
+        var height_document = $(document).height();
+        var height_client = document.body.clientHeight;
+
+        getScrollBarWidth();
+        var widthScroll = getScrollBarWidth();
+        var plusWidthSroll = widthScroll + "px";
+        $('body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom').css({ 'margin-right': plusWidthSroll });
 
 
+        if (height_document > height_client) {
+            $('body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom').css({ 'margin-right': 0 });
+        }
+    };
 
-//$(window).load(function () {
-//    SetDiscountValueOnProductPicture();
-//    $('#myAlert').on('shown.bs.modal', function () {
-//        SetScrollPadding();
-//    });
-//});
+    $('#myModal').on('shown.bs.modal', function () {
+        getScrollBarMargin();
+    });
+    $('#myModal').on('hide.bs.modal', function () {
+        $('body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom').css({ 'margin-right': 0 });
+    });
 
-//$(window).resize(function () {
-//    SetDiscountValueOnProductPicture();
-//    $('#myAlert').on('shown.bs.modal', function () {
-//        SetScrollPadding();
-//    });
-//});
+    $("#myAlert").on('shown.bs.modal', function () {
+        getScrollBarMargin();
+    });
+    $('#myAlert').on('hide.bs.modal', function () {
+        $('body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom').css({ 'margin-right': 0 });
+    });
 
-//скролл для модальных окон и попавер
-//function SetScrollPadding() {
 
-//    var height_document = $(document).height();
-//    var height_client = document.body.clientHeight;
+});
 
-//    if (height_document > height_client) {
-//        $('body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom').css({ 'margin-right': 0 });
-//    }
-//}
+$(window).resize(function () {
+    SetDiscountValueOnProductPicture();
+});
+
+//ширина скролла
+function getScrollBarWidth() {
+    var $outer = $('<div>').css({ visibility: 'hidden', width: 100, overflow: 'scroll' }).appendTo('body'),
+        widthWithScroll = $('<div>').css({ width: '100%' }).appendTo($outer).outerWidth();
+    $outer.remove();
+    return 100 - widthWithScroll;
+};
 
 //скидка
 function SetDiscountValueOnProductPicture() {

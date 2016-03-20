@@ -5604,11 +5604,11 @@ button.close {
   overflow: hidden;
 }
 
-body.modal-open,
+/*body.modal-open,
 .modal-open .navbar-fixed-top,
 .modal-open .navbar-fixed-bottom {
   margin-right: 15px;
-}
+}*/
 
 .modal {
   position: fixed;
