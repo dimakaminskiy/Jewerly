@@ -393,6 +393,7 @@
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_ProductsSortOptions.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_FiltersPartialView.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\_ShoppingCartItemsPartialView.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />

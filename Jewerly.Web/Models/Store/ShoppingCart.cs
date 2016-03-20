@@ -124,11 +124,14 @@ namespace Jewerly.Web.Models
     {
         public ShoppingCartMiniModel(List<CartModel> cartItems)
         {
-            Items = cartItems;
+           Items = cartItems;
+            Count = cartItems.Sum(t => t.Quantity);
            TotalPrice = cartItems.Sum(t => t.UnitPrice*t.Quantity).ToString("F2");
         }
         public IList<CartModel> Items { get; set; }
         public string TotalPrice { get; set; }
+        public string Currency { get; set; }
+        public int Count { get; set; }
 
     }
 

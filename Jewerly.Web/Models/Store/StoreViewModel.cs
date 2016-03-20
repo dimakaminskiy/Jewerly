@@ -31,7 +31,9 @@ namespace Jewerly.Web.Models
         {
             get { return ProductSortModel.Sort; }
         }
-        public List<ProductFilter> Filters { get; set; } 
+        public List<ProductFilter> Filters { get; set; }
+        public ShoppingCartMiniModel ShoppingCartMiniModel { get; set; }
+
      }
 
 

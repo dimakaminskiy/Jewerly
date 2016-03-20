@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -6,8 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Ninject.Activation;
 
 namespace Jewerly.Web.Controllers
 {
@@ -15,36 +14,43 @@ namespace Jewerly.Web.Controllers
     {
         protected readonly DataManager DataManager;
 
+      protected  static string RenderViewToString(ControllerContext context,
+                                    string viewPath,object model)
+        {
+            // first find the ViewEngine for this view
+            ViewEngineResult viewEngineResult = null;
+            viewEngineResult = ViewEngines.Engines.FindView(context, viewPath, null);
+
+            if (viewEngineResult == null)
+                throw new FileNotFoundException("View cannot be found.");
+
+            // get the view and attach the model to view data
+            var view = viewEngineResult.View;
+            context.Controller.ViewData.Model = model;
+
+            string result = null;
+
+            using (var sw = new StringWriter())
+            {
+                var ctx = new ViewContext(context, view,
+                                            context.Controller.ViewData,
+                                            context.Controller.TempData,
+                                            sw);
+                view.Render(ctx, sw);
+                result = sw.ToString();
+            }
+
+            return result;
+        }
+
+
+
         public BaseController(DataManager dataManager)
         {
             DataManager = dataManager;
         }
 
-        //private void SetAuthenticatedUserCorrency(int id)
-        //{
-        //    var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-        //    var u = manager.FindById(GetCurrentUserId());
-        //    u.CurrencyId = id;
-        //    manager.Update(u);
-        //}
-
-        //private void SetCookieCorrency(int id)
-        //{
-        //    HttpCookie cookie = Request.Cookies["Currency"];
-        //    if (cookie == null)
-        //    {
-        //        HttpCookie newCookie = new HttpCookie("Currency", id.ToString());
-        //        newCookie.Expires = DateTime.Now.AddDays(365);
-        //        Response.Cookies.Add(newCookie);
-        //    }
-        //    else
-        //    {
-        //        cookie.Value = id.ToString();
-        //        Response.Cookies.Set(cookie);
-        //    }
-
-
-        //}
+   
 
         public int GetCurrentCurrency()
         {
@@ -58,30 +64,7 @@ namespace Jewerly.Web.Controllers
            return User.Identity.GetUserId<string>();
         }
 
-        //public void  SetCurrency(int id)
-        //{
-        //    int oldValue = GetCurrentCurrency();
-        //    if (id != oldValue ) 
-        //    {
-        //        if (DataManager.Currencies.Count(t => t.CurrencyId == id) > 0)
-        //        {
-        //            if (User.Identity.IsAuthenticated)
-        //            {
-        //                SetAuthenticatedUserCorrency(id);
-        //            }
-        //             SetCookieCorrency(id);
-        //        }
-        //        else
-        //        {
-        //            if (User.Identity.IsAuthenticated)
-        //            {
-        //                SetAuthenticatedUserCorrency(DefaultCurrency);
-        //            }
-        //            SetCookieCorrency(DefaultCurrency);   
-        //        }
-                
-        //    }
-        //}
+      
 
 
 
@@ -102,19 +85,9 @@ namespace Jewerly.Web.Controllers
 
         public string GetCookie(string name)
         {
-            //var responseCookie = Response.Cookies[name];
-            //if (responseCookie != null)
-            //{
-            //    if (responseCookie.Value != null)
-            //    {
-            //        return responseCookie.Value;
-            //    }
-                    
-            //}
-
-            var httpCookie = HttpContext.Request.Cookies[name];
-            if (httpCookie != null) return httpCookie.Value;
-            return string.Empty;
+          var httpCookie = HttpContext.Request.Cookies[name];
+           if (httpCookie != null) return httpCookie.Value;
+           return string.Empty;
         }
 
 

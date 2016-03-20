@@ -83,6 +83,11 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
         #endregion
 
+
+      
+       
+
+
         
         private IQueryable<Product> GetProductByCategoryId(int catId)
         {
@@ -306,7 +311,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
         public ActionResult Index(int? page = 0,int id = 0, string name = "", string sort = "")
         {
-           // initializeSeoName();
+        
 
         
             if (Request.HttpMethod == "POST")
@@ -385,93 +390,12 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
 
 
-           
-
-
-
-
-
-
-           //foreach (var attr in attributtes)
-           //{
-
-           //    var options =
-           //        (from option in DataManager.SpecificationAttributeOptions.GetAll()
-           //            .Where(t => t.ProductSpecificationAttributeId == attr.ProductSpecificationAttributeId)
-           //         from Product product in queryableSet
-           //         from mapp in product.MappingProductSpecificationAttributeToProducts
-           //         where option.SpecificationAttributeOptionId == mapp.SpecificationAttributeOptionId
-           //         select option
-           //            ).Distinct().Select(t => new ProductFilterOption()
-           //            {
-           //                Id = t.SpecificationAttributeOptionId,
-           //                Name = t.Name
-           //            })
-           //            .ToList();
-
-
-
-               //var options = (from Product product in products
-               //               from mapp in product.MappingProductSpecificationAttributeToProducts
-               //               from option in mapp.ProductSpecificationAttribute.SpecificationAttributeOptions
-               //               where mapp.ProductSpecificationAttribute.ProductSpecificationAttributeId ==
-               //               attr.ProductSpecificationAttributeId 
-               //               && mapp.ProductId==product.ProductId
-               //               && mapp.SpecificationAttributeOptionId
-               //               orderby option.DisplayOrder
-               //               select option
-               //    ).Distinct().Select(t => new ProductFilterOption()
-               //    {
-               //        Id = t.SpecificationAttributeOptionId,
-               //        Name = t.Name
-               //    }).ToList();
-
-           //    var filter = new ProductFilter
-           //    {
-           //        Id = attr.ProductSpecificationAttributeId,
-           //        Name = attr.Name,
-           //        SeoName = attr.SeoName,
-           //        Options = options
-
-           //    };
-           //    model.Filters.Add(filter);
-           //}
-
-
-
-
-
-
-
-
-            //if (queryFilters != null && queryFilters.Count != 0)
-            //{
-            //    for (int i = 0; i < queryFilters.Count; i++)
-            //    {
-            //        var filter = queryFilters[i];
-            //        var f = model.Filters.SingleOrDefault(t => t.Id == filter.AttributeId);
-            //        if (f != null)
-            //        {
-            //            f.CurrentOptionId = filter.AttributeOptionId;
-            //            queryableSet = (from p in queryableSet
-            //            from m in p.MappingProductSpecificationAttributeToProducts
-            //            where p.ProductId == m.ProductId && m.SpecificationAttributeOptionId == filter.AttributeId
-            //            select p
-            //             );
-
-
-
-
-            //        }
-            //    }
-            //}
-
 
 
             var products = GetProducts(queryableSet, string.IsNullOrEmpty(sort) ? sortOptions.SortByDefult : sort);
 
             var productsViewModel = new PageableProducts(products,
-            model.Currencies.CurrentCurrency, (page == null || page == 0) ? 1 : page.Value, itemPerPage);
+            model.Currencies.CurrentCurrency, (page == null || page == 0) ? 1 : page.Value,User.Identity.IsAuthenticated ,itemPerPage);
 
 
 
@@ -479,7 +403,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
            model.Products = productsViewModel;
            model.ProductSortModel = sortOptions;
 
-        
+         
 
 
 

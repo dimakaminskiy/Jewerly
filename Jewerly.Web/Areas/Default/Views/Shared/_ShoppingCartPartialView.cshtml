@@ -1,20 +1,48 @@
-﻿
-
+﻿@model Jewerly.Web.Models.ShoppingCartMiniModel
 
 <div class="btn-group cart" role="group">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" title="Корзина">
-            <div id="cart">
+        <div id="cart">
             <span class="glyphicon glyphicon-shopping-cart"></span>
-             Корзина
+            Корзина
             <span class="glyphicon glyphicon-ok"></span>
-            <span id ="top-card-count">1</span>
-            <br/>
-            <span id="top-card-totals">59,99</span>
+            <span id="top-card-count">@Model.Count</span><br />
+            @if (Model.Items.Any())
+            {
+                <span id="top-card-totals">@Model.TotalPrice @Model.Currency</span>
+            }
+            else
+            {
+                <span id="top-card-totals"></span>
+            }
         </div>
     </button>
-
     <div id="mini-shopping-cart" class="dropdown-menu popover popover-content">
+        @Html.Partial("_ShoppingCartItemsPartialView", Model)
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*<div id="mini-shopping-cart" class="dropdown-menu popover popover-content">
         <div id="mini-shopping-cart-items">
             <div class="buttons">
                 <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-sm pull-left">В корзину</a>
@@ -36,7 +64,5 @@
                 </div>
             </div>
         </div>
-    </div>
-
-</div>
+    </div>*@
 

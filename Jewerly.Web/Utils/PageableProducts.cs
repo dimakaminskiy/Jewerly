@@ -48,7 +48,7 @@ namespace Jewerly.Web.Utils
 
         public int ItemPerPage { get; set; }
 
-        public PageableProducts(IQueryable<Product> queryableSet, Currency currency, int page, int itemPerPage = 0)
+        public PageableProducts(IQueryable<Product> queryableSet, Currency currency, int page, bool trade,int itemPerPage = 0)
         {
             if (itemPerPage == 0)
             {
@@ -63,7 +63,7 @@ namespace Jewerly.Web.Utils
             List =
                 queryableSet.Skip((PageNo - 1)*itemPerPage)
                     .Take(itemPerPage)
-                    .ToList().Select(t => t.ToProductViewModel(currency));
+                    .ToList().Select(t => t.ToProductViewModel(currency,trade));
         }
     }
 

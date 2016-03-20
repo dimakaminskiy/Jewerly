@@ -1,0 +1,37 @@
+﻿@using Jewerly.Web.Utils
+@model Jewerly.Web.Models.ShoppingCartMiniModel
+
+
+    <div id="mini-shopping-cart-items">
+        @if (Model.Items.Any())
+        {
+            <div class="buttons clearfix">
+                <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-sm pull-left">В корзину</a>
+                <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-sm pull-right">В корзину</a>
+            </div>
+    <div class="items">
+
+        @foreach (var item in Model.Items)
+        {
+            <div class="item row mgo">
+                <div class="picture col-xs-3" style="padding: 0;">
+                    <a title="@item.Name" href="@Url.Action("Details","Store", new {id=item.ProductId, name= item.SeoName})">
+                        <img title="@item.Name" src="@item.Picture" alt="@item.Name" class="img-responsive">
+                    </a>
+                </div>
+                <div class="product col-xs-9">
+                    <div class="name">
+                        <a href="@Url.Action("Details","Store", new {id=item.ProductId, name= item.SeoName})">@item.Name</a>
+                    </div>
+                    <div class="price">Цена: <span>@item.UnitPrice.ToString("F2") @item.Currency</span></div>
+                    <div class="quantity">Количество: <span>@item.Quantity</span></div>
+                </div>
+            </div>
+          }
+    </div>
+        }
+        else
+        {
+            <div>tyiur679r6</div>
+        }
+    </div>

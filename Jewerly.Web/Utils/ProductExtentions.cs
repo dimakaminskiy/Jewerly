@@ -22,10 +22,24 @@ namespace Jewerly.Web.Utils
 
     public static class ProductExtentions
     {
-        public static ProductViewModel ToProductViewModel(this Product product, Currency currency)
+        public static ProductViewModel ToProductViewModel(this Product product, Currency currency, bool trade)
         {
 
             var price = product.Price*currency.Rate;
+
+            if (product.Markup != null)
+            {
+                if (trade)
+                {
+                    price = price + ((price / 100) * product.Markup.Trade);
+                }
+                else
+                {
+                    price = price + ((price / 100) * product.Markup.Retail);
+                }
+            }
+
+
 
             if (product.Discount != null)
             {
