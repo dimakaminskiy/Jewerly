@@ -43,15 +43,17 @@ namespace Jewerly.Web.Areas.Default.Models
             [Required]
             [Display(Name = "Отчество")]
             public string MiddleName { get; set; }
-              [Required]
-              [Display(Name = "Страна")]
+            [Required]
+            [Display(Name = "Страна")]
             public int CountryId { get; set; }
-              [Required]
-              [Display(Name = "Город")]
-              public string City { get; set; }
-              [Required]
-              [Display(Name = "Телефон")]
-              public string Phone { get; set; }
+            [Required]
+            [Display(Name = "Город")]
+            public string City { get; set; }
+            [Required]
+            [Display(Name = "Телефон")]
+            [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
+
+            public string Phone { get; set; }
             //    [RegularExpression(@"^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$", ErrorMessageResourceType = typeof(GlobalResource), ErrorMessageResourceName = "ErrorMessageRegularExpressionEmail")]
             [Display(Name = "E-mail")]
             public string Email { get; set; }
