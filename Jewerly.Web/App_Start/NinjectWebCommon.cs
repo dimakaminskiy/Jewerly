@@ -93,7 +93,7 @@ namespace Jewerly.Web.App_Start
 
             kernel.Bind<IGenericRepository<OrderStatus>>().To<GenericRepository<OrderStatus>>();
             kernel.Bind<IGenericRepository<Cart>>().To<GenericRepository<Cart>>();
-
+            kernel.Bind<IGenericRepository<SliderPicture>>().To<GenericRepository<SliderPicture>>();
             
         }        
     }

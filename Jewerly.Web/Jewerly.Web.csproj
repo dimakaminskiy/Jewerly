@@ -193,6 +193,7 @@
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductSpecificationAttributesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReviewsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SliderPicturesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SpecificationAttributeOptionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Default\Controllers\AboutController.cs" />
@@ -394,6 +395,12 @@
     <Content Include="Areas\Default\Views\Shared\_ProductsSortOptions.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_FiltersPartialView.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_ShoppingCartItemsPartialView.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\AdminLayout.cshtml" />
+    <Content Include="Areas\Admin\Views\SliderPictures\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\SliderPictures\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\SliderPictures\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\SliderPictures\Index.cshtml" />
+    <Content Include="Areas\Default\Views\About\_SliderPictures.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />

@@ -54,6 +54,13 @@ namespace Jewerly.Web.Areas.Default.Controllers
             return View();
         }
 
+        [ChildActionOnly]
+        public ActionResult SliderPictures()
+        {
+            return PartialView("_SliderPictures",DataManager.SliderPictures.GetAll().OrderBy(t=> Guid.NewGuid()).Take(5).ToList());
+        }
+
+
         public ActionResult Index()
         {
             var model = new MenuCategories(null,GetListMenuCategories());

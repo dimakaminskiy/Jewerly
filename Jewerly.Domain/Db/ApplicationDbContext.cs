@@ -47,8 +47,8 @@ namespace Jewerly.Domain
         public DbSet<MethodOfDelivery> MethodOfDeliveries { get; set; }
         public DbSet<MethodOfPayment> MethodOfPayments { get; set; }
 
-        public DbSet<Cart> Carts { get; set; } 
-        
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<SliderPicture> SliderPictures { get; set; } 
 
     }
     

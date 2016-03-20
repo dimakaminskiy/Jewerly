@@ -30,4 +30,19 @@ namespace Jewerly.Domain
 
     }
 
+    public class SliderPicture
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Выберите изображение")]
+        [Display(Name = "Изображение")]
+        public string Path { get; set; }
+        [Display(Name = "Название")]
+        [Required]
+        public string Caption { get; set; }
+        [Display(Name = "Текст")]
+        [Required]
+        public string Text { get; set; }
+       
+    }
+
 }
