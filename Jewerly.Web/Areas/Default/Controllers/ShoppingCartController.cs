@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Caching;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Domain.Entities;
@@ -24,8 +21,33 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
             return View(model);
         }
+        [HttpPost]
+        public ActionResult ChangeCart(ShoppingCartMiniModel shoppingCartMiniModel)
+        {
+            int currencyId = GetCurrentCurrency();
+            var currency = DataManager.Currencies.SearchFor(t => t.CurrencyId == currencyId).Single();
+            var cart = ShoppingCart.GetCart(this, DataManager);
+            
+            foreach (var item in shoppingCartMiniModel.Items)
+            {
+                cart.SetProductCountByCartId(item.Id,item.Quantity);
+            }
+            var cartItems = cart.GetCarts();
+            var model = GetShoppingCartMiniModel(cartItems, currency);
 
+            var data = RenderViewToString(ControllerContext, "_ShoppingCart",model);
+            var mini = RenderViewToString(ControllerContext, "_ShoppingCartItemsPartialView", model);
 
+            return Json(new
+            { success = true,
+              data=data,
+              mini=mini,
+              cartcountitems = model.Count,
+              carttotalprice = model.TotalPrice + " " + currency.CurrencyCode,
+            });
+            
+        }
+        [NonAction]
         public ShoppingCartMiniModel GetShoppingCartMiniModel(IEnumerable<Cart> cartItems, Currency currency)
         {
             List<CartModel> carts = new List<CartModel>();
@@ -44,8 +66,6 @@ namespace Jewerly.Web.Areas.Default.Controllers
                         price = price + ((price / 100) * item.Product.Markup.Retail);
                     }
                 }
-
-
                 if (item.Product.Discount != null)
                 {
                     price = price - ((price / 100) * item.Product.Discount.Value);
@@ -68,8 +88,6 @@ namespace Jewerly.Web.Areas.Default.Controllers
             model.Currency = currency.CurrencyCode;
             return model;
         }
-
-
         [HttpPost]
         public ActionResult AddProductToCart(int productId)
         {
@@ -117,33 +135,16 @@ namespace Jewerly.Web.Areas.Default.Controllers
             });
 
         }
-
-
-
-
-
-
-        [HttpPost]
-        public ActionResult ChangeCart(int id, int count)
-        {
-            try
-            {
-                var cart = ShoppingCart.GetCart(this, DataManager);
-                
-                
-                return Json(new { success = true, item = id, itemCount = 10});
-            }
-            catch (Exception e)
-            {
-                return Json(new { success = false, errorMessage = e.Message });
-            }
-
-        }
-
-
+       
         public ShoppingCartController(DataManager dataManager) : base(dataManager)
         {
         }
+
+
+
+
+
+      
 
 
         public ActionResult MiniShoppingCart()

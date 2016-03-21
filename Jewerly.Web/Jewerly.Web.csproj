@@ -198,6 +198,7 @@
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Default\Controllers\AboutController.cs" />
     <Compile Include="Areas\Default\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Default\Controllers\CheckoutController.cs" />
     <Compile Include="Areas\Default\Controllers\ManageController.cs" />
     <Compile Include="Areas\Default\Controllers\ReviewsController.cs" />
     <Compile Include="Areas\Default\Controllers\ShoppingCartController.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Areas\Default\DefaultAreaRegistration.cs" />
     <Compile Include="Areas\Default\Models\AccountViewModels.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="extensions\Class1.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -212,6 +214,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\Store\CategoryModel.cs" />
     <Compile Include="Models\Store\CurrencyModel.cs" />
     <Compile Include="Models\Store\MainPageViewModal.cs" />
@@ -239,6 +242,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\bg_dark.png" />
     <Content Include="Content\images\loading.gif" />
+    <Content Include="Content\images\quantity_loading.gif" />
     <Content Include="Content\img\bg.gif" />
     <Content Include="Content\img\bg.png" />
     <Content Include="Content\img\bg2.png" />
@@ -403,6 +407,10 @@
     <Content Include="Areas\Default\Views\About\_SliderPictures.cshtml" />
     <Content Include="Areas\Default\Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Areas\Default\Views\ShoppingCart\Index.cshtml" />
+    <Content Include="Areas\Default\Views\ShoppingCart\_ShoppingCart.cshtml" />
+    <Content Include="Areas\Default\Views\Checkout\AddressAndPayment.cshtml" />
+    <Content Include="Areas\Default\Views\Checkout\Complete.cshtml" />
+    <Content Include="Areas\Default\Views\Checkout\MailView.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />
@@ -454,6 +462,8 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_NavMenuPartialView.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_ShoppingCartPartialView.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

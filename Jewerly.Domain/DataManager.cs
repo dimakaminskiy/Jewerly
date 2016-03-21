@@ -28,6 +28,9 @@ namespace Jewerly.Domain
        public IGenericRepository<OrderDetail> OrderDetails { get; set; }
        public IGenericRepository<Cart> Carts { get; set; }
        public IGenericRepository<SliderPicture> SliderPictures { get; set; }
+       public IGenericRepository<MethodOfPayment> MethodOfPayments { get; set; }
+       public IGenericRepository<MethodOfDelivery> MethodOfDeliveries { get; set; }
+
 
        public DataManager
            (
@@ -47,13 +50,13 @@ namespace Jewerly.Domain
            ,IGenericRepository<Markup> markups
            ,IGenericRepository<Review> reviews
            ,IGenericRepository<Country> countries
-
            ,IGenericRepository<OrderStatus> orderStatuses
            ,IGenericRepository<Order> orders
            ,IGenericRepository<OrderDetail> orderDetails
            ,IGenericRepository<Cart> carts
-           ,IGenericRepository<SliderPicture> sliderPictures 
-
+           ,IGenericRepository<SliderPicture> sliderPictures
+           ,IGenericRepository<MethodOfPayment> methodOfPayments
+           ,IGenericRepository<MethodOfDelivery> methodOfDeliveries 
            
            )
        {
@@ -78,6 +81,8 @@ namespace Jewerly.Domain
            OrderDetails = orderDetails;
            Carts = carts;
            SliderPictures = sliderPictures;
+           MethodOfPayments = methodOfPayments;
+           MethodOfDeliveries = methodOfDeliveries;
        }
     }
 }

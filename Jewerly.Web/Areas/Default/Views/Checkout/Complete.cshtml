@@ -1,0 +1,21 @@
+﻿@model int
+@{
+    ViewBag.Title = "Complete";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+
+
+<div class="dostavka">
+    <div class="content_in center">
+        <h2>Покупка завершена</h2>
+        <p>@ViewBag.Message</p>
+        <p>
+            Спасибо за покупку! Ваш номер заказа <span class="red">@Model</span>
+            <br>  Наш представитель свяжется с Вами в ближайшее время для уточнения деталей.
+        </p>
+        <p>
+            Вы можете продолжить покупки, вернувшись в
+            <b>@Html.ActionLink("Каталог.", "Index", "Store")</b>
+        </p>
+    </div>
+</div>

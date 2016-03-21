@@ -1,0 +1,143 @@
+﻿@model  Jewerly.Web.Models.ShoppingCartMiniModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formAnswerScheme", id = "formAnswerScheme" }))
+{
+    <div id="shopping-cart" class="content_silver" >
+        @Html.Partial("_ShoppingCart", Model)
+    </div>
+}
+
+<style>
+
+.product-qloading{
+    background: rgba(0, 0, 0, 0) url("/Content/images/quantity_loading.gif") no-repeat scroll 0 0;
+    display: none;
+    height: 16px;
+    margin-left: 0;
+    position: absolute;
+    width: 16px;
+     margin-left: 0 !important;
+}
+</style>
+
+@section scripts{
+    <script>
+        $(document).on("focusout", ".inp_count", function() {
+            if ($(this).val() == '' || $(this).val() == 0)
+                $(this).val($(this).attr('oldvalue'));
+        });
+
+        $(document).on("click", ".delete-cart", function(e) {
+            //e.preventDefault();
+            //if ($(this).attr("delproduct" == 'F')) {
+            //    $(this).attr("delproduct", 'Y');
+            //    changeOrderCart(null);
+            //}
+            //alert($(this));
+            //alert($(this).attr("cartid"));
+            var cartId = "#cart_" + $(this).attr("cartid");
+            var cart = $(cartId);
+            if (cart) {
+                cart.val(0);
+                changeOrderCart(null);
+            }
+
+
+        });
+
+        $(document).on("keydown", ".inp_count", function(e) {
+            if ($(this).is(':disabled'))
+                return false;
+            if ((e.which >= 48 && e.which <= 57) || (e.which >= 96 && e.which <= 105) || e.which == 8 || e.which == 46) {
+
+                if ($(this).val().length <= 1 && (e.which == 8 || e.which == 46))
+                    return true;
+                var focusInput = $(this);
+                setTimeout(function() {
+                    if (focusInput != null && focusInput.val() != 0) {
+                        var load = focusInput.next(".product-qloading");
+                        load.css('display', 'inline-block');
+                        changeOrderCart(focusInput);
+                    }
+                }, 500);
+
+            } else if ((e.which >= 112 && e.which <= 123) || (e.which >= 37 && e.which <= 40)) {
+            } else
+                return false;
+        });
+
+        function focusCampo(id) {
+            var inputField = document.getElementById(id);
+            if (inputField != null && inputField.value.length != 0) {
+                if (inputField.createTextRange) {
+                    var FieldRange = inputField.createTextRange();
+                    FieldRange.moveStart('character', inputField.value.length);
+                    FieldRange.collapse();
+                    FieldRange.select();
+                } else if (inputField.selectionStart || inputField.selectionStart == '0') {
+                    var elemLen = inputField.value.length;
+                    inputField.selectionStart = elemLen;
+                    inputField.selectionEnd = elemLen;
+                    inputField.focus();
+                }
+            } else {
+                inputField.focus();
+            }
+        }
+
+        function changeOrderCart(focusInput) {
+            var dataCart = $("#formAnswerScheme").serialize();
+            $.ajax({
+                url: '@Url.Action("ChangeCart")',
+                type: 'POST',
+                dataType: 'json',
+                data: dataCart,
+                cache: false,
+                beforeSend: function() {
+                    if (focusInput != null)
+                        focusInput.attr('disabled', true);
+                },
+                async: false,
+                success: function(response) {
+                    if (response.success) {
+                        if (response.cartcountitems) { // обновить кол-во товара в корзине
+                            $("#top-card-count").html("(" + response.cartcountitems + ")").css('opacity', 0).animate({ opacity: 1 });;
+                        }
+                        if (response.mini) { // обновление списка покупок
+                            $("#mini-shopping-cart-items").replaceWith(response.cartitems);
+                        }
+                        if (response.carttotalprice) { // общая цена
+                            $("#top-card-totals").html(response.carttotalprice);
+                        }
+
+
+                        $("#shopping-cart").html(response.data);
+                        if (focusInput) {
+                            var attrId = $(focusInput).attr("id");
+                            focusCampo(attrId);
+                        }
+                    }
+                },
+                error: function(xhr, textStatus, exceptionThrown) { alert(JSON.parse(xhr.responseText)); }
+            });
+        }
+
+        //$(document).ready(function() {
+        //    $(".inp_count").validate({
+        //        onfocusout: false,
+        //        onkeyup: false,
+        //        onclick: false,
+        //        onsubmit: false
+        //    });
+        //});
+
+    </script>
+
+
+}
+
+

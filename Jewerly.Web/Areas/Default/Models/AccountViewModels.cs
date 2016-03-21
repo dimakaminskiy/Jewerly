@@ -52,7 +52,6 @@ namespace Jewerly.Web.Areas.Default.Models
             [Required]
             [Display(Name = "Телефон")]
           //  [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
-
           //  [RegularExpression(@"^[0-9]{7,12}$", ErrorMessage = "Введите номер теленфона")]
             [RegularExpression(@"^(\+)?(\d{3,5})?\d{7,10}$", ErrorMessage = "Invalid phone")]
             public string Phone { get; set; }
@@ -60,9 +59,11 @@ namespace Jewerly.Web.Areas.Default.Models
             [Display(Name = "E-mail")]
             public string Email { get; set; }
               [Required]
+              [DataType(DataType.Password)]
             [Display(Name = "Пароль")]
             public string Password { get; set; }
               [Required]
+              [DataType(DataType.Password)]
               [Display(Name = "Подтверждение пароля")]
               public string ConfirmPassword { get; set; }
               [Required]

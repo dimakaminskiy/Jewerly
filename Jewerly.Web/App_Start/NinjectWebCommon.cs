@@ -74,26 +74,26 @@ namespace Jewerly.Web.App_Start
             kernel.Bind<IGenericRepository<ProductSpecificationAttribute>>().To<GenericRepository<ProductSpecificationAttribute>>();
             kernel.Bind<IGenericRepository<SpecificationAttributeOption>>().To<GenericRepository<SpecificationAttributeOption>>();
             kernel.Bind<IGenericRepository<MappingProductSpecificationAttributeToProduct>>().To<GenericRepository<MappingProductSpecificationAttributeToProduct>>();
-
-
-
             kernel.Bind<IGenericRepository<MappingProductChoiceAttributeToProduct>>().To<GenericRepository<MappingProductChoiceAttributeToProduct>>();
             kernel.Bind<IGenericRepository<AvalibleChoiceAttributeOption>>().To<GenericRepository<AvalibleChoiceAttributeOption>>();
             kernel.Bind<IGenericRepository<ProductChoiceAttribute>>().To<GenericRepository<ProductChoiceAttribute>>();
             kernel.Bind<IGenericRepository<ChoiceAttributeOption>>().To<GenericRepository<ChoiceAttributeOption>>();
-
             kernel.Bind<IGenericRepository<Discount>>().To<GenericRepository<Discount>>();
             kernel.Bind<IGenericRepository<Markup>>().To<GenericRepository<Markup>>();
-
             kernel.Bind<IGenericRepository<Review>>().To<GenericRepository<Review>>();
             kernel.Bind<IGenericRepository<Country>>().To<GenericRepository<Country>>();
 
             kernel.Bind<IGenericRepository<Order>>().To<GenericRepository<Order>>();
+            
             kernel.Bind<IGenericRepository<OrderDetail>>().To<GenericRepository<OrderDetail>>();
-
             kernel.Bind<IGenericRepository<OrderStatus>>().To<GenericRepository<OrderStatus>>();
             kernel.Bind<IGenericRepository<Cart>>().To<GenericRepository<Cart>>();
             kernel.Bind<IGenericRepository<SliderPicture>>().To<GenericRepository<SliderPicture>>();
+
+
+
+            kernel.Bind<IGenericRepository<MethodOfPayment>>().To<GenericRepository<MethodOfPayment>>();
+            kernel.Bind<IGenericRepository<MethodOfDelivery>>().To<GenericRepository<MethodOfDelivery>>();
             
         }        
     }

@@ -101,10 +101,101 @@ namespace Jewerly.Web.Models
             DataManager.Carts.Edit(cart);
             return cart;
         }
-       
+        public void  SetProductCountByCartId(int cartId, int count)
+        {
+            Cart cartItem = null; 
+            if (count == 0 )
+            {
+               cartItem =  DataManager.Carts.SearchFor(t => t.Id == cartId && t.CartId == ShoppingCartId).SingleOrDefault();
+                if (cartItem != null)
+                {
+                    DataManager.Carts.Delete(cartItem);
+                }
+            }
+            else
+            {
+                cartItem = DataManager.Carts.SearchFor(t => t.Id == cartId && t.CartId == ShoppingCartId).SingleOrDefault();
+                if (cartItem != null)
+                {
+                    cartItem.Count = count;
+                    DataManager.Carts.Edit(cartItem);
+                }
+
+            }
 
 
-    }
+     
+        }
+
+        public int GetCartsCount()
+        {
+            return DataManager.Carts.Count(t => t.CartId == ShoppingCartId);
+        }
+
+        public int CreateOrder(OrderModel model, Currency currency,bool trade)
+        {
+            //var c = new OrderDetail();
+
+            var order = new Order
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                MiddleName = model.MiddleName,
+                Email = model.Email,
+                Phone = model.Phone,
+                CountryId = model.CountryId,
+                City = model.City,
+                CurrencyId = currency.CurrencyId,
+                OrderDate = DateTime.Now,
+                OrderStatusId = 1,
+                MethodOfDeliveryId = model.MethodOfDeliveryId,
+                MethodOfPaymentId = model.MethodOfPaymentId,
+                TextInfo = model.TextInfo,
+              };
+
+            List<OrderDetail> list = new List<OrderDetail>();
+            var cartItems = GetCarts();
+            foreach (var item in cartItems)
+            {
+                var price = item.Product.Price * currency.Rate;
+
+                if (item.Product.Markup != null)
+                {
+                    if (trade)
+                    {
+                        price = price + ((price / 100) * item.Product.Markup.Trade);
+                    }
+                    else
+                    {
+                        price = price + ((price / 100) * item.Product.Markup.Retail);
+                    }
+                }
+                if (item.Product.Discount != null)
+                {
+                    price = price - ((price / 100) * item.Product.Discount.Value);
+                }
+
+                var orderDetail = new OrderDetail
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Count,
+                    UnitPrice = price
+                 };
+                list.Add(orderDetail);
+            }
+            order.Total = list.Sum(t => t.UnitPrice*t.Quantity);
+
+            DataManager.Orders.Insert(order);
+
+            foreach (var detail in list)
+            {
+                detail.OrderId = order.Id;
+                DataManager.OrderDetails.Insert(detail);
+            }
+            return order.Id;
+        }
+
+     }
 
 
     public class CartModel
@@ -125,10 +216,14 @@ namespace Jewerly.Web.Models
         public ShoppingCartMiniModel(List<CartModel> cartItems)
         {
            Items = cartItems;
-            Count = cartItems.Sum(t => t.Quantity);
+           Count = cartItems.Sum(t => t.Quantity);
            TotalPrice = cartItems.Sum(t => t.UnitPrice*t.Quantity).ToString("F2");
         }
-        public IList<CartModel> Items { get; set; }
+        public ShoppingCartMiniModel()
+        {
+            
+        }
+        public List<CartModel> Items { get; set; }
         public string TotalPrice { get; set; }
         public string Currency { get; set; }
         public int Count { get; set; }

@@ -33,7 +33,7 @@ namespace Jewerly.Domain.Entities
         [Display(Name = "E-mail")]
         public string Email { get; set; }
         [Display(Name = "Сумма")]
-        public double Total { get; set; }
+        public decimal Total { get; set; }
         [Display(Name = "Страна")]
         public int CountryId { get; set; }
         [Display(Name = "Город")]
@@ -46,6 +46,8 @@ namespace Jewerly.Domain.Entities
         public int MethodOfPaymentId { get; set; }
         [Display(Name = "Метод доставки")]
         public int MethodOfDeliveryId { get; set; }
+        public int CurrencyId { get; set; }
+        public virtual Currency Currency { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual MethodOfDelivery MethodOfDelivery { get; set; }
@@ -61,11 +63,10 @@ namespace Jewerly.Domain.Entities
         public int ProductId { get; set; } 
         public  string ChoiceAttributesInJson { get; set; }
         public int Quantity { get; set; }
-        public double UnitPrice { get; set; }
-        public int CurrencyId { get; set; }
-        public virtual Order Order { get; set; }
+        public decimal UnitPrice { get; set; }
+         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }
-        public virtual Currency Currency { get; set; }
+      
        
 
     }

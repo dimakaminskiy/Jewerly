@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ошибка</title>
+    <style>
+        html, body, table {
+            height: 100%;
+        }
+
+        body {
+            background: url(/Content/images/city.png) repeat-x 0 100% fixed, linear-gradient(to top, #5080b1, #004e8c) fixed;
+            animation: city 30s linear infinite;
+            -webkit-animation: city 30s linear infinite;
+        }
+
+        @@keyframes city {
+            from {
+                background-position: -1000px 100%, 0 0;
+            }
+
+            to {
+                background-position: 0 100%, 0 0;
+            }
+        }
+
+        @@-webkit-keyframes city {
+            from {
+                background-position: -1000px 100%, 0 0;
+            }
+
+            to {
+                background-position: 0 100%, 0 0;
+            }
+        }
+
+        a {
+            color: #ffffff;
+            font: 900 30px "Comic Sans MS", Verdana, Arial, Helvetica, sans-serif;
+        }
+
+        table {
+            margin: auto;
+            width: 80%;
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <div><a href="@Url.Action("Index","Store")">Вернуться на Главную</a></div>
+                <img src="/Content/images/cloud.png">
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
