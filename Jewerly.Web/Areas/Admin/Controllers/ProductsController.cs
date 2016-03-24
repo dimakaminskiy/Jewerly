@@ -104,7 +104,18 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
             products = products.Skip((page - 1)*countItemOnpage)
                 .Take(countItemOnpage);
-           
+
+
+
+            if (!string.IsNullOrEmpty(categoryId) && categoryId != 0.ToString())
+            {
+                ViewBag.CategoryName =
+                    DataManager.Categories.SearchFor(t => t.Id.ToString() == categoryId).Single().Name;
+            }
+
+
+
+
             ViewBag.PageNo = page;
             ViewBag.CategoryId = categoryId;
             ViewBag.SearchString = searchString;

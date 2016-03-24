@@ -9,9 +9,7 @@
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
 }
 
-
-
-
+<h2>Товары</h2>
 
 <div>
     <form action="@Url.Action("Index")" method="get">
@@ -29,7 +27,8 @@
             </label>
             <div class="col-md-10">
                 @Html.Editor("searchString", new { @class = "form-control" })
-                <input type="submit" value="Найти" class="btn btn-default" />
+                <input type="submit" value="Найти" class="btn btn-default"/>
+                <a href="@Url.Action("Index", new {categoryId = "", searchString = ""})">Сбросить фильтр</a>
             </div>
         </div>
 
@@ -46,12 +45,27 @@
                 </form>
             </div>
         *@
-        <h2>Товары</h2>
 
-        <p>
+
+<div>
+    Фильтр:
+    @if (ViewBag.CategoryName != null)
+    {
+        <span>По группе товаров: @ViewBag.CategoryName</span>
+    }
+    @if (ViewBag.SearchString != null)
+    {
+        <span>По Id: @ViewBag.SearchString .</span>
+    }
+</div>
+
+<p>
             @Html.ActionLink("Создать", "Create")
-        </p>
-        <table class="table">
+</p>
+
+
+
+<table class="table">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Picture.Path)

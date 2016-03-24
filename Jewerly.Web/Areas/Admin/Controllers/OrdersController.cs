@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Domain.Entities;
 using Jewerly.Web.Controllers;
+using Microsoft.AspNet.Identity;
 
 namespace Jewerly.Web.Areas.Admin.Controllers
 {
@@ -12,10 +13,55 @@ namespace Jewerly.Web.Areas.Admin.Controllers
     {
 
         // GET: Admin/Orders
-        public ActionResult Index()
+        public ActionResult Index(int? orderStatusId, int page = 1)
         {
-            var orders = DataManager.Orders.GetAll().Include(o => o.Country).Include(o => o.MethodOfDelivery).Include(o => o.MethodOfPayment).Include(o => o.OrderStatus);
-            return View(orders.ToList());
+
+
+            //foreach (var order in DataManager.Orders.GetAll().ToList())
+            //{
+            //    order.OrderStatusId = 2;
+            //    DataManager.Orders.Edit(order);
+            //}
+
+
+
+
+
+            IQueryable<Order> orders = DataManager.Orders.GetAll();
+
+            if (orderStatusId.HasValue)
+            {
+                orders = orders.Where(t => t.OrderStatusId == orderStatusId.Value);
+            }
+            else
+            {
+                orderStatusId = 1;
+                orders = orders.Where(t => t.OrderStatusId==1);
+            }
+            orders = orders.OrderBy(t => t.Id).Include(o => o.Country).Include(o => o.MethodOfDelivery).Include(o => o.MethodOfPayment).Include(o => o.OrderStatus);
+            var count = orders.Count();
+            int countItemOnpage = 1;
+
+            orders = orders.Skip((page - 1) * countItemOnpage)
+                .Take(countItemOnpage);
+
+            var orderStutuses = DataManager.OrderStatuses.GetAll().ToList();
+
+            ViewBag.PageNo = page;
+            ViewBag.CountPage = (int)decimal.Remainder(count, countItemOnpage) == 0 ? count / countItemOnpage : count / countItemOnpage + 1;
+            ViewBag.OrderStatusId = orderStatusId;
+            ViewBag.OrderStatuses = new SelectList(orderStutuses, "Id", "Name", 1);
+
+
+
+
+            ViewBag.StutusName = orderStutuses.Single(t => t.Id == orderStatusId).Name;
+
+
+
+
+            //          var orders = DataManager.Orders.GetAll().Include(o => o.Country).Include(o => o.MethodOfDelivery).Include(o => o.MethodOfPayment).Include(o => o.OrderStatus);
+                    return View(orders.ToList());
         }
 
 
