@@ -1,72 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Domain.Entities;
+using Jewerly.Web.Controllers;
 
 namespace Jewerly.Web.Areas.Admin.Controllers
 {
-    public class OrdersController : Controller
+    public class OrdersController : BaseController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Admin/Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Country).Include(o => o.MethodOfDelivery).Include(o => o.MethodOfPayment).Include(o => o.OrderStatus);
+            var orders = DataManager.Orders.GetAll().Include(o => o.Country).Include(o => o.MethodOfDelivery).Include(o => o.MethodOfPayment).Include(o => o.OrderStatus);
             return View(orders.ToList());
         }
 
-        // GET: Admin/Orders/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Order order = db.Orders.Find(id);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
-        }
 
-        // GET: Admin/Orders/Create
-        public ActionResult Create()
-        {
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
-            ViewBag.MethodOfDeliveryId = new SelectList(db.MethodOfDeliveries, "Id", "Name");
-            ViewBag.MethodOfPaymentId = new SelectList(db.MethodOfPayments, "Id", "Name");
-            ViewBag.OrderStatusId = new SelectList(db.OrderStatuses, "Id", "Name");
-            return View();
-        }
-
-        // POST: Admin/Orders/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,OrderDate,FirstName,LastName,MiddleName,Phone,Email,Total,CountryId,City,TextInfo,OrderStatusId,MethodOfPaymentId,MethodOfDeliveryId")] Order order)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Orders.Add(order);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", order.CountryId);
-            ViewBag.MethodOfDeliveryId = new SelectList(db.MethodOfDeliveries, "Id", "Name", order.MethodOfDeliveryId);
-            ViewBag.MethodOfPaymentId = new SelectList(db.MethodOfPayments, "Id", "Name", order.MethodOfPaymentId);
-            ViewBag.OrderStatusId = new SelectList(db.OrderStatuses, "Id", "Name", order.OrderStatusId);
-            return View(order);
-        }
+     
 
         // GET: Admin/Orders/Edit/5
         public ActionResult Edit(int? id)
@@ -75,15 +28,15 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            Order order = DataManager.Orders.GetById(id.Value);
             if (order == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", order.CountryId);
-            ViewBag.MethodOfDeliveryId = new SelectList(db.MethodOfDeliveries, "Id", "Name", order.MethodOfDeliveryId);
-            ViewBag.MethodOfPaymentId = new SelectList(db.MethodOfPayments, "Id", "Name", order.MethodOfPaymentId);
-            ViewBag.OrderStatusId = new SelectList(db.OrderStatuses, "Id", "Name", order.OrderStatusId);
+            ViewBag.CountryId = new SelectList(DataManager.Countries.GetAll(), "Id", "Name", order.CountryId);
+            ViewBag.MethodOfDeliveryId = new SelectList(DataManager.MethodOfDeliveries.GetAll(), "Id", "Name", order.MethodOfDeliveryId);
+            ViewBag.MethodOfPaymentId = new SelectList(DataManager.MethodOfPayments.GetAll(), "Id", "Name", order.MethodOfPaymentId);
+            ViewBag.OrderStatusId = new SelectList(DataManager.OrderStatuses.GetAll(), "Id", "Name", order.OrderStatusId);
             return View(order);
         }
 
@@ -96,14 +49,21 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(order).State = EntityState.Modified;
-                db.SaveChanges();
+             DataManager.Orders.Edit(order);
                 return RedirectToAction("Index");
             }
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", order.CountryId);
-            ViewBag.MethodOfDeliveryId = new SelectList(db.MethodOfDeliveries, "Id", "Name", order.MethodOfDeliveryId);
-            ViewBag.MethodOfPaymentId = new SelectList(db.MethodOfPayments, "Id", "Name", order.MethodOfPaymentId);
-            ViewBag.OrderStatusId = new SelectList(db.OrderStatuses, "Id", "Name", order.OrderStatusId);
+
+            var list =
+                DataManager.OrderDetails.SearchFor(t => t.OrderId == order.Id)
+                    .Include(t => t.ProductId)
+                    .Include(t => t.Product.Picture);
+
+            order.OrderDetails = list.ToList();
+
+            ViewBag.CountryId = new SelectList(DataManager.Countries.GetAll(), "Id", "Name", order.CountryId);
+            ViewBag.MethodOfDeliveryId = new SelectList(DataManager.MethodOfDeliveries.GetAll(), "Id", "Name", order.MethodOfDeliveryId);
+            ViewBag.MethodOfPaymentId = new SelectList(DataManager.MethodOfPayments.GetAll(), "Id", "Name", order.MethodOfPaymentId);
+            ViewBag.OrderStatusId = new SelectList(DataManager.OrderStatuses.GetAll(), "Id", "Name", order.OrderStatusId);
             return View(order);
         }
 
@@ -114,7 +74,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            Order order = DataManager.Orders.GetById(id.Value);
             if (order == null)
             {
                 return HttpNotFound();
@@ -127,19 +87,21 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Order order = db.Orders.Find(id);
-            db.Orders.Remove(order);
-            db.SaveChanges();
+            Order order = DataManager.Orders.GetById(id);
+            var orderDetails = DataManager.OrderDetails.SearchFor(t => t.OrderId == order.Id);
+            foreach (var detail in orderDetails)
+            {
+                DataManager.OrderDetails.Delete(detail);
+            }
+            DataManager.Orders.Delete(order);
+
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        
+
+        public OrdersController(DataManager dataManager) : base(dataManager)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

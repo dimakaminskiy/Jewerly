@@ -354,11 +354,10 @@
     <Content Include="Areas\Admin\Views\MethodOfPayments\Details.cshtml" />
     <Content Include="Areas\Admin\Views\MethodOfPayments\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\MethodOfPayments\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Orders\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Orders\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Orders\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Orders\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Orders\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\_SliderPictures.cshtml" />
     <None Include="Areas\Admin\Views\Shared\Admin _Layout.cshtml" />
     <Content Include="Areas\Default\Views\Shared\DefaultLayout.cshtml" />
     <Content Include="Areas\Default\Views\Store\Index.cshtml" />
@@ -410,7 +409,7 @@
     <Content Include="Areas\Default\Views\ShoppingCart\_ShoppingCart.cshtml" />
     <Content Include="Areas\Default\Views\Checkout\AddressAndPayment.cshtml" />
     <Content Include="Areas\Default\Views\Checkout\Complete.cshtml" />
-    <Content Include="Areas\Default\Views\Checkout\MailView.cshtml" />
+    <Content Include="Areas\Default\Views\Shared\MailView.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />

@@ -71,7 +71,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             if (id == 0)
             {
                 list =
-                 new SelectList(categories, "Id", "Name", categories.First().Id).PreAppend( "-----------", "", false);
+                 new SelectList(categories, "Id", "Name", categories.First().Id).PreAppend( "-----------", "", true);
             }
             else
             {
@@ -87,9 +87,29 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
         #region Product Actions
 
-        public ActionResult Index()
+        public ActionResult Index(string searchString, string categoryId, int page = 1)
         {
-            var products = DataManager.Products.GetAll();
+            IQueryable<Product> products = DataManager.Products.GetAll();
+            if (!string.IsNullOrEmpty(categoryId)  && DataManager.Categories.Count(t=>t.Id.ToString()==categoryId)!=0)
+            {
+                products = products.Where(t => t.CategoryId.ToString() == categoryId);
+            }
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(t => t.ProductId.ToString().Contains(searchString));
+            }
+            products = products.OrderBy(t => t.ProductId);
+            var count = products.Count();
+            int countItemOnpage = 5;
+
+            products = products.Skip((page - 1)*countItemOnpage)
+                .Take(countItemOnpage);
+           
+            ViewBag.PageNo = page;
+            ViewBag.CategoryId = categoryId;
+            ViewBag.SearchString = searchString;
+            ViewBag.CountPage = (int)decimal.Remainder(count, countItemOnpage) == 0 ? count / countItemOnpage : count / countItemOnpage + 1;
+            ViewBag.Category = GetSelectListCategories(string.IsNullOrEmpty(categoryId)?0:int.Parse(categoryId));
             return View(products.ToList());
         }
 

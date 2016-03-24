@@ -1,10 +1,14 @@
-﻿
+﻿@model IList<Jewerly.Domain.SliderPicture>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
 }
 
- <!---Слайдер---->
+<div>
+   @Html.Partial("_SliderPictures",Model)
+</div>
+
+@*<!---Слайдер---->
 <div id="myCarousel" class="carousel slide hidden-xs shadow" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -68,4 +72,4 @@
         pause: 'hover',
         wrap: true
     });
-</script>
+</script>*@

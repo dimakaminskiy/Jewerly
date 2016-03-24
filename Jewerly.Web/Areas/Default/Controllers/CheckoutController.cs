@@ -112,6 +112,8 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 smtp.UseDefaultCredentials = false;
                 smtp.Credentials = new NetworkCredential(settings.MailFromAddress, settings.password);
 
+
+                ViewBag.baseurl = baseurl;
                 using (var msg = new MailMessage(settings.MailFromAddress, settings.MailFromAddress))
                 {
                     string message = RenderViewToString(ControllerContext, "MailView", order);

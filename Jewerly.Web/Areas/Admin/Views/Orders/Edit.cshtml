@@ -1,4 +1,6 @@
-﻿@model Jewerly.Domain.Entities.Order
+﻿@using Jewerly.Domain.Entities
+@using Jewerly.Web.Utils
+@model Jewerly.Domain.Entities.Order
 
 @{
     ViewBag.Title = "Заказы";
@@ -16,12 +18,12 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
-
+        @Html.HiddenFor(model => model.OrderDate)
         <div class="form-group">
             @Html.LabelFor(model => model.OrderDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+                @Html.DisplayFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control" } })
+          
             </div>
         </div>
 
@@ -127,7 +129,43 @@
             </div>
         </div>
     </div>
+
+
+
+    <div>
+        <table>
+
+            @foreach (OrderDetail item in Model.OrderDetails)
+            {
+                <tr>
+                    <td>@item.Product.ProductId</td>
+                    <td>@item.Product.Name</td>
+                    <td><img src="@item.Product.Picture.Preview()"/></td>
+                    <td>@item.Quantity</td>
+                    <td>@item.UnitPrice.ToString("F2") @Model.</td>
+                    <td>@((item.Quantity * item.Quantity).ToString("F2"))</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 <div>
     <a href="@Url.Action("Index", "Orders")" class="btn btn-default">Назад</a>

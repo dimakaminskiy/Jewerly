@@ -13,9 +13,10 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         // GET: Admin/Home
         public ActionResult Index()
         {
-            return View();
+            var list = DataManager.SliderPictures.GetAll().OrderBy(t => Guid.NewGuid()).Take(5).ToList();
+            return View(list);
          }
-
+        
         public HomeController(DataManager dataManager) : base(dataManager)
         {
         }

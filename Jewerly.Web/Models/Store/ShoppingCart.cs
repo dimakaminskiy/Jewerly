@@ -132,6 +132,16 @@ namespace Jewerly.Web.Models
             return DataManager.Carts.Count(t => t.CartId == ShoppingCartId);
         }
 
+        public void  EmptyCart()
+        {
+            var cartItems = DataManager.Carts.SearchFor(
+              cart => cart.CartId == ShoppingCartId).ToList();
+            foreach (var cartItem in cartItems)
+            {
+                DataManager.Carts.Delete(cartItem);
+            } 
+        }
+
         public int CreateOrder(OrderModel model, Currency currency,bool trade)
         {
             //var c = new OrderDetail();
@@ -192,6 +202,7 @@ namespace Jewerly.Web.Models
                 detail.OrderId = order.Id;
                 DataManager.OrderDetails.Insert(detail);
             }
+            EmptyCart(); // после оформления заказа необходимо очистить корзину !
             return order.Id;
         }
 

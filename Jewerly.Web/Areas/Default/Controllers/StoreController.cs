@@ -308,10 +308,23 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
         }
 
+       
+
+
 
         public ActionResult Index(int? page = 0,int id = 0, string name = "", string sort = "")
         {
-        
+
+            //var baseurl = FullyQualifiedApplicationPath(HttpContext);
+            //var o = DataManager.Orders.SearchFor(t => t.Id == 2).Include(t => t.OrderDetails).First();
+            //ViewBag.baseurl = baseurl;
+            //string message = RenderViewToString(ControllerContext, "MailView", o);
+
+
+
+
+
+
 
         
             if (Request.HttpMethod == "POST")
