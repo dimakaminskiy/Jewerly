@@ -311,7 +311,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 await UserManager.SendEmailAsync(user.Id, "Восстановление пароля",
                     "Здравствуйте! <br/>Вы отправили запрос на восстановление пароля от аккаунта " + user.Email +
                     " .<br/>" +
-                    "Для того чтобы задать новый пароль, перейдите по  <a href=\"" + callbackUrl + "\">ссылке</a>" +
+                    "Для того чтобы задать новый пароль, перейдите по  <a href=\"" + callbackUrl + "\">ссылке</a><br/>" +
                     "С уважением, команда <a href=\"" + settings.Link + "\">" + settings.Link + "</a>");
                 return View("ForgotPasswordConfirmation");
 

@@ -181,8 +181,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             }
         }
 
-      
-        // GET: Admin/CategoryPictures/Delete/5
+     
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -194,18 +193,38 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+            var error = Request.Params["msg"];
+            if (!string.IsNullOrEmpty(error))
+            {
+                ModelState.AddModelError("", error);
+            }
+
             return View(categoryPicture);
         }
 
-        // POST: Admin/CategoryPictures/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             CategoryPicture categoryPicture = DataManager.CategoryPictures.GetById(id);
-            DataManager.CategoryPictures. Delete(categoryPicture);
-
-
+            var list = DataManager.Categories.SearchFor(t => t.CategoryPictureId == categoryPicture.Id).ToList();
+            try
+            {
+                foreach (var c in list)
+                {
+                    c.CategoryPictureId = null;
+                    DataManager.Categories.Edit(c);
+                }
+                System.IO.File.Delete(UrlToLocal(categoryPicture.Path));
+                DataManager.CategoryPictures.Delete(categoryPicture);
+               
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Delete",
+                    new { msg = "Произошла ошибка при удалении изображения." });
+            }
+ 
             TempData["message"] = string.Format("Изображение категории \"{0}\" было удалено", categoryPicture.Caption);
             return RedirectToAction("Index");
         }

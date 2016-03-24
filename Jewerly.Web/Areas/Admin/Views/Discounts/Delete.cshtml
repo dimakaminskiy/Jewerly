@@ -28,7 +28,9 @@
                 @Html.DisplayFor(model => model.Value)
             </div>
         </div>
-
+        <div>
+            При удалении скидки, цены на товары с выбраной скидкой будут пересчитаны
+        </div>
    </div>
         @using (Html.BeginForm()) {
             @Html.AntiForgeryToken()

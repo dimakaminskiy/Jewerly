@@ -53,8 +53,12 @@
             </div>
         </div>
 
-        </div>
-        @using (Html.BeginForm())
+    </div>
+    <div style="color: red">
+       Если вам временно не нужна валюта, снимите галочку с опубликована, не удаляйте ее.
+     </div>
+
+    @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 

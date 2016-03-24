@@ -1,71 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Jewerly.Domain;
+using Jewerly.Web.Controllers;
+
 
 namespace Jewerly.Web.Areas.Admin.Controllers
 {
-    public class DiscountsController : Controller
+    public class DiscountsController : BaseController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
-        // GET: Admin/Discounts
         public ActionResult Index()
         {
-            return View(db.Discounts.ToList());
+            return View(DataManager.Discounts.GetAll().ToList());
         }
 
-        // GET: Admin/Discounts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Discount discount = db.Discounts.Find(id);
-            if (discount == null)
-            {
-                return HttpNotFound();
-            }
-            return View(discount);
-        }
-
-        // GET: Admin/Discounts/Create
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Admin/Discounts/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Value")] Discount discount)
         {
             if (ModelState.IsValid)
             {
-                db.Discounts.Add(discount);
-                db.SaveChanges();
+                DataManager.Discounts.Insert(discount);
+                TempData["message"] = string.Format("Скидка \"{0}\" была создана", discount.Name);
                 return RedirectToAction("Index");
             }
 
             return View(discount);
         }
 
-        // GET: Admin/Discounts/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Discount discount = db.Discounts.Find(id);
+            Discount discount = DataManager.Discounts.GetById(id.Value);
             if (discount == null)
             {
                 return HttpNotFound();
@@ -73,17 +47,15 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(discount);
         }
 
-        // POST: Admin/Discounts/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Value")] Discount discount)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(discount).State = EntityState.Modified;
-                db.SaveChanges();
+                DataManager.Discounts.Edit(discount);
+                TempData["message"] = string.Format("Скидка \"{0}\" была отредактирована", discount.Name);
+
                 return RedirectToAction("Index");
             }
             return View(discount);
@@ -96,7 +68,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Discount discount = db.Discounts.Find(id);
+            Discount discount = DataManager.Discounts.GetById(id.Value);
             if (discount == null)
             {
                 return HttpNotFound();
@@ -109,19 +81,24 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Discount discount = db.Discounts.Find(id);
-            db.Discounts.Remove(discount);
-            db.SaveChanges();
+            Discount discount = DataManager.Discounts.GetById(id);
+            //удаление скидок на продуктах
+            var list = DataManager.Products.SearchFor(t => t.DiscountId == discount.Id).ToList();
+            foreach (var p in list)
+            {
+                p.DiscountId = null;
+                DataManager.Products.Edit(p);
+            }
+
+            DataManager.Discounts.Delete(discount);
+            TempData["message"] = string.Format("Скидка \"{0}\" была удалена", discount.Name);
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+       
+
+        public DiscountsController(DataManager dataManager) : base(dataManager)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

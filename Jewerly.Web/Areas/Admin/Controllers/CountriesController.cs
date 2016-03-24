@@ -1,58 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Domain.Entities;
+using Jewerly.Web.Controllers;
 
 namespace Jewerly.Web.Areas.Admin.Controllers
 {
-    public class CountriesController : Controller
+    public class CountriesController : BaseController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        #region Action
 
-        // GET: Admin/Countries
         public ActionResult Index()
         {
-            return View(db.Countries.ToList());
+            return View(DataManager.Countries.GetAll().ToList());
         }
-
-        // GET: Admin/Countries/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Country country = db.Countries.Find(id);
-            if (country == null)
-            {
-                return HttpNotFound();
-            }
-            return View(country);
-        }
-
-        // GET: Admin/Countries/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Countries/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name")] Country country)
         {
             if (ModelState.IsValid)
             {
-                db.Countries.Add(country);
-                db.SaveChanges();
+                DataManager.Countries.Insert(country);
+                TempData["message"] = string.Format("Страна \"{0}\" была создана", country.Name);
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +42,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Country country = db.Countries.Find(id);
+            Country country = DataManager.Countries.GetById(id.Value);
             if (country == null)
             {
                 return HttpNotFound();
@@ -74,17 +50,14 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(country);
         }
 
-        // POST: Admin/Countries/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] Country country)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(country).State = EntityState.Modified;
-                db.SaveChanges();
+                DataManager.Countries.Edit(country);
+                TempData["message"] = string.Format("Страна \"{0}\" была отредактирована", country.Name);
                 return RedirectToAction("Index");
             }
             return View(country);
@@ -97,11 +70,18 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Country country = db.Countries.Find(id);
+            Country country = DataManager.Countries.GetById(id.Value);
             if (country == null)
             {
                 return HttpNotFound();
             }
+
+            var error = Request.Params["msg"];
+            if (!string.IsNullOrEmpty(error))
+            {
+                ModelState.AddModelError("", error);
+            }
+
             return View(country);
         }
 
@@ -110,19 +90,32 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Country country = db.Countries.Find(id);
-            db.Countries.Remove(country);
-            db.SaveChanges();
+            Country country = DataManager.Countries.GetById(id);
+
+            using (var db = new ApplicationDbContext())
+            {
+                if (db.Users.Count(t => t.CountryId == id) != 0)
+                {
+                    return RedirectToAction("Delete",
+                   new { msg = "Произошла ошибка при удалении страны. Обнаружены пользователи с этой страны." });
+                }
+            }
+         
+            DataManager.Countries.Delete(country);
+            TempData["message"] = string.Format("Страна \"{0}\" была удалена", country.Name);
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        
+        #endregion
+
+        #region ctor
+
+        public CountriesController(DataManager dataManager) : base(dataManager)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
+
+        #endregion
+
     }
 }

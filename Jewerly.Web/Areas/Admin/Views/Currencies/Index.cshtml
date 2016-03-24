@@ -49,7 +49,11 @@
         </td>
         <td>
             <a href="@Url.Action("Edit", new {id = item.CurrencyId})"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a href="@Url.Action("Delete", new {id = item.CurrencyId})"><span class="glyphicon glyphicon-trash"></span></a>
+
+            @if (item.CurrencyId > 3)
+            {
+                <a href="@Url.Action("Delete", new {id = item.CurrencyId})"><span class="glyphicon glyphicon-trash"></span></a>
+            }
         </td>
     </tr>
 }

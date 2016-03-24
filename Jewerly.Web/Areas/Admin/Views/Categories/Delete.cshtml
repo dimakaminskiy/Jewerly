@@ -10,14 +10,18 @@
 <h3>Подтвердите удаление</h3>
 <div>
     <h4>Категория товаров</h4>
-    <hr />
+    <hr/>
+    <div style="color: red">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+  
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-2">
                 @Html.DisplayNameFor(model => model.CategoryPicture.Path)
             </div>
             <div class="col-md-10">
-                <img class="img-responsive" src="@Html.DisplayFor(model => model.CategoryPicture.Path)" alt="@Html.DisplayFor(model => model.CategoryPicture.AltAttribute)" />
+                <img class="img-responsive" src="@Html.DisplayFor(model => model.CategoryPicture.Path)" alt="@Html.DisplayFor(model => model.CategoryPicture.AltAttribute)"/>
             </div>
         </div>
         <div class="form-group">
@@ -61,6 +65,12 @@
             </div>
         </div>
     </div>
+    <div style="color: red">
+        Удаляйте категории только в крайнем случае, лучше снимите галочку с пункта опубликована
+    </div>
+
+
+
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()

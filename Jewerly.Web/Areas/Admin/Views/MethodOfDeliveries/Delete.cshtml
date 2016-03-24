@@ -11,6 +11,9 @@
 <div>
     <h4>Метод доставки</h4>
     <hr/>
+    <div style="color: red">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-2">
@@ -37,7 +40,9 @@
             </div>
         </div>
     </div>
-
+    <div style="color: red">
+        Вы можете способо доставки, который ниразу не использован при отправке заказов.
+    </div>
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 

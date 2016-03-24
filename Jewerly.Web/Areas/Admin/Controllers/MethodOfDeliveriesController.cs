@@ -1,72 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Domain.Entities;
+using Jewerly.Web.Controllers;
 
 namespace Jewerly.Web.Areas.Admin.Controllers
 {
-    public class MethodOfDeliveriesController : Controller
+    public class MethodOfDeliveriesController : BaseController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        #region Actions
 
-        // GET: Admin/MethodOfDeliveries
         public ActionResult Index()
         {
-            return View(db.MethodOfDeliveries.ToList());
+            return View(DataManager.MethodOfDeliveries.GetAll());
         }
 
-        // GET: Admin/MethodOfDeliveries/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            MethodOfDelivery methodOfDelivery = db.MethodOfDeliveries.Find(id);
-            if (methodOfDelivery == null)
-            {
-                return HttpNotFound();
-            }
-            return View(methodOfDelivery);
-        }
-
-        // GET: Admin/MethodOfDeliveries/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/MethodOfDeliveries/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Available,DisplayOrder")] MethodOfDelivery methodOfDelivery)
         {
             if (ModelState.IsValid)
             {
-                db.MethodOfDeliveries.Add(methodOfDelivery);
-                db.SaveChanges();
+                DataManager.MethodOfDeliveries.Insert(methodOfDelivery);
+                TempData["message"] = string.Format("Способ доставки \"{0}\" был создан", methodOfDelivery.Name);
                 return RedirectToAction("Index");
             }
 
             return View(methodOfDelivery);
         }
 
-        // GET: Admin/MethodOfDeliveries/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MethodOfDelivery methodOfDelivery = db.MethodOfDeliveries.Find(id);
+            MethodOfDelivery methodOfDelivery = DataManager.MethodOfDeliveries.GetById(id.Value);
             if (methodOfDelivery == null)
             {
                 return HttpNotFound();
@@ -74,17 +49,15 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(methodOfDelivery);
         }
 
-        // POST: Admin/MethodOfDeliveries/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Available,DisplayOrder")] MethodOfDelivery methodOfDelivery)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(methodOfDelivery).State = EntityState.Modified;
-                db.SaveChanges();
+                DataManager.MethodOfDeliveries.Edit(methodOfDelivery);
+                TempData["message"] = string.Format("Способ доставки \"{0}\" был изменен", methodOfDelivery.Name);
                 return RedirectToAction("Index");
             }
             return View(methodOfDelivery);
@@ -97,32 +70,46 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MethodOfDelivery methodOfDelivery = db.MethodOfDeliveries.Find(id);
+            MethodOfDelivery methodOfDelivery = DataManager.MethodOfDeliveries.GetById(id.Value);
             if (methodOfDelivery == null)
             {
                 return HttpNotFound();
             }
+            var error = Request.Params["msg"];
+            if (!string.IsNullOrEmpty(error))
+            {
+                ModelState.AddModelError("", error);
+            }
             return View(methodOfDelivery);
         }
 
-        // POST: Admin/MethodOfDeliveries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            MethodOfDelivery methodOfDelivery = db.MethodOfDeliveries.Find(id);
-            db.MethodOfDeliveries.Remove(methodOfDelivery);
-            db.SaveChanges();
+            MethodOfDelivery methodOfDelivery = DataManager.MethodOfDeliveries.GetById(id);
+
+            if (DataManager.Orders.SearchFor(t => t.MethodOfDeliveryId == id).Count() != 0)
+            {
+                return RedirectToAction("Delete",
+                    new {msg = "Произошла ошибка при удалении. Обнаружены заказы с этим способом доставки."});
+            }
+
+            DataManager.MethodOfDeliveries.Delete(methodOfDelivery);
+            TempData["message"] = string.Format("Способ доставки \"{0}\" был удален", methodOfDelivery.Name);
+
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        #endregion
+
+        #region ctor
+
+        public MethodOfDeliveriesController(DataManager dataManager) : base(dataManager)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
+
+        #endregion
+
     }
 }

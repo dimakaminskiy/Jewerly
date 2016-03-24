@@ -67,9 +67,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(currency);
         }
 
-        // POST: Admin/Currencies/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(
@@ -78,14 +75,12 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 DataManager.Currencies.Edit(currency);
-
                 TempData["message"] = string.Format("Изменения в валюте \"{0}\" были сохранены", currency.Name);
                 return RedirectToAction("Index");
             }
             return View(currency);
         }
 
-        // GET: Admin/Currencies/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)

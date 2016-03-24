@@ -66,13 +66,13 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-             List< Category> result= new List<Category>();
+            List<Category> result = new List<Category>();
 
 
             var topCategories =
                 DataManager.Categories.SearchFor(t => t.ParentCategoryId == null).OrderBy(t => t.Name).ToList();
 
-             foreach (Category category in topCategories)
+            foreach (Category category in topCategories)
             {
                 result.Add(category);
                 var childrenCategories =
@@ -80,7 +80,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                 result.AddRange(childrenCategories);
             }
 
-             return View(result);
+            return View(result);
         }
 
         public ActionResult Create()
@@ -93,9 +93,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View();
         }
 
-        // POST: Admin/Categories/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(
@@ -118,7 +115,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(category);
         }
 
-        // GET: Admin/Categories/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -135,9 +131,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(category);
         }
 
-        // POST: Admin/Categories/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(
@@ -161,8 +154,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(category);
         }
 
-
-        // GET: Admin/CategoryPictures/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -174,6 +165,15 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
+
+            var error = Request.Params["msg"];
+            if (!string.IsNullOrEmpty(error))
+            {
+                ModelState.AddModelError("", error);
+            }
+
+
             return View(category);
         }
 
@@ -183,6 +183,23 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Category category = DataManager.Categories.GetById(id);
+
+
+            if (DataManager.Products.SearchFor(t => t.CategoryId == id).Count() != 0)
+            {
+                return RedirectToAction("Delete",
+                            new { msg = "В даной категории обнаружены товары. Удаление невозможно" });
+            }
+            if (DataManager.Categories.SearchFor(t => t.ParentCategoryId == id).Count() != 0)
+            {
+                return RedirectToAction("Delete",
+                    new { msg = "В даной категории обнаружены подкатегории. Удаление невозможно" });
+            }
+
+
+
+
+
             DataManager.Categories.Delete(category);
 
             TempData["message"] = string.Format("Категории \"{0}\" была удалена", category.Name);

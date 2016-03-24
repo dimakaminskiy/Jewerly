@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Jewerly.Domain
 {
@@ -22,6 +23,8 @@ namespace Jewerly.Domain
         [Display(Name = "Изображение")]
         public int? CategoryPictureId { get; set; }
         public virtual CategoryPicture CategoryPicture { get; set; }
+     
+
 
     }
 }

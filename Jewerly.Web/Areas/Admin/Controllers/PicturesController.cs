@@ -7,6 +7,8 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Web.Controllers;
+using Jewerly.Web.Utils;
+using Microsoft.Owin.Security;
 
 namespace Jewerly.Web.Areas.Admin.Controllers
 {
@@ -134,39 +136,10 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         }
 
 
-        //public string SaveJevelPhotWithWatermark(string pathToGallery, int top, int left, int height, int width,
-        //   string pathToImage, string pathToWatermark, int widthWatermark, int heightWatermark)
-        //{
-        //    FileInfo f = new FileInfo(pathToImage);
-        //    var img = new WebImage(pathToImage); // наше изображение
-        //    img.Resize(width, height); // уменьшим его 
-        //    /********************************************************************************/
-        //    int nHeight = img.Height - top - PictureHeight; // подготовим ширину и высоту
-        //    int nWidth = img.Width - left - PictureWidth;
-        //    if (nHeight < 0) nHeight = 0;
-        //    /****************** Обрежим изображение, по выбранным кординатам ***************************************************/
-        //    img.Crop(top, left, nHeight, nWidth);
-        //    try
-        //    {
-        //        img.AddImageWatermark(pathToWatermark, widthWatermark, heightWatermark, "Center", "Middle", 20);
-
-        //        img.Save(pathToGallery + @"\image\" + f.Name);
-        //        img.Resize(TrumbPictureWidth, TrumbPictureHeight);
-        //        img.Save(pathToGallery + @"\preview\" + f.Name);
-        //        return f.Name;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw new ArgumentException("Произошла ошибка  при попытке сохранения изображени.");
-        //    }
-
-        //}
 
 
 
         #endregion
-
-
 
         #region Ctor
 
@@ -182,41 +155,14 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
         #region Actions
 
-
-
-        // GET: Admin/Pictures
         public ActionResult Index()
         {
             return View(DataManager.Pictures.GetAll().OrderBy(t => t.Caption).ToList());
         }
-
-        // GET: Admin/Pictures/Create
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Admin/Pictures/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Path,Caption,AltAttribute,TitleAttribute")] Picture picture)
-        {
-            if (ModelState.IsValid)
-            {
-
-
-                TempData["message"] = string.Format("Изображение \"{0}\" было сохранено", picture.Caption);
-                return RedirectToAction("Index");
-            }
-
-            return View(picture);
-        }
-
-
-
-        // GET: Admin/Pictures/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -228,6 +174,11 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+            var error = Request.Params["msg"];
+            if (!string.IsNullOrEmpty(error))
+            {
+                ModelState.AddModelError("", error);
+            }
             return View(picture);
         }
 
@@ -237,7 +188,24 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Picture picture = DataManager.Pictures.GetById(id);
-            DataManager.Pictures.Delete(picture);
+
+            if (DataManager.Products.SearchFor(t => t.PictureId == id).Count() != 0)
+            {
+                return RedirectToAction("Delete",
+                  new { msg = "Произошла ошибка при удалении. Обнаружены товары с этим способом изображением." });  
+            }
+            try
+            {
+              System.IO.File.Delete(UrlToLocal(picture.Preview()));
+              System.IO.File.Delete(UrlToLocal(picture.Image()));
+              DataManager.Pictures.Delete(picture);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Delete",
+                 new { msg = "Произошла ошибка при удалении." });  
+            }
+
 
 
             TempData["message"] = string.Format("Изображение  \"{0}\" было удалено", picture.Caption);
@@ -245,9 +213,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         }
 
         #endregion
-
-
-
 
         [HttpPost]
         public JsonResult UploadPreImage(HttpPostedFileWrapper qqfile)

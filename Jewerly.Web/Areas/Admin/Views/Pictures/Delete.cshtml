@@ -12,13 +12,16 @@
 <div>
     <h4>Изображение товара</h4>
     <hr/>
+    <div style="color: red">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-2">
                 @Html.DisplayNameFor(model => model.Path)
             </div>
             <div class="col-md-10">
-                <img class="img-responsive shadow" src="@Model.Preview()" alt="@Model.Path" title="@Model.Path" />
+                <img class="img-responsive shadow" src="@Model.Preview()" alt="@Model.Path" title="@Model.Path"/>
             </div>
         </div>
         <div class="form-group">
@@ -30,8 +33,12 @@
             </div>
         </div>
 
-        </div>
-        @using (Html.BeginForm())
+    </div>
+
+    <div style="color: red">
+        Вы можете удалить изображение, которое не используется с товаром
+    </div>
+    @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 

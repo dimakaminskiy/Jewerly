@@ -8,54 +8,33 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 {
     public class ProductChoiceAttributesController : BaseController
     {
-       
+        #region Actions
 
-        // GET: Admin/ProductChoiceAttributes
         public ActionResult Index()
         {
             return View(DataManager.ProductChoiceAttributes.GetAll().ToList());
         }
 
-        // GET: Admin/ProductChoiceAttributes/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ProductChoiceAttribute productChoiceAttribute = DataManager.ProductChoiceAttributes.GetById(id.Value);
-            if (productChoiceAttribute == null)
-            {
-                return HttpNotFound();
-            }
-            return View(productChoiceAttribute);
-        }
-
-        // GET: Admin/ProductChoiceAttributes/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/ProductChoiceAttributes/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductChoiceAttributeId,Name,DisplayOrder")] ProductChoiceAttribute productChoiceAttribute)
+        public ActionResult Create(
+            [Bind(Include = "ProductChoiceAttributeId,Name,DisplayOrder")] ProductChoiceAttribute productChoiceAttribute)
         {
             if (ModelState.IsValid)
             {
-             
                 DataManager.ProductChoiceAttributes.Insert(productChoiceAttribute);
-
+                TempData["message"] = string.Format("Атрибут \"{0}\" был создан", productChoiceAttribute.Name);
                 return RedirectToAction("Index");
             }
 
             return View(productChoiceAttribute);
         }
 
-        // GET: Admin/ProductChoiceAttributes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -70,24 +49,20 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(productChoiceAttribute);
         }
 
-        // POST: Admin/ProductChoiceAttributes/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductChoiceAttributeId,Name,DisplayOrder")] ProductChoiceAttribute productChoiceAttribute)
+        public ActionResult Edit(
+            [Bind(Include = "ProductChoiceAttributeId,Name,DisplayOrder")] ProductChoiceAttribute productChoiceAttribute)
         {
             if (ModelState.IsValid)
             {
-             
                 DataManager.ProductChoiceAttributes.Edit(productChoiceAttribute);
-
+                TempData["message"] = string.Format("Атрибут \"{0}\" был изменён", productChoiceAttribute.Name);
                 return RedirectToAction("Index");
             }
             return View(productChoiceAttribute);
         }
 
-        // GET: Admin/ProductChoiceAttributes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -102,21 +77,40 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(productChoiceAttribute);
         }
 
-        // POST: Admin/ProductChoiceAttributes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ProductChoiceAttribute productChoiceAttribute = DataManager.ProductChoiceAttributes.GetById(id);
+            //ProductChoiceAttribute productChoiceAttribute = DataManager.ProductChoiceAttributes.GetById(id);
+            //var avalibleAttrOptions = DataManager.AvalibleChoiceAttributeOptions.SearchFor(t => t.ChoiceAttributeOptionId == id)
+            //   .ToList();
+            //foreach (var m in avalibleAttrOptions)
+            //{
+            //    DataManager.AvalibleChoiceAttributeOptions.Delete(m);
+            //}
+
+
+            //var options = DataManager.ChoiceAttributeOptions.SearchFor(t=>t.)
             
-            DataManager.ProductChoiceAttributes.Delete(productChoiceAttribute);
+
+
+
+
+            //TempData["message"] = string.Format("Атрибут \"{0}\" был удалён", productChoiceAttribute.Name);
+
+            //DataManager.ProductChoiceAttributes.Delete(productChoiceAttribute);
             return RedirectToAction("Index");
         }
 
-      
+        #endregion
+
+        #region Ctor
 
         public ProductChoiceAttributesController(DataManager dataManager) : base(dataManager)
         {
         }
+
+        #endregion
+
     }
 }
