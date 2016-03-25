@@ -53,7 +53,7 @@ namespace Jewerly.Web.Areas.Default.Models
             [Display(Name = "Телефон")]
           //  [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
           //  [RegularExpression(@"^[0-9]{7,12}$", ErrorMessage = "Введите номер теленфона")]
-            [RegularExpression(@"^(\+)?(\d{3,5})?\d{7,10}$", ErrorMessage = "Invalid phone")]
+            [RegularExpression(@"^(\+)?(\d{3,5})?\d{7,10}$", ErrorMessage = "Введите номер теленфона")]
             public string Phone { get; set; }
             //    [RegularExpression(@"^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$", ErrorMessageResourceType = typeof(GlobalResource), ErrorMessageResourceName = "ErrorMessageRegularExpressionEmail")]
             [Display(Name = "E-mail")]

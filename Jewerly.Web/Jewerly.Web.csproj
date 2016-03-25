@@ -423,6 +423,7 @@
     <Content Include="Areas\Default\Views\Checkout\AddressAndPayment.cshtml" />
     <Content Include="Areas\Default\Views\Checkout\Complete.cshtml" />
     <Content Include="Areas\Default\Views\Shared\MailView.cshtml" />
+    <Content Include="Areas\Default\Views\Manage\UserInfo.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />
