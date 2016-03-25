@@ -13,9 +13,12 @@ namespace Jewerly.Web.Areas.Admin.Controllers
     public class SliderPicturesController : BaseController
     {
 
+        #region Helpers
+
         private int PhotoGalleryWidth = 850;
         private int PhotoGalleryHeight = 480;
         private string TempFolder { get; set; }
+
         private string UrlToLocal(string url)
         {
             return HttpContext.Server.MapPath(url);
@@ -81,34 +84,50 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
             }
         }
+
         private void ReSizePreview(WebImage img)
         {
             double ratio;
             if (img.Width > img.Height && img.Width > PhotoGalleryWidth)
             {
-                ratio = (double)img.Height / (double)img.Width;
-                int nWidth = (int)(PhotoGalleryHeight / ratio);
+                ratio = (double) img.Height/(double) img.Width;
+                int nWidth = (int) (PhotoGalleryHeight/ratio);
                 img.Resize(nWidth, PhotoGalleryHeight);
             }
         }
+
         private bool IsImage(string ext)
         {
-            var extensions = new string[] { ".jpg", ".png", ".gif", ".jpeg", ".JPG", ".JPEG" }; // допустимые форматы.
+            var extensions = new string[] {".jpg", ".png", ".gif", ".jpeg", ".JPG", ".JPEG"}; // допустимые форматы.
             return extensions.Any(p => p == ext);
         }
+
         private bool CheckSize(WebImage img)
         {
             return img.Width >= PhotoGalleryWidth && img.Height >= PhotoGalleryHeight;
-        } 
+        }
 
+        #endregion
 
+        #region Actions
 
-
-
-      
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            return View(DataManager.SliderPictures.GetAll());
+            IQueryable<SliderPicture> pictures = DataManager.SliderPictures.GetAll().OrderBy(t => t.Caption);
+
+            var count = pictures.Count();
+            int countItemOnpage = 8;
+
+            pictures = pictures.Skip((page - 1) * countItemOnpage)
+                .Take(countItemOnpage);
+
+            ViewBag.PageNo = page;
+            ViewBag.CountPage = (int)decimal.Remainder(count, countItemOnpage) == 0
+                ? count / countItemOnpage
+                : count / countItemOnpage + 1;
+
+
+            return View(pictures.ToList());
         }
 
         public ActionResult Create()
@@ -133,10 +152,9 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-                return Json(new { success = false, errorMessage = e.Message });
+                return Json(new {success = false, errorMessage = e.Message});
             }
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -167,7 +185,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(sliderPicture);
         }
 
-        // GET: Admin/SliderPictures/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -182,9 +199,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(sliderPicture);
         }
 
-        // POST: Admin/SliderPictures/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Path,Caption,Text")] SliderPicture sliderPicture)
@@ -197,7 +211,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(sliderPicture);
         }
 
-        // GET: Admin/SliderPictures/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -227,14 +240,22 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                TempData["message"] = "При удалении возникла ошибка";
+                TempData["error"] = "При удалении возникла ошибка";
+                return RedirectToAction("Delete", new { id = id });
             }
             return RedirectToAction("Index");
         }
+
+        #endregion
+
+        #region ctor
 
         public SliderPicturesController(DataManager dataManager) : base(dataManager)
         {
             TempFolder = "~/Content/images/Temp";
         }
+
+        #endregion
+
     }
 }

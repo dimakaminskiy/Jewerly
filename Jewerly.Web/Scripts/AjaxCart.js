@@ -15,8 +15,6 @@ var AjaxCart = {
         displayAjaxLoading(display);
         this.loadWaiting = display;
     },
-
-
     addproducttocart_catalog: function (urladd) {
         if (this.loadWaiting != false) {
             return;
@@ -53,26 +51,21 @@ var AjaxCart = {
 
     success_process: function (response) {
 
-
-       
-
-
         if (response.cartcountitems) { // обновить кол-во товара в корзине
-            $(AjaxCart.cartcountitems).html("("+response.cartcountitems+")").css('opacity', 0).animate({opacity: 1});;
+            $(AjaxCart.cartcountitems).html("("+response.cartcountitems+")").css('opacity', 0).animate({opacity: 1});
         }
         if (response.cartitems) { // обновление списка покупок
-            $(AjaxCart.cartitems).replaceWith(response.cartitems);
+            $(AjaxCart.cartitems).replaceWith(response.cartitems).css('opacity', 0).animate({ opacity: 1 });
         }
         if (response.carttotalprice) { // общая цена
-            $(AjaxCart.carttotalprice).html(response.carttotalprice);
+            $(AjaxCart.carttotalprice).html(response.carttotalprice).css('opacity', 0).animate({ opacity: 1 });
         }
 
         if (response.message) {
             //display notification
             if (response.success == true) {
                 //success
-
-                    //specify timeout for success messages
+                //specify timeout for success messages
                     displayBarNotification(response.message, 'success', 3500);
             }
             else {
@@ -93,7 +86,7 @@ var AjaxCart = {
     },
 
     ajaxFailure: function () {
-        alert("Не удалось добавить продукт. Пожалуйста, обновите страницу и попробуйте еще раз.");
+        $("#myAlert .modal-body").text("Не удалось добавить продукт. Пожалуйста, обновите страницу и попробуйте еще раз.");
     }
 };
 
@@ -110,49 +103,7 @@ function displayAjaxLoading(display) {
 var barNotificationTimeout;
 function displayBarNotification(message, messagetype, timeout) {
     clearTimeout(barNotificationTimeout);
-
-    //types: success, error
-    var cssclass = 'success';
-    if (messagetype == 'success') {
-        cssclass = 'success';
-    }
-    else if (messagetype == 'error') {
-        cssclass = 'error';
-    }
-    //remove previous CSS classes and notifications
-    $('#bar-notification')
-        .removeClass('success')
-        .removeClass('error');
-    $('#bar-notification .content').remove();
-
-    //we do not encode displayed message
-
-    //add new notifications
-    var htmlcode = '';
-    if ((typeof message) == 'string') {
-        htmlcode = '<p class="content">' + message + '</p>';
-    } else {
-        for (var i = 0; i < message.length; i++) {
-            htmlcode = htmlcode + '<p class="content">' + message[i] + '</p>';
-        }
-    }
-    $('#bar-notification').append(htmlcode)
-        .addClass(cssclass)
-        .fadeIn('slow')
-        .mouseenter(function () {
-            clearTimeout(barNotificationTimeout);
-        });
-
-    $('#bar-notification .close').unbind('click').click(function () {
-        $('#bar-notification').fadeOut('slow');
-    });
-
-    //timeout (if set)
-    if (timeout > 0) {
-        barNotificationTimeout = setTimeout(function () {
-            $('#bar-notification').fadeOut('slow');
-        }, timeout);
-    }
+     $("#myAlert .modal-body").text(message);
+ 
 }
-
 

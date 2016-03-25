@@ -73,12 +73,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            var error = Request.Params["msg"];
-            if (!string.IsNullOrEmpty(error))
-            {
-                ModelState.AddModelError("", error);
-            }
-            return View(markup);
+             return View(markup);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -87,9 +82,9 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         {
             if (DataManager.Products.SearchFor(t => t.MarkupId == id).Count() != 0)
             {
-                return RedirectToAction("Delete",
-                  new { msg = "Произошла ошибка при удалении наценки. Обнаружены продукты с этой наценкой." });
-            }
+                TempData["error"] = "Произошла ошибка при удалении наценки. Обнаружены продукты с этой наценкой.";
+                return RedirectToAction("Delete", new { id = id });
+             }
 
 
             Markup markup = DataManager.Markups.GetById(id);

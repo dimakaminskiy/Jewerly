@@ -186,6 +186,39 @@
     <Compile Include="Areas\Admin\Controllers\MarkupsController.cs" />
     <Compile Include="Areas\Admin\Controllers\MethodOfDeliveriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MethodOfPaymentsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Migrations\201602271309213_Initialize.cs" />
+    <Compile Include="Areas\Admin\Controllers\Migrations\201602271309213_Initialize.Designer.cs">
+      <DependentUpon>201602271309213_Initialize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603130834187_Add-Carts.cs" />
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603130834187_Add-Carts.Designer.cs">
+      <DependentUpon>201603130834187_Add-Carts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603151618320_change attributes.cs" />
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603151618320_change attributes.Designer.cs">
+      <DependentUpon>201603151618320_change attributes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603151621487_change attributes1.cs" />
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603151621487_change attributes1.Designer.cs">
+      <DependentUpon>201603151621487_change attributes1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603151628416_change attributes2.cs" />
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603151628416_change attributes2.Designer.cs">
+      <DependentUpon>201603151628416_change attributes2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603191222528_carts.cs" />
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603191222528_carts.Designer.cs">
+      <DependentUpon>201603191222528_carts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603200927262_sliderPictures.cs" />
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603200927262_sliderPictures.Designer.cs">
+      <DependentUpon>201603200927262_sliderPictures.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603231549496_order.cs" />
+    <Compile Include="Areas\Admin\Controllers\Migrations\201603231549496_order.Designer.cs">
+      <DependentUpon>201603231549496_order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Admin\Controllers\Migrations\Configuration.cs" />
     <Compile Include="Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Areas\Admin\Controllers\PicturesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductChoiceAttributesController.cs" />
@@ -293,7 +326,6 @@
     <Content Include="Areas\Admin\Views\Currencies\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Products\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Pictures\Create.cshtml" />
@@ -301,14 +333,12 @@
     <Content Include="Areas\Admin\Views\Pictures\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ProductSpecificationAttributes\Create.cshtml" />
     <Content Include="Areas\Admin\Views\ProductSpecificationAttributes\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductSpecificationAttributes\Details.cshtml" />
     <Content Include="Areas\Admin\Views\ProductSpecificationAttributes\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ProductSpecificationAttributes\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Products\GetProductSpecificationAttributes.cshtml" />
     <Content Include="Areas\Admin\Views\Products\ProductSpecificationAttributes.cshtml" />
     <Content Include="Areas\Admin\Views\ProductChoiceAttributes\Create.cshtml" />
     <Content Include="Areas\Admin\Views\ProductChoiceAttributes\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductChoiceAttributes\Details.cshtml" />
     <Content Include="Areas\Admin\Views\ProductChoiceAttributes\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ProductChoiceAttributes\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Products\ProductChoiceAttributes.cshtml" />
@@ -326,7 +356,6 @@
     <Content Include="Areas\Admin\Views\Markups\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Reviews\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Reviews\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Reviews\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Reviews\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Reviews\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Countries\Create.cshtml" />
@@ -345,12 +374,10 @@
     <Content Include="Areas\Admin\Views\Orders\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Orders\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Home\_SliderPictures.cshtml" />
-    <None Include="Areas\Admin\Views\Shared\Admin _Layout.cshtml" />
     <Content Include="Areas\Default\Views\Shared\DefaultLayout.cshtml" />
     <Content Include="Areas\Default\Views\Store\Index.cshtml" />
     <Content Include="Areas\Admin\Views\SpecificationAttributeOptions\Create.cshtml" />
     <Content Include="Areas\Admin\Views\SpecificationAttributeOptions\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\SpecificationAttributeOptions\Details.cshtml" />
     <Content Include="Areas\Admin\Views\SpecificationAttributeOptions\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\SpecificationAttributeOptions\Index.cshtml" />
     <Content Include="Content\img\psd\Ico.psd" />
@@ -379,7 +406,6 @@
     <Content Include="Areas\Default\Views\Manage\ChangePassword.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Areas\Default\Views\Shared\_ProductsSortOptions.cshtml" />
@@ -471,6 +497,32 @@
       <Project>{63f5a702-1a79-424d-a863-d4579f93dbba}</Project>
       <Name>Jewerly.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Admin\Controllers\Migrations\201602271309213_Initialize.resx">
+      <DependentUpon>201602271309213_Initialize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Admin\Controllers\Migrations\201603130834187_Add-Carts.resx">
+      <DependentUpon>201603130834187_Add-Carts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Admin\Controllers\Migrations\201603151618320_change attributes.resx">
+      <DependentUpon>201603151618320_change attributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Admin\Controllers\Migrations\201603151621487_change attributes1.resx">
+      <DependentUpon>201603151621487_change attributes1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Admin\Controllers\Migrations\201603151628416_change attributes2.resx">
+      <DependentUpon>201603151628416_change attributes2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Admin\Controllers\Migrations\201603191222528_carts.resx">
+      <DependentUpon>201603191222528_carts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Admin\Controllers\Migrations\201603200927262_sliderPictures.resx">
+      <DependentUpon>201603200927262_sliderPictures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Admin\Controllers\Migrations\201603231549496_order.resx">
+      <DependentUpon>201603231549496_order.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

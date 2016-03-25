@@ -9,8 +9,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
     public class SpecificationAttributeOptionsController : BaseController
     {
        
-
-        // GET: Admin/SpecificationAttributeOptions
         public ActionResult Index()
         {
             var specificationAttributeOptions =
@@ -21,10 +19,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                     .ToList();
             return View(specificationAttributeOptions);
         }
-
-
-
-        // GET: Admin/SpecificationAttributeOptions/Create
         public ActionResult Create()
         {
             var model = new SpecificationAttributeOption();
@@ -32,10 +26,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             ViewBag.ProductSpecificationAttributeId = new SelectList(DataManager.ProductSpecificationAttributes.GetAll().ToList(), "ProductSpecificationAttributeId", "Name");
             return View(model);
         }
-
-        // POST: Admin/SpecificationAttributeOptions/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "SpecificationAttributeOptionId,ProductSpecificationAttributeId,Name,DisplayOrder")] SpecificationAttributeOption specificationAttributeOption)
@@ -57,8 +47,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             ViewBag.ProductSpecificationAttributeId = new SelectList(DataManager.ProductSpecificationAttributes.GetAll().ToList(), "ProductSpecificationAttributeId", "Name", specificationAttributeOption.ProductSpecificationAttributeId);
             return View(specificationAttributeOption);
         }
-
-        // GET: Admin/SpecificationAttributeOptions/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -74,9 +62,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(specificationAttributeOption);
         }
 
-        // POST: Admin/SpecificationAttributeOptions/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "SpecificationAttributeOptionId,ProductSpecificationAttributeId,Name,DisplayOrder")] SpecificationAttributeOption specificationAttributeOption)
@@ -98,8 +83,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             ViewBag.ProductSpecificationAttributeId = new SelectList(DataManager.ProductSpecificationAttributes.GetAll().ToList(), "ProductSpecificationAttributeId", "Name", specificationAttributeOption.ProductSpecificationAttributeId);
             return View(specificationAttributeOption);
         }
-
-        // GET: Admin/SpecificationAttributeOptions/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -113,8 +96,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             }
             return View(specificationAttributeOption);
         }
-
-        // POST: Admin/SpecificationAttributeOptions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

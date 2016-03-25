@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Jewerly.Domain.SliderPicture>
+﻿@using Jewerly.Web.Utils
+@model IEnumerable<Jewerly.Domain.SliderPicture>
 
 @{
     ViewBag.Title = "Изображения";
@@ -21,7 +22,7 @@
         <div class="col-md-3 col-sm-6">
             <div class="product-wrapper sale">
                 <div class="product-image text-center">
-                    <img src="@item.Path"/>
+                    <img class="img-responsive" src="@item.Path" />
                 </div>
                 <div class="product-info text-center">
                     <div class="text-uppercase">@item.Caption</div>
@@ -48,3 +49,11 @@
     }
 </div>
 
+@if (ViewBag.CountPage != null && ((int)ViewBag.CountPage) > 1)
+{
+    @Html.PageLinks((int)ViewBag.PageNo, (int)ViewBag.CountPage, x => Url.Action("Index", "SliderPictures",
+                new
+                {
+                    page = x
+                }))
+}

@@ -184,24 +184,18 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         {
             Category category = DataManager.Categories.GetById(id);
 
-
             if (DataManager.Products.SearchFor(t => t.CategoryId == id).Count() != 0)
             {
-                return RedirectToAction("Delete",
-                            new { msg = "В даной категории обнаружены товары. Удаление невозможно" });
+                TempData["error"] = string.Format("В категории  \"{0}\" обнаружены товары. Удаление невозможно.", category.Name);
+                return RedirectToAction("Delete", new { id = id });
             }
             if (DataManager.Categories.SearchFor(t => t.ParentCategoryId == id).Count() != 0)
             {
-                return RedirectToAction("Delete",
-                    new { msg = "В даной категории обнаружены подкатегории. Удаление невозможно" });
+                TempData["error"] = string.Format("В категории  \"{0}\" обнаружены подкатегории. Удаление невозможно.", category.Name);
+                return RedirectToAction("Delete", new { id = id });
             }
 
-
-
-
-
             DataManager.Categories.Delete(category);
-
             TempData["message"] = string.Format("Категории \"{0}\" была удалена", category.Name);
             return RedirectToAction("Index");
         }

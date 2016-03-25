@@ -28,10 +28,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         private SelectList GetSelectListPictures(int id)
         {
             SelectList list;
-
-
             var selectedPic = DataManager.Products.GetAll().Select(t => t.PictureId).ToArray();
-
             if (id == 0)
             {
                 list =
@@ -45,7 +42,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             }
             return list;
         }
-
         private SelectList GetSelectListDiscount(int? id)
         {
             SelectList list;
@@ -62,12 +58,10 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             }
             return list;
         }
-
         private SelectList GetSelectListCategories(int id)
         {
             SelectList list;
             var categories = DataManager.Categories.GetAll().OrderBy(x => x.Name);
-
             if (id == 0)
             {
                 list =
@@ -80,9 +74,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             }
             return list;
         }
-
-
-
         #endregion
 
         #region Product Actions
@@ -104,17 +95,12 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
             products = products.Skip((page - 1)*countItemOnpage)
                 .Take(countItemOnpage);
-
-
-
+            
             if (!string.IsNullOrEmpty(categoryId) && categoryId != 0.ToString())
             {
                 ViewBag.CategoryName =
                     DataManager.Categories.SearchFor(t => t.Id.ToString() == categoryId).Single().Name;
             }
-
-
-
 
             ViewBag.PageNo = page;
             ViewBag.CategoryId = categoryId;
@@ -138,9 +124,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View();
         }
 
-        // POST: Admin/Products/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ProductId,Name,SeoName,ShortDescription,FullDescription,Price,Published,PictureId,MarkupId,DiscountId,CategoryId")] Product product)
@@ -165,7 +148,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(product);
         }
 
-        // GET: Admin/Products/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -187,9 +169,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(product);
         }
 
-        // POST: Admin/Products/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ProductId,Name,SeoName,ShortDescription,FullDescription,Price,Published,PictureId,MarkupId,DiscountId,CategoryId")] Product product)
@@ -213,8 +192,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             ViewBag.PictureId = GetSelectListPictures(product.PictureId);
             return View(product);
         }
-
-        // GET: Admin/Products/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -229,12 +206,24 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(product);
         }
 
-        // POST: Admin/Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             var product = DataManager.Products.GetById(id);
+
+            if (DataManager.OrderDetails.SearchFor(t => t.ProductId == id).Count() != 0)
+            {
+                TempData["error"] = string.Format("Есть записи о  \"{0}\" в заказах пользователей. Удаление не возможно", product.Name);
+                return RedirectToAction("Delete",new {id=id});
+            }
+
+            if (DataManager.Carts.SearchFor(t => t.ProductId == id).Count() != 0)
+            {
+                TempData["error"] = string.Format("Есть записи о  \"{0}\" в корзинах пользователей. Удаление не возможно", product.Name);
+                return RedirectToAction("Delete", new { id = id });
+            }
+            
             DataManager.Products.Delete(product);
 
             TempData["message"] = string.Format("Продукт \"{0}\" был удален", product.Name);
@@ -243,11 +232,10 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
         #endregion
 
+        #region Product Actions
         public ActionResult ProductSpecificationAttributes(int prodId)
         {
-
             var attributes = DataManager.ProductSpecificationAttributes.GetAll().ToList();
-
             List<ProductSpecificationAttribiteViewModel> model = new List<ProductSpecificationAttribiteViewModel>();
 
             foreach (var attr in attributes)
@@ -257,7 +245,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                     .OrderBy(t => t.DisplayOrder)
                     .ThenBy(t => t.Name)
                     .Select(p => new {Id = p.SpecificationAttributeOptionId, Name = p.Name}).ToList();
-
 
                 if (options.Any())
                 {
@@ -394,7 +381,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return PartialView(model);
 
         }
-
         public ActionResult ProductChoiceAttributeOptions(int prodAttrId)
         {
             var result = DataManager.ChoiceAttributeOptions
@@ -415,7 +401,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
            
         }
-
         public ActionResult ProductNameByCategoryId(int Id)
         {
             var result = DataManager.Categories.GetById(Id);
@@ -426,7 +411,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                            name = result.ProductName,
                        }, JsonRequestBehavior.AllowGet);
         }
-
         public ActionResult ProductPicturebyId(int id)
         {
             var picture = DataManager.Pictures.GetById(id);
@@ -443,8 +427,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                            name = (picture==null)? "/Content/img/NoImage.gif" : picture.Preview(),
                        }, JsonRequestBehavior.AllowGet);
         }
-
-
         [HttpPost]
         public ActionResult DeleteChoiceAttributeFromProduct(int id)
         {
@@ -470,20 +452,13 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             });
 
         }
-
-
-
         [HttpPost]
         public ActionResult AddChoiceAttributesToProduct(ProductChoiceAttributesViewModel model)
         {
-
             var avalibleAttrOptions = model.ChoiceAttributeOptions.Where(t => t.Available).ToList();
             var attrid = model.ProductChoiceAttributeId;
             var prodId = model.ProductId;
-
             var prod = DataManager.Products.GetById(prodId);
-
-
             var mapAttrToProd = new MappingProductChoiceAttributeToProduct();
             mapAttrToProd.ProductId = prodId;
             mapAttrToProd.ProductChoiceAttributeId = attrid;
@@ -507,14 +482,8 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                 errorMessage = string.Empty,
                 url = Url.Action("Edit", new { id = prodId})
             });
+          }
 
-          //  return RedirectToAction("Edit", new {id = prodId});
-
-        }
-
-
-
-
-
+        #endregion
     }
 }

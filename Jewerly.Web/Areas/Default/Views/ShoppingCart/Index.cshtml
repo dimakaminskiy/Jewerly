@@ -104,14 +104,14 @@
                 async: false,
                 success: function(response) {
                     if (response.success) {
-                        if (response.cartcountitems) { // обновить кол-во товара в корзине
-                            $("#top-card-count").html("(" + response.cartcountitems + ")").css('opacity', 0).animate({ opacity: 1 });;
+                        if (response.cartcountitems != undefined || response.cartcountitems!="") { // обновить кол-во товара в корзине
+                            $("#top-card-count").html("(" + response.cartcountitems + ")").css('opacity', 0).animate({ opacity: 1 });
                         }
                         if (response.mini) { // обновление списка покупок
-                            $("#mini-shopping-cart-items").replaceWith(response.cartitems);
+                            $("#mini-shopping-cart-items").replaceWith(response.mini).css('opacity', 0).animate({ opacity: 1 });
                         }
                         if (response.carttotalprice) { // общая цена
-                            $("#top-card-totals").html(response.carttotalprice);
+                            $("#top-card-totals").html(response.carttotalprice).css('opacity', 0).animate({ opacity: 1 });
                         }
 
 

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Jewerly.Domain.CategoryPicture>
+﻿@using Jewerly.Web.Utils
+@model IEnumerable<Jewerly.Domain.CategoryPicture>
 
 @{
     ViewBag.Title = "Index";
@@ -47,6 +48,13 @@
 
     }
 </div>
-
+@if (ViewBag.CountPage != null && ((int)ViewBag.CountPage) > 1)
+{
+    @Html.PageLinks((int)ViewBag.PageNo, (int)ViewBag.CountPage, x => Url.Action("Index", "CategoryPictures",
+                new
+                {
+                    page = x
+                }))
+}
 
 

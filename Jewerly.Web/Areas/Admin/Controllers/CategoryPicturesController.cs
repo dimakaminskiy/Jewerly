@@ -114,20 +114,28 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         #endregion
 
         #region Actions
-
-
-        // GET: Admin/CategoryPictures
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            return View(DataManager.CategoryPictures.GetAll().ToList());
-        }
+            IQueryable<CategoryPicture> pictures = DataManager.CategoryPictures.GetAll().OrderBy(t => t.Caption);
 
-       // GET: Admin/CategoryPictures/Create
+            var count = pictures.Count();
+            int countItemOnpage = 8;
+
+            pictures = pictures.Skip((page - 1) * countItemOnpage)
+                .Take(countItemOnpage);
+
+            ViewBag.PageNo = page;
+            ViewBag.CountPage = (int)decimal.Remainder(count, countItemOnpage) == 0
+                ? count / countItemOnpage
+                : count / countItemOnpage + 1;
+
+
+            return View(pictures.ToList());
+        }
         public ActionResult Create()
         {
             return View();
         }
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Path,Caption,AltAttribute,TitleAttribute")] CategoryPicture categoryPicture)
@@ -156,10 +164,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
             return View(categoryPicture);
         }
-
-       
- 
-
         [HttpPost]
         public JsonResult UploadImage(HttpPostedFileWrapper qqfile)
         {
@@ -180,8 +184,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                 return Json(new { success = false, errorMessage = e.Message });
             }
         }
-
-     
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -193,15 +195,9 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            var error = Request.Params["msg"];
-            if (!string.IsNullOrEmpty(error))
-            {
-                ModelState.AddModelError("", error);
-            }
-
             return View(categoryPicture);
         }
-
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -221,9 +217,9 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Delete",
-                    new { msg = "Произошла ошибка при удалении изображения." });
-            }
+                TempData["error"] = "Произошла ошибка при удалении изображения.";
+                return RedirectToAction("Delete", new { id = id });
+             }
  
             TempData["message"] = string.Format("Изображение категории \"{0}\" было удалено", categoryPicture.Caption);
             return RedirectToAction("Index");

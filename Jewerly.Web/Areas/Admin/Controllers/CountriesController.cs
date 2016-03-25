@@ -75,13 +75,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-
-            var error = Request.Params["msg"];
-            if (!string.IsNullOrEmpty(error))
-            {
-                ModelState.AddModelError("", error);
-            }
-
             return View(country);
         }
 
@@ -91,13 +84,12 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Country country = DataManager.Countries.GetById(id);
-
             using (var db = new ApplicationDbContext())
             {
                 if (db.Users.Count(t => t.CountryId == id) != 0)
                 {
-                    return RedirectToAction("Delete",
-                   new { msg = "Произошла ошибка при удалении страны. Обнаружены пользователи с этой страны." });
+                    TempData["error"] = "Произошла ошибка при удалении страны. Обнаружены пользователи с этой страны.";
+                    return RedirectToAction("Delete", new { id = id });
                 }
             }
          

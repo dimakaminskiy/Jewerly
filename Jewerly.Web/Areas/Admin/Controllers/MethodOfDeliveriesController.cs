@@ -63,7 +63,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(methodOfDelivery);
         }
 
-        // GET: Admin/MethodOfDeliveries/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -75,12 +74,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            var error = Request.Params["msg"];
-            if (!string.IsNullOrEmpty(error))
-            {
-                ModelState.AddModelError("", error);
-            }
-            return View(methodOfDelivery);
+           return View(methodOfDelivery);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -91,13 +85,12 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
             if (DataManager.Orders.SearchFor(t => t.MethodOfDeliveryId == id).Count() != 0)
             {
-                return RedirectToAction("Delete",
-                    new {msg = "Произошла ошибка при удалении. Обнаружены заказы с этим способом доставки."});
-            }
 
+                TempData["error"] = "Произошла ошибка при удалении. Обнаружены заказы с этим способом доставки.";
+                return RedirectToAction("Delete", new { id = id });
+            }
             DataManager.MethodOfDeliveries.Delete(methodOfDelivery);
             TempData["message"] = string.Format("Способ доставки \"{0}\" был удален", methodOfDelivery.Name);
-
             return RedirectToAction("Index");
         }
 

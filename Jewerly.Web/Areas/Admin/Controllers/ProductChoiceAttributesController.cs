@@ -17,7 +17,11 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            ProductChoiceAttribute productChoiceAttribute = new ProductChoiceAttribute
+            {
+                DisplayOrder = 1
+            };
+            return View(productChoiceAttribute);
         }
 
         [HttpPost]
@@ -81,24 +85,24 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            //ProductChoiceAttribute productChoiceAttribute = DataManager.ProductChoiceAttributes.GetById(id);
-            //var avalibleAttrOptions = DataManager.AvalibleChoiceAttributeOptions.SearchFor(t => t.ChoiceAttributeOptionId == id)
-            //   .ToList();
-            //foreach (var m in avalibleAttrOptions)
-            //{
-            //    DataManager.AvalibleChoiceAttributeOptions.Delete(m);
-            //}
 
+            var list =
+                DataManager.MappingProductChoiceAttributeToProducts.SearchFor(t => t.ProductChoiceAttributeId == id)
+                    .ToList();
 
-            //var options = DataManager.ChoiceAttributeOptions.SearchFor(t=>t.)
-            
+            foreach (var m  in list)
+            {
+                DataManager.MappingProductChoiceAttributeToProducts.Delete(m);
+            }
+            var options = DataManager.ChoiceAttributeOptions.SearchFor(t => t.ProductChoiceAttributeId == id).ToList();
 
-
-
-
-            //TempData["message"] = string.Format("Атрибут \"{0}\" был удалён", productChoiceAttribute.Name);
-
-            //DataManager.ProductChoiceAttributes.Delete(productChoiceAttribute);
+            foreach (var option in options)
+            {
+                DataManager.ChoiceAttributeOptions.Delete(option);
+            }
+            var attr = DataManager.ProductChoiceAttributes.GetById(id);
+            DataManager.ProductChoiceAttributes.Delete(attr);
+            TempData["message"] = string.Format("Атрибут \"{0}\" был удалён", attr.Name);
             return RedirectToAction("Index");
         }
 

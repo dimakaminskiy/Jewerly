@@ -101,9 +101,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-
             ChoiceAttributeOption choiceAttributeOption = DataManager.ChoiceAttributeOptions.GetById(id);
-
             var avalibleAttrOptions =   DataManager.AvalibleChoiceAttributeOptions.SearchFor(t => t.ChoiceAttributeOptionId == id)
                 .ToList();
             foreach (var m in avalibleAttrOptions)

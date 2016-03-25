@@ -1,15 +1,15 @@
-﻿using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Jewerly.Domain;
 using Jewerly.Web.Controllers;
 
-
 namespace Jewerly.Web.Areas.Admin.Controllers
 {
     public class DiscountsController : BaseController
     {
+        #region Actions
+
         public ActionResult Index()
         {
             return View(DataManager.Discounts.GetAll().ToList());
@@ -19,6 +19,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Value")] Discount discount)
@@ -61,7 +62,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(discount);
         }
 
-        // GET: Admin/Discounts/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -76,7 +76,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return View(discount);
         }
 
-        // POST: Admin/Discounts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -95,10 +94,15 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-       
+        #endregion
+
+        #region ctor
 
         public DiscountsController(DataManager dataManager) : base(dataManager)
         {
         }
+
+        #endregion
+
     }
 }

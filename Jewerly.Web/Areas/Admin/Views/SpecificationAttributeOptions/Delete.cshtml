@@ -36,9 +36,10 @@
                 @Html.DisplayFor(model => model.DisplayOrder)
             </div>
         </div>
-
+        </div>
+    <div style="color: red">
+       При удалении опции атрибута,  эта опция будет удалена со всех товаров, где она использовалась.
     </div>
-
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 

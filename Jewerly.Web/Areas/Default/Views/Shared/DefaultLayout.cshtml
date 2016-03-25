@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<div class="ajax-loading-block-window" style="display: none">
+@*<div class="ajax-loading-block-window" style="display: none">
 </div>
 <div id="dialog-notifications-success" title="Notification" style="display: none;">
 </div>
@@ -22,7 +22,7 @@
 </div>
 <div id="bar-notification" class="bar-notification">
     <span class="close" title="Close">&nbsp;</span>
-</div>
+</div>*@
 
 
 
@@ -30,7 +30,7 @@
 <div class="container">
 
     <!-- Modal -->
-    @*<div class="modal" id="myAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal" id="myAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content shadow">
                 <div class="modal-body">
@@ -38,95 +38,98 @@
                 </div>
             </div>
         </div>
-    </div>*@
+    </div>
 
     <!---аккаунт--->
-    <ul class="nav nav-pills pull-right" id="ModalBtn">
-        <li role="presentation" class="active">@Html.ActionLink("Админка", "Index", "Home", new {area = "Admin"}, null)</li><!-- Админка-->
+  
         @if (User.Identity.IsAuthenticated == false)
         {
-            <li role="presentation">
-                <a href="@Url.Action("Login", "Account")" data-toggle="modal" data-target="#myModal">Вход</a>
-            </li>
-            <li role="presentation">
-                <a href="@Url.Action("Register", "Account")" data-toggle="modal" data-target="#myModal">Регистрация</a>
-            </li>
+            <ul class="nav nav-pills pull-right" id="ModalBtn">
+                <li role="presentation" class="active">@Html.ActionLink("Админка", "Index", "Home", new { area = "Admin" }, null)</li><!-- Админка-->
+                <li role="presentation">
+                    <a href="@Url.Action("Login", "Account")" data-toggle="modal" data-target="#myModal">Вход</a>
+                </li>
+                <li role="presentation">
+                    <a href="@Url.Action("Register", "Account")" data-toggle="modal" data-target="#myModal">Регистрация</a>
+                </li>
+            </ul>
         }
         else if (User.Identity.IsAuthenticated == true)
         {
-            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
+            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
             {
                 @Html.AntiForgeryToken()
-
-                <li role="presentation">
-                    @Html.ActionLink("Аккаунт " + User.Identity.GetUserName() + "!", "Index", "Account", routeValues: null, htmlAttributes: new {title = "Manage"})
-                </li>
-                <li role="presentation"><a href="javascript:document.getElementById('logoutForm').submit()">Выход</a></li>
+    <ul class="nav nav-pills pull-right" id="ModalBtn">
+        <li role="presentation">
+            @Html.ActionLink("Аккаунт " + User.Identity.GetUserName() + "!", "Index", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li role="presentation"><a href="javascript:document.getElementById('logoutForm').submit()">Выход</a></li>
+    </ul>
             }
         }
 
 
-    </ul>
 
 
 
 
-    <!-- Modal -->
-    <div id='myModal' class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div id='myModalContent'></div>
+
+        <!-- Modal -->
+        <div id='myModal' class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id='myModalContent'></div>
+                </div>
             </div>
         </div>
-    </div>
-    <!---аккаунтEnd--->
-    <div class="clearfix"></div>
-    <div class="row text-center">
-        <!---Title--->
-        <div class="col-sm-4">
-            <div>@Html.Action("MiniShoppingCart", "ShoppingCart")</div>
+        <!---аккаунтEnd--->
+        <div class="clearfix"></div>
+        <div class="row text-center">
+            <!---Title--->
+            <div class="col-sm-4">
+                <div>@Html.Action("MiniShoppingCart", "ShoppingCart")</div>
+            </div>
+
+            <div class="col-sm-4">
+                <a href="/" style="display: inline-block;">
+                    <img src="/Content/img/LogoTrandBig2.png" class="img-responsive" alt="Название" style="margin: auto" />
+                </a>
+            </div>
+            <div class="col-sm-4">
+                <form role="search">
+                    <input type="text" class="form-control" placeholder="Поиск..." style="margin: 0.5em auto">
+                </form>
+            </div>
+
+        </div><!---TitleEnd--->
+        <!-- // меню -->
+        @Html.Partial("_NavMenuPartialView")
+
+
+        <div class="row">
+            @RenderBody()
+        </div>
+        <div id="top-link" class="up text-center">
+            <a href="#top"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
         </div>
 
-        <div class="col-sm-4">
-            <a href="/" style="display: inline-block;">
-                <img src="/Content/img/LogoTrandBig2.png" class="img-responsive" alt="Название" style="margin: auto"/>
-            </a>
-        </div>
-        <div class="col-sm-4">
-            <form role="search">
-                <input type="text" class="form-control" placeholder="Поиск..." style="margin: 0.5em auto">
-            </form>
-        </div>
 
-    </div><!---TitleEnd--->
-    <!-- // меню -->
-    @Html.Partial("_NavMenuPartialView")
-
-
-    <div class="row">
-        @RenderBody()
-    </div>
-    <div id="top-link" class="up text-center">
-        <a href="#top"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
-    </div>
+        @*<style>
+                .ajax-loading-block-window {
+                    background: rgba(0, 0, 0, 0) url("/Content/images/loading.gif") no-repeat scroll center center;
+                    height: 32px;
+                    left: 50%;
+                    margin: -16px 0 0 -16px;
+                    position: fixed;
+                    top: 50%;
+                    width: 32px;
+                    z-index: 999;
+                }
+            </style>*@
 
 
-    <style>
-        .ajax-loading-block-window {
-            background: rgba(0, 0, 0, 0) url("/Content/images/loading.gif") no-repeat scroll center center;
-            height: 32px;
-            left: 50%;
-            margin: -16px 0 0 -16px;
-            position: fixed;
-            top: 50%;
-            width: 32px;
-            z-index: 999;
-        }
-    </style>
-
-
-    <div class="ajax-loading-block-window" style="display: none">
-    </div>
+        @*<div class="ajax-loading-block-window" style="display: none">
+            </div>*@
 
 </div>
 

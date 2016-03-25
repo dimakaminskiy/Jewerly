@@ -155,9 +155,22 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
         #region Actions
 
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            return View(DataManager.Pictures.GetAll().OrderBy(t => t.Caption).ToList());
+
+            IQueryable<Picture> pictures = DataManager.Pictures.GetAll().OrderBy(t => t.Caption);
+
+            var count = pictures.Count();
+            int countItemOnpage = 8;
+
+            pictures = pictures.Skip((page - 1) * countItemOnpage)
+                .Take(countItemOnpage);
+            
+            ViewBag.PageNo = page;
+            ViewBag.CountPage = (int)decimal.Remainder(count, countItemOnpage) == 0
+                ? count / countItemOnpage
+                : count / countItemOnpage + 1;
+            return View(pictures.ToList());
         }
         public ActionResult Create()
         {
@@ -174,11 +187,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            var error = Request.Params["msg"];
-            if (!string.IsNullOrEmpty(error))
-            {
-                ModelState.AddModelError("", error);
-            }
             return View(picture);
         }
 
@@ -191,8 +199,8 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
             if (DataManager.Products.SearchFor(t => t.PictureId == id).Count() != 0)
             {
-                return RedirectToAction("Delete",
-                  new { msg = "Произошла ошибка при удалении. Обнаружены товары с этим способом изображением." });  
+                TempData["error"] = "Произошла ошибка при удалении. Обнаружены товары с этим способом изображением.";
+                return RedirectToAction("Delete", new { id = id });
             }
             try
             {
@@ -202,12 +210,9 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Delete",
-                 new { msg = "Произошла ошибка при удалении." });  
+                TempData["error"] = "Произошла ошибка при удалении.";
+                return RedirectToAction("Delete", new { id = id }); 
             }
-
-
-
             TempData["message"] = string.Format("Изображение  \"{0}\" было удалено", picture.Caption);
             return RedirectToAction("Index");
         }

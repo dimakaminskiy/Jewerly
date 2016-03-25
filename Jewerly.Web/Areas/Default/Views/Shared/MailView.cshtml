@@ -11,8 +11,6 @@
     <div>Заказчик - @(Model.LastName + " " + Model.FirstName)</div>
     <div>Телефон - @Model.Phone</div>
     <div>E-mail - @Model.Email</div>
-    <div>Оплата - @Model.MethodOfPayment.Name</div>
-    <div>Доставка - @Model.MethodOfDelivery.Name</div>
     <div>Коментарии - @Model.TextInfo</div>
     <div>
         <table style="border-style: double; padding: 5px;">
@@ -39,5 +37,5 @@
             }
         </table>
     </div>
-        <p>Сумма заказа @Model.Total @Model.Currency.CurrencyCode</p>");
+        <p>Сумма заказа @Model.Total.ToString("F2") @Model.Currency.CurrencyCode</p>
    </div>

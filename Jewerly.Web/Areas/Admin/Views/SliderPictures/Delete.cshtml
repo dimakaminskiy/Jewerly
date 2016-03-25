@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.Path)
             </div>
             <div class="col-md-10">
-                <img class="img-responsive shadow" src='@Model.Path' alt="@Model.Text" title="@Model.Text" />
+                <img class="img-responsive shadow" src='@Model.Path' alt="@Model.Text" title="@Model.Text"/>
             </div>
         </div>
         <div class="form-group">
@@ -30,8 +30,9 @@
                 @Html.DisplayFor(model => model.Text)
             </div>
         </div>
-       
-
+    </div>
+    <div style="color: red">
+        Не удаляйте все изображения, они необходимы для слайдера.
     </div>
     @using (Html.BeginForm())
     {

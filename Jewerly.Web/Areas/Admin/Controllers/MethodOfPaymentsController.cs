@@ -78,11 +78,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            var error = Request.Params["msg"];
-            if (!string.IsNullOrEmpty(error))
-            {
-                ModelState.AddModelError("", error);
-            }
+          
             return View(methodOfPayment);
         }
 
@@ -95,8 +91,8 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
             if (DataManager.Orders.SearchFor(t => t.MethodOfPaymentId == id).Count() != 0)
             {
-                return RedirectToAction("Delete",
-                  new { msg = "Произошла ошибка при удалении. Обнаружены заказы с этим способом оплаты." });
+                TempData["error"] = "Произошла ошибка при удалении. Обнаружены заказы с этим способом оплаты.";
+                return RedirectToAction("Delete", new { id = id });
             }
 
             DataManager.MethodOfPayments.Delete(methodOfPayment);

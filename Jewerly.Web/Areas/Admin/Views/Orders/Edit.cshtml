@@ -143,7 +143,12 @@
                     <td><img src="@item.Product.Picture.Preview()"/></td>
                     <td>@item.Quantity</td>
                     <td>@item.UnitPrice.ToString("F2") @Model.</td>
-                    <td>@((item.Quantity * item.Quantity).ToString("F2"))</td>
+                    <td>
+                        @*@{
+                            var t = (item.Quantity*item.UnitPrice).ToString("F2");
+                        }
+                        @t*@
+                    </td>
                 </tr>
             }
         </table>

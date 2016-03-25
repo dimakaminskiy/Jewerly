@@ -89,7 +89,7 @@
                             </div>
                             <button onclick="AjaxCart.addproducttocart_catalog('@Url.Action("AddProductToCart", "ShoppingCart", new {productId = @item.Id})');return false;"
                                     class="btn btn-default btn-sm" type="button"
-                                    @*data-toggle="modal" data-target="#myAlert"*@>
+                                    data-toggle="modal" data-target="#myAlert">
                                 Купить
                             </button>
                         </div>
@@ -153,28 +153,39 @@
 
 @section scripts {
 
-<script type="text/javascript">
-    AjaxCart.init('#top-card-count', '#top-card-totals', '#mini-shopping-cart-items');
-</script>
+    <script type="text/javascript">
+        AjaxCart.init('#top-card-count', '#top-card-totals', '#mini-shopping-cart-items');
+    </script>
 
-<script>
-    $('.currency').click(function () {
-        var t = $(this).attr("data-currency");
-        $("#CurrencyId").val(t);
-        $("#form-currency").submit();
-    });
-</script>
+    <script>
+        $('.currency').click(function() {
+            var t = $(this).attr("data-currency");
+            $("#CurrencyId").val(t);
+            $("#form-currency").submit();
+        });
+    </script>
 
 
 
     <script>
-        
-        $(document).ready(function () {
 
-            
-            $(".filter-option").click(function (event) {
+        $(document).ready(function() {
+
+
+            $(document).on("show.bs.modal", "#myAlert", function(e) {
+
+                var myAlert = $("#myAlert");
+                clearTimeout(myAlert.data('hideInterval'));
+                myAlert.data('hideInterval', setTimeout(function() {
+                    myAlert.modal('hide');
+                }, 1500));
+
+            });
+
+
+            $(".filter-option").click(function(event) {
                 event.preventDefault();
-                
+
                 var filterOptionId = $(this).attr("attr-option");
                 var filterOptionName = $(this).text();
                 var filterId = $(this).attr("attr-id");
@@ -182,7 +193,7 @@
                 var filter = $(queryFilter);
                 var filterName = filter.attr("attr-name");
 
-                if (filterOptionId == undefined||filterOptionId !== "") {
+                if (filterOptionId == undefined || filterOptionId !== "") {
                     if (!filter.hasClass("selected")) {
                         filter.addClass("selected");
                     }
@@ -195,7 +206,7 @@
                         filter.removeClass("selected");
                     }
                     filter.attr("attr-option", "");
-                    filter.html(filterName );
+                    filter.html(filterName);
                 }
 
                 $("div.btn-group.open").removeClass("open");
@@ -204,7 +215,7 @@
             });
 
 
-            $("#execute-filter-btn").click(function () {
+            $("#execute-filter-btn").click(function() {
                 var orgLink = "@Request.Url.LocalPath";
                 var attributes = $("#filter span[id^='filter-name-']").filter('.selected');
                 for (var i = 0; i < attributes.length; i++) {
@@ -212,7 +223,7 @@
                     line += (i != 0) ? "&" : "?";
                     line += $(attributes[i]).attr("attr-other-name") + "=" + $(attributes[i]).attr("attr-option");
                     orgLink += line;
-                }               
+                }
                 document.location.href = orgLink;
             });
         });
