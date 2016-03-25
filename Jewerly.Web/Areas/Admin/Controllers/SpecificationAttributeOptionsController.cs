@@ -101,6 +101,20 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             SpecificationAttributeOption specificationAttributeOption = DataManager.SpecificationAttributeOptions.GetById(id);
+
+            var list =
+                DataManager.MappingProductSpecificationAttributeToProducts.SearchFor(
+                    t => t.SpecificationAttributeOptionId == id).ToList();
+
+
+            foreach (var m in list)
+            {
+                DataManager.MappingProductSpecificationAttributeToProducts.Delete(m);
+            }
+
+
+
+
             DataManager.SpecificationAttributeOptions.Delete(specificationAttributeOption);
 
             TempData["message"] = string.Format("Опция Атрибута \"{0}\" была удалена", specificationAttributeOption.Name);

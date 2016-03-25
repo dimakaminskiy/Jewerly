@@ -142,7 +142,7 @@ namespace Jewerly.Web.Models
             } 
         }
 
-        public int CreateOrder(OrderModel model, Currency currency,bool trade)
+        public int CreateOrder(OrderModel model, Currency currency,bool trade, string user)
         {
             //var c = new OrderDetail();
 
@@ -154,6 +154,7 @@ namespace Jewerly.Web.Models
                 Email = model.Email,
                 Phone = model.Phone,
                 CountryId = model.CountryId,
+                UserId = user,
                 City = model.City,
                 CurrencyId = currency.CurrencyId,
                 OrderDate = DateTime.Now,

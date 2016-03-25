@@ -199,7 +199,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
             if (DataManager.Products.SearchFor(t => t.PictureId == id).Count() != 0)
             {
-                TempData["error"] = "Произошла ошибка при удалении. Обнаружены товары с этим способом изображением.";
+                TempData["error"] = "Произошла ошибка при удалении. Обнаружены товары с этим изображением.";
                 return RedirectToAction("Delete", new { id = id });
             }
             try

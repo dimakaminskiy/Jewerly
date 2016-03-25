@@ -91,14 +91,12 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
 
               //  }
-                 int currencyId = GetCurrentCurrency();
-
-                 var currency = DataManager.Currencies.SearchFor(t => t.CurrencyId == currencyId).Single();
-
+                int currencyId = GetCurrentCurrency();
+                var currency = DataManager.Currencies.SearchFor(t => t.CurrencyId == currencyId).Single();
                 var cart = ShoppingCart.GetCart(HttpContext, DataManager);
                 if (cart.GetCartsCount() == 0) return RedirectToAction("Index", "ShoppingCart");
                 var baseurl = FullyQualifiedApplicationPath(HttpContext);
-                var orderId = cart.CreateOrder(model,currency,User.Identity.IsAuthenticated);
+                var orderId = cart.CreateOrder(model,currency,User.Identity.IsAuthenticated,User.Identity.GetUserId());
 
 
                 var order = DataManager.Orders.SearchFor(t => t.Id == orderId).Single();

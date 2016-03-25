@@ -54,6 +54,7 @@ namespace Jewerly.Web.Areas.Default.Models
           //  [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
           //  [RegularExpression(@"^[0-9]{7,12}$", ErrorMessage = "Введите номер теленфона")]
             [RegularExpression(@"^(\+)?(\d{3,5})?\d{7,10}$", ErrorMessage = "Неверный номер теленфона")]
+
             public string Phone { get; set; }
             //    [RegularExpression(@"^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$", ErrorMessageResourceType = typeof(GlobalResource), ErrorMessageResourceName = "ErrorMessageRegularExpressionEmail")]
             [Display(Name = "E-mail")]
@@ -108,18 +109,18 @@ namespace Jewerly.Web.Areas.Default.Models
         {
             [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "Текущий пароль")]
             public string OldPassword { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} должен быть минимум {2} символов длиной.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Новый пароль")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Повторите новый пароль")]
+            [Compare("NewPassword", ErrorMessage = "Введенные пароли не совпадают.")]
             public string ConfirmPassword { get; set; }
         }
     

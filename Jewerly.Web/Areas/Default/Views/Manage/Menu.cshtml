@@ -1,0 +1,41 @@
+﻿@using Jewerly.Web.Utils
+<nav class="navbar navbar-collapse" role=navigation>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <button type="button" class="navbar-toggle collapsed btn-default width" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
+                Аккаунт
+            </button>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+                <div id="menu-left" class="text-center shadow">
+                    <!--Список---->
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h4 class="img-rounded text-uppercase">
+                                <span class="glyphicon glyphicon-cog"></span> Аккаунт <span class="glyphicon glyphicon-cog"></span>
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="row">
+                                    <!---категории--->
+                                    <ul class="nav nav-pills nav-stacked">
+                                        @*<li><a href="@Url.Action("UserInfo")">Мои данные</a></li>
+                                        <li><a href="@Url.Action("History")">История заказов</a></li>
+                                        <li><a href='@Url.Action("ChangePassword", "Manage")'>Смена пароля</a></li>*@
+                                        @Html.LiActionLink("О магазине", "UserInfo", "Manage")
+                                        @Html.LiActionLink("История заказов", "History", "Manage")
+                                        @Html.LiActionLink("Смена пароля", "ChangePassword", "Manage")
+                                    </ul>
+                                </div><!---категории End--->
+                            </div>
+                        </div>
+                        <div class="panel-footer"><span class="glyphicon glyphicon-option-horizontal"></span></div>
+                    </div>
+
+                </div> <!--Список End---->
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </div><!-- /.container-fluid -->
+</nav>

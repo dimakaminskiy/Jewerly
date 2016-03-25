@@ -109,7 +109,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             DataManager.ProductSpecificationAttributes.GetById(id);
             
             DataManager.ProductSpecificationAttributes.Delete(productSpecificationAttribute);
-            TempData["message"] = string.Format("Атрибуте \"{0}\" был удален", productSpecificationAttribute.Name);
+            TempData["message"] = string.Format("Атрибут \"{0}\" был удален", productSpecificationAttribute.Name);
             return RedirectToAction("Index");
         }
 

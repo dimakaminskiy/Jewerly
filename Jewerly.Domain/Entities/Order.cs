@@ -13,6 +13,7 @@ namespace Jewerly.Domain.Entities
             OrderDate = DateTime.Now;
         }
 
+
         public int Id { get; set; }
         [Required]
         [Display(Name = "Дата")]
@@ -47,6 +48,7 @@ namespace Jewerly.Domain.Entities
         [Display(Name = "Метод доставки")]
         public int MethodOfDeliveryId { get; set; }
         public int CurrencyId { get; set; }
+        public string UserId { get; set; }
         public virtual Currency Currency { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

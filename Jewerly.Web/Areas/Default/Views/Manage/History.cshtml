@@ -1,0 +1,56 @@
+﻿@using Jewerly.Domain.Entities
+@using Jewerly.Web.Utils
+@model IEnumerable<Jewerly.Domain.Entities.Order>
+@{
+    ViewBag.Title = "History";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+
+@if (Model.Any())
+{
+
+    foreach (var order in Model)
+    {
+
+        <div>@order.OrderDate.ToShortDateString()</div>
+        <div>@order.Total.ToString("F2")</div>
+        <div>@order.Currency.CurrencyCode</div>
+
+        <div>
+            <table class="table table-bordered">
+                <tr>
+                    <td>Артикул</td>
+                    <td>Название</td>
+                    <td></td>
+                    <td>Количесиво</td>
+                    <td>Цена @order.Currency.CurrencyCode</td>
+                    <td>
+                        Сумма @order.Currency.CurrencyCode
+                    </td>
+                </tr>
+                @foreach (OrderDetail item in order.OrderDetails)
+                {
+                    <tr>
+                        <td>@item.Product.ProductId</td>
+                        <td>@item.Product.Name</td>
+                        <td><img src="@item.Product.Picture.Preview()"/></td>
+                        <td>@item.Quantity</td>
+                        <td>@item.UnitPrice.ToString("F2")</td>
+                        <td>
+                            @{
+                                var t = (item.Quantity*item.UnitPrice).ToString("F2");
+                            }
+                            @t
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
+}
+else
+{
+  <p>Нет заказов</p>
+}
+

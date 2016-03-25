@@ -88,6 +88,14 @@
     <Compile Include="Migrations\201603231549496_order.Designer.cs">
       <DependentUpon>201603231549496_order.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603261023417_orders.cs" />
+    <Compile Include="Migrations\201603261023417_orders.Designer.cs">
+      <DependentUpon>201603261023417_orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603261027532_orders1.cs" />
+    <Compile Include="Migrations\201603261027532_orders1.Designer.cs">
+      <DependentUpon>201603261027532_orders1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Db\ApplicationUser.cs" />
@@ -128,6 +136,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603231549496_order.resx">
       <DependentUpon>201603231549496_order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603261023417_orders.resx">
+      <DependentUpon>201603261023417_orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603261027532_orders1.resx">
+      <DependentUpon>201603261027532_orders1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

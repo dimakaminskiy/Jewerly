@@ -7,14 +7,9 @@
             <span class="glyphicon glyphicon-shopping-cart"></span>
             Корзина
             <span id="top-card-count">(@Model.Count)</span><br />
-            @if (Model.Items.Any())
-            {
+           
                 <span id="top-card-totals">@Model.TotalPrice @Model.Currency</span>
-            }
-            else
-            {
-                <span id="top-card-totals"></span>
-            }
+           
         </div>
     </button>
     <div id="mini-shopping-cart" class="dropdown-menu popover popover-content">

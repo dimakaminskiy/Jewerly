@@ -362,10 +362,19 @@ border-radius: 5px;
 }
 #search {
     width: 100%;
+    position: relative;
 }
 #search input {
     border: 2px solid #ccc;
     border-radius: 4px;
+    margin: 0.5em auto;
+    width: 100%;
+    max-width: 100%;
+}
+#search button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
 /*#searchMobile, #searchMobile input {
     width: 100%;

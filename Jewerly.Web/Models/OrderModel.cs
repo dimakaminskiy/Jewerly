@@ -20,6 +20,7 @@ namespace Jewerly.Web.Models
         
         [Required]
         [Display(Name = "Телефон")]
+        [RegularExpression(@"^(\+)?(\d{3,5})?\d{7,10}$", ErrorMessage = "Неверный номер теленфона")]
         public string Phone { get; set; }
         
         [Required]
@@ -28,7 +29,7 @@ namespace Jewerly.Web.Models
        
         [Display(Name = "Страна")]
         public int CountryId { get; set; }
-        
+        [Required]
         [Display(Name = "Город")]
         public string City { get; set; }
         

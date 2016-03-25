@@ -120,24 +120,33 @@ namespace Jewerly.Web.Areas.Default.Controllers
             if (ModelState.IsValid)
             {
                 var u = UserManager.FindById(User.Identity.GetUserId());
-                u.City = model.City;
-                u.CountryId = model.CurrencyId;
-                u.CurrencyId = model.CurrencyId;
+                if (u.CurrencyId != model.CurrencyId)
+                {
+                    u.CurrencyId = model.CurrencyId;
+                    SetCookie("Currency", model.CurrencyId.ToString());
+                    var hh = GetCookie("Currency");
+                }
+                u.CountryId = model.CountryId;
                 u.FirstName = model.FirstName;
                 u.LastName = model.LastName;
                 u.MiddleName = model.MiddleName;
                 u.PhoneNumber = model.Phone;
 
-                ViewBag.CountryId = new SelectList(DataManager.Countries.GetAll(), "Id", "Name", model.CountryId);
-                ViewBag.CurrencyId = new SelectList(DataManager.Currencies.GetAll(), "CurrencyId", "Name", model.CurrencyId);
-                return View(model);
+                UserManager.Update(u);
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+
+            ViewBag.CountryId = new SelectList(DataManager.Countries.GetAll(), "Id", "Name", model.CountryId);
+            ViewBag.CurrencyId = new SelectList(DataManager.Currencies.GetAll(), "CurrencyId", "Name", model.CurrencyId);
+            return View(model);
         }
 
-        public ActionResult OrderHistory()
+        public ActionResult History()
         {
-            return View();
+            var id = User.Identity.GetUserId();
+            var list = DataManager.Orders.SearchFor(t => t.UserId ==id ).ToList();
+
+            return View(list);
         }
     }
 }

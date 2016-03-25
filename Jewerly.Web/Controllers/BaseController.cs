@@ -91,10 +91,6 @@ namespace Jewerly.Web.Controllers
            return User.Identity.GetUserId<string>();
         }
 
-      
-
-
-
         public void SetCookie(string name, string value)
         {
             var httpCookie = HttpContext.Response.Cookies[name];

@@ -295,6 +295,7 @@
     <Content Include="Content\img\LogoTrandBig2.png" />
     <Content Include="Content\img\NoImage.gif" />
     <Content Include="Content\img\NoImage2.gif" />
+    <Content Include="Content\img\ring.png" />
     <Content Include="Content\img\tmp\lg.jpg" />
     <Content Include="Content\img\tmp\lg2.jpg" />
     <Content Include="Content\img\tmp\ring-1.jpg" />
@@ -424,6 +425,8 @@
     <Content Include="Areas\Default\Views\Checkout\Complete.cshtml" />
     <Content Include="Areas\Default\Views\Shared\MailView.cshtml" />
     <Content Include="Areas\Default\Views\Manage\UserInfo.cshtml" />
+    <Content Include="Areas\Default\Views\Manage\History.cshtml" />
+    <Content Include="Areas\Default\Views\Manage\Menu.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />
