@@ -28,7 +28,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                 .Include(o => o.Country).Include(o => o.MethodOfDelivery)
                 .Include(o => o.MethodOfPayment).Include(o => o.OrderStatus).Include(t => t.Currency);
             var count = orders.Count();
-            int countItemOnpage = 1;
+            int countItemOnpage = 10;
 
             orders = orders.Skip((page - 1)*countItemOnpage)
                 .Take(countItemOnpage);
@@ -70,7 +70,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         public ActionResult Edit(
             [Bind(
                 Include =
-                    "Id,OrderDate,FirstName,LastName,MiddleName,Phone,Email,Total,CountryId,City,TextInfo,OrderStatusId,MethodOfPaymentId,MethodOfDeliveryId"
+                    "Id,OrderDate,FirstName,LastName,MiddleName,CurrencyId,Phone,Email,Total,CountryId,City,TextInfo,OrderStatusId,MethodOfPaymentId,MethodOfDeliveryId"
                 )] Order order)
         {
             if (ModelState.IsValid)

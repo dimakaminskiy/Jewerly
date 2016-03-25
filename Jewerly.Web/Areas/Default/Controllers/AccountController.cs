@@ -277,8 +277,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/ForgotPassword
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -287,15 +286,6 @@ namespace Jewerly.Web.Areas.Default.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                //if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                //{
-                //    // Don't reveal that the user does not exist or is not confirmed
-                //    return View("ForgotPasswordConfirmation");
-                //}
-
-                //var user = await UserManager.FindByNameAsync(model.Email);
-
-
                 if (user == null)
                 {
                     ModelState.AddModelError("", @"Пользователь с таким e-mail не зарегистрирован");
@@ -308,22 +298,13 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new {userId = user.Id, code = code},
                     protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Восстановление пароля",
+                await UserManager.SendEmailAsync(user.Id, settings.Link+" Восстановление пароля",
                     "Здравствуйте! <br/>Вы отправили запрос на восстановление пароля от аккаунта " + user.Email +
                     " .<br/>" +
                     "Для того чтобы задать новый пароль, перейдите по  <a href=\"" + callbackUrl + "\">ссылке</a><br/>" +
                     "С уважением, команда <a href=\"" + settings.Link + "\">" + settings.Link + "</a>");
                 return PartialView("ForgotPasswordConfirmation");
-
-
-
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
-            }
+           }
 
             // If we got this far, something failed, redisplay form
             return PartialView(model);
@@ -368,7 +349,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return PartialView(model);
             }
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
@@ -382,7 +363,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             AddErrors(result);
-            return View();
+            return PartialView();
         }
 
         //

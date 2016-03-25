@@ -12,7 +12,7 @@ var AjaxCart = {
     },
 
     setLoadWaiting: function (display) {
-        displayAjaxLoading(display);
+        //displayAjaxLoading(display);
         this.loadWaiting = display;
     },
     addproducttocart_catalog: function (urladd) {
@@ -90,20 +90,19 @@ var AjaxCart = {
     }
 };
 
-function displayAjaxLoading(display) {
-    if (display) {
-        $('.ajax-loading-block-window').show();
-    }
-    else {
-        $('.ajax-loading-block-window').hide('slow');
-    }
-}
+//function displayAjaxLoading(display) {
+//    if (display) {
+//        $('.ajax-loading-block-window').show();
+//    }
+//    else {
+//        $('.ajax-loading-block-window').hide('slow');
+//    }
+//}
 
 
 var barNotificationTimeout;
 function displayBarNotification(message, messagetype, timeout) {
     clearTimeout(barNotificationTimeout);
      $("#myAlert .modal-body").text(message);
- 
 }
 

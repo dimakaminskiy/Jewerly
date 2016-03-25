@@ -102,9 +102,25 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                     DataManager.Categories.SearchFor(t => t.Id.ToString() == categoryId).Single().Name;
             }
 
+
+            if (!string.IsNullOrEmpty(categoryId))
+            {
+                int h = int.Parse(categoryId);
+                var cat = DataManager.Categories.SearchFor(t => t.Id == h).SingleOrDefault();
+                if (cat != null)
+                {
+                    ViewBag.CategoryName = cat.Name;
+                }
+            }
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                ViewBag.SearchString = searchString;
+            }
+
+
+    
             ViewBag.PageNo = page;
             ViewBag.CategoryId = categoryId;
-            ViewBag.SearchString = searchString;
             ViewBag.CountPage = (int)decimal.Remainder(count, countItemOnpage) == 0 ? count / countItemOnpage : count / countItemOnpage + 1;
             ViewBag.Category = GetSelectListCategories(string.IsNullOrEmpty(categoryId)?0:int.Parse(categoryId));
             return View(products.ToList());
