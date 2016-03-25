@@ -133,8 +133,17 @@
 
 
     <div>
-        <table>
-
+        <table class="table table-bordered">
+            <tr>
+                <td>Артикул</td>
+                <td>Название</td>
+                <td></td>
+                <td>Количесиво</td>
+                <td>Цена</td>
+                <td>
+                    Сумма
+                </td>
+            </tr>
             @foreach (OrderDetail item in Model.OrderDetails)
             {
                 <tr>

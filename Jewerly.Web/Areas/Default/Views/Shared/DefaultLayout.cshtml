@@ -14,19 +14,6 @@
 </head>
 <body>
 
-@*<div class="ajax-loading-block-window" style="display: none">
-</div>
-<div id="dialog-notifications-success" title="Notification" style="display: none;">
-</div>
-<div id="dialog-notifications-error" title="Error" style="display: none;">
-</div>
-<div id="bar-notification" class="bar-notification">
-    <span class="close" title="Close">&nbsp;</span>
-</div>*@
-
-
-
-
 <div class="container">
 
     <!-- Modal -->
@@ -34,7 +21,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content shadow">
                 <div class="modal-body">
-                    
+                     
                 </div>
             </div>
         </div>
@@ -68,20 +55,15 @@
             }
         }
 
-
-
-
-
-
-
         <!-- Modal -->
-        <div id='myModal' class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div id='myModalContent'></div>
-                </div>
+    <div id='myModal' class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
             </div>
         </div>
+    </div>
+
         <!---аккаунтEnd--->
         <div class="clearfix"></div>
         <div class="row text-center">
@@ -96,8 +78,11 @@
                 </a>
             </div>
             <div class="col-sm-4">
-                <form role="search">
-                    <input type="text" class="form-control" placeholder="Поиск..." style="margin: 0.5em auto">
+                <form role="search" id="search">
+                    <div class="input-group-lg">
+                        <input type="text" class="form-control" placeholder="Поиск...">
+                            <button class="btn btn-default btn-lg" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                    </div><!-- /input-group -->
                 </form>
             </div>
 
@@ -112,24 +97,6 @@
         <div id="top-link" class="up text-center">
             <a href="#top"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
         </div>
-
-
-        @*<style>
-                .ajax-loading-block-window {
-                    background: rgba(0, 0, 0, 0) url("/Content/images/loading.gif") no-repeat scroll center center;
-                    height: 32px;
-                    left: 50%;
-                    margin: -16px 0 0 -16px;
-                    position: fixed;
-                    top: 50%;
-                    width: 32px;
-                    z-index: 999;
-                }
-            </style>*@
-
-
-        @*<div class="ajax-loading-block-window" style="display: none">
-            </div>*@
 
 </div>
 

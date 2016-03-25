@@ -368,7 +368,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return PartialView(model);
             }
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
@@ -382,7 +382,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             AddErrors(result);
-            return View();
+            return PartialView();
         }
 
         //

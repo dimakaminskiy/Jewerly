@@ -1,15 +1,11 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Регистрация";
     Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
 }
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel"><img src="/Content/img/LogoTrandBig2.png" class="img-responsive" alt="TrandyCats"/></h4>
-</div>
-<div class="modal-body">
-    Адрес Вашей почты подтвержден. Пожалуйста, щелкните @Html.ActionLink("здесь", "Login", "Account", routeValues: null, htmlAttributes: new {id = "loginLink"}) для входа в систему.
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+
+<div class="col-md-12">
+    <div class="content_silver text-center">
+        Адрес Вашей почты подтвержден. Пожалуйста, щелкните @Html.ActionLink("здесь", "Login", "Account", routeValues: null, htmlAttributes: new {id = "loginLink"}) для входа в систему.
+        <div><img src="/Content/img/ring.png" class="img-responsive" alt="TrandyCats" style="margin: auto;" /></div>
+    </div>
 </div>

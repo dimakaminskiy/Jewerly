@@ -121,8 +121,17 @@
     </div>
 
     <div>
-        <table>
-
+        <table class="table table-bordered">
+            <tr>
+                <td>Артикул</td>
+                <td>Название</td>
+                <td></td>
+                <td>Количесиво</td>
+                <td>Цена</td>
+                <td>
+                    Сумма
+                </td>
+            </tr>
             @foreach (OrderDetail item in Model.OrderDetails)
             {
                 <tr>
@@ -131,7 +140,12 @@
                     <td><img src="@item.Product.Picture.Preview()" /></td>
                     <td>@item.Quantity</td>
                     <td>@item.UnitPrice.ToString("F2") @Model.</td>
-                    <td>@((item.Quantity * item.Quantity).ToString("F2"))</td>
+                    <td>
+                        @*@{
+                            var t = (item.Quantity*item.UnitPrice).ToString("F2");
+                        }
+                        @t*@
+                    </td>
                 </tr>
             }
         </table>
