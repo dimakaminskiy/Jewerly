@@ -1,10 +1,40 @@
-﻿//using System.Collections.Generic;
-//using System.ComponentModel.DataAnnotations;
-//using Microsoft.AspNet.Identity;
-//using Microsoft.Owin.Security;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 
-//namespace Jewerly.Web.Models
-//{
+namespace Jewerly.Web.Models
+{
+
+    public class UserInfo
+    {
+        [Display(Name = "Фамилия")]
+        public string LastName { get; set; }
+        [Display(Name = "Имя")]
+        public string FirstName { get; set; }
+        [Display(Name = "Отчество")]
+        public string MiddleName { get; set; }
+        [Display(Name = "Телефон")]
+        [RegularExpression(@"^(\+)?(\d{3,5})?\d{7,10}$", ErrorMessage = "Введите номер теленфона")]
+        public string Phone { get; set; }
+        [Display(Name = "Страна")]
+        public int CountryId { get; set; }
+        [Display(Name = "Валюта")]
+        public int CurrencyId { get; set; }
+        [Display(Name = "Город")]
+        public string City { get; set; }
+        [Display(Name = "Вид деятельности")]
+        public string KindOfActivity { get; set; }
+        
+
+    }
+
+
+
+
+
+
+
 //    public class IndexViewModel
 //    {
 //        public bool HasPassword { get; set; }
@@ -83,4 +113,4 @@
 //        public string SelectedProvider { get; set; }
 //        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
 //    }
-//}
+}

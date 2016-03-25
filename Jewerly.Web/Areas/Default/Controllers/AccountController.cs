@@ -299,7 +299,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 if (user == null)
                 {
                     ModelState.AddModelError("", @"Пользователь с таким e-mail не зарегистрирован");
-                    return View(model);
+                    return PartialView(model);
                 }
 
 
@@ -313,7 +313,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
                     " .<br/>" +
                     "Для того чтобы задать новый пароль, перейдите по  <a href=\"" + callbackUrl + "\">ссылке</a><br/>" +
                     "С уважением, команда <a href=\"" + settings.Link + "\">" + settings.Link + "</a>");
-                return View("ForgotPasswordConfirmation");
+                return PartialView("ForgotPasswordConfirmation");
 
 
 
@@ -326,7 +326,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return PartialView(model);
         }
 
 

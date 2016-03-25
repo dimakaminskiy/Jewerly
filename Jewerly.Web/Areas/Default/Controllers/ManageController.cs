@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Schema;
 using Jewerly.Domain;
 using Jewerly.Web.Areas.Default.Models;
 using Jewerly.Web.Controllers;
+using Jewerly.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
@@ -92,11 +94,47 @@ namespace Jewerly.Web.Areas.Default.Controllers
         }
 
 
-        public ActionResult Myinfo()
+        public ActionResult UserInfo()
         {
-          //  var model = new UserInfo();
-            return View();
+           var u =  UserManager.FindById(User.Identity.GetUserId());
+            var model = new UserInfo
+            {
+                CurrencyId = u.CurrencyId,
+                LastName = u.LastName,
+                FirstName = u.FirstName,
+                MiddleName = u.MiddleName,
+                CountryId = u.CountryId,
+                City = u.City,
+                Phone = u.PhoneNumber,
+                KindOfActivity = u.KindOfActivity
+            };
+
+            ViewBag.CountryId = new SelectList(DataManager.Countries.GetAll(), "Id", "Name", model.CountryId);
+            ViewBag.CurrencyId = new SelectList(DataManager.Currencies.GetAll(), "CurrencyId", "Name", model.CurrencyId);
+            return View(model);
         }
+
+        [HttpPost]
+        public ActionResult UserInfo(UserInfo model)
+        {
+            if (ModelState.IsValid)
+            {
+                var u = UserManager.FindById(User.Identity.GetUserId());
+                u.City = model.City;
+                u.CountryId = model.CurrencyId;
+                u.CurrencyId = model.CurrencyId;
+                u.FirstName = model.FirstName;
+                u.LastName = model.LastName;
+                u.MiddleName = model.MiddleName;
+                u.PhoneNumber = model.Phone;
+
+                ViewBag.CountryId = new SelectList(DataManager.Countries.GetAll(), "Id", "Name", model.CountryId);
+                ViewBag.CurrencyId = new SelectList(DataManager.Currencies.GetAll(), "CurrencyId", "Name", model.CurrencyId);
+                return View(model);
+            }
+            return RedirectToAction("Index");
+        }
+
         public ActionResult OrderHistory()
         {
             return View();
