@@ -1,56 +1,94 @@
 ﻿@using Jewerly.Domain.Entities
 @using Jewerly.Web.Utils
 @model IEnumerable<Jewerly.Domain.Entities.Order>
-@{
-    ViewBag.Title = "History";
-    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
-}
-
-@if (Model.Any())
-{
-
-    foreach (var order in Model)
-    {
-
-        <div>@order.OrderDate.ToShortDateString()</div>
-        <div>@order.Total.ToString("F2")</div>
-        <div>@order.Currency.CurrencyCode</div>
-
-        <div>
-            <table class="table table-bordered">
-                <tr>
-                    <td>Артикул</td>
-                    <td>Название</td>
-                    <td></td>
-                    <td>Количесиво</td>
-                    <td>Цена @order.Currency.CurrencyCode</td>
-                    <td>
-                        Сумма @order.Currency.CurrencyCode
-                    </td>
-                </tr>
-                @foreach (OrderDetail item in order.OrderDetails)
-                {
-                    <tr>
-                        <td>@item.Product.ProductId</td>
-                        <td>@item.Product.Name</td>
-                        <td><img src="@item.Product.Picture.Preview()"/></td>
-                        <td>@item.Quantity</td>
-                        <td>@item.UnitPrice.ToString("F2")</td>
-                        <td>
-                            @{
-                                var t = (item.Quantity*item.UnitPrice).ToString("F2");
-                            }
-                            @t
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
+    @{
+        ViewBag.Title = "Trandycats";
+        Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
     }
 
+    <div class="col-sm-4 col-md-3">
+        <!--левая часть--->
+        @Html.Partial("Menu")
+    </div> <!--левая часть End--->
+
+    <div class="col-sm-8 col-md-9">
+        <!-----правая часть----->
+        <div class="row bg shadow mgo">
+            @if (Model.Any())
+{
+    <table class="table table-responsive table-bordered text-center">
+        <tr class="danger" style="color: #000">
+            <td>№ заказа</td>
+            <td>Дата</td>
+            <td>Сумма</td>
+            <td>Статус</td>
+        </tr>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.OrderDate.ToShortDateString()</td>
+                <td>@order.Total.ToString("F2") @order.Currency.CurrencyCode</td>
+                <td>@order.OrderStatus.Name</td>
+            </tr>
+            <tr class="danger">
+                <td colspan="4">
+                    <div class="panel-group" id="@("accordion" + order.Id)" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="@("heading" + order.Id)">
+                                <h4 class="panel-title">
+                                    <a class="width btn-block collapsed" role="button" data-toggle="collapse" data-parent="@("#accordion" + order.Id)" href="@("#collapse" + order.Id)" aria-expanded="true" aria-controls="@("collapse" + order.Id)">
+                                        Подробнее заказ №@order.Id
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="@("collapse" + order.Id)" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@("heading" + order.Id)">
+                                <div class="panel-body">
+                                    <table class="table table-bordered" id="@order.Id">
+                                        <tr>
+                                            <td>Артикул</td>
+                                            <td>Название</td>
+                                            <td></td>
+                                            <td>Количесиво</td>
+                                            <td>Цена @order.Currency.CurrencyCode</td>
+                                            <td>
+                                                Сумма @order.Currency.CurrencyCode
+                                            </td>
+                                        </tr>
+                                        @foreach (OrderDetail item in order.OrderDetails)
+                                        {
+                                            <tr>
+                                                <td>@item.Product.ProductId</td>
+                                                <td>@item.Product.Name</td>
+                                                <td><img src="@item.Product.Picture.Preview()" /></td>
+                                                <td>@item.Quantity</td>
+                                                <td>@item.UnitPrice.ToString("F2")</td>
+                                                <td>
+                                                    @{
+                                            var t = (item.Quantity * item.UnitPrice).ToString("F2");
+                                                    }
+                                                    @t
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
 }
 else
 {
-  <p>Нет заказов</p>
-}
+    <div class="text-center">У Вас пока нет ни одного заказа.</div>
+     <div><img src="/Content/img/ring.png" class="img-responsive" alt="TrandyCats" style="margin: auto;" /></div>
+            }
+            <div>
+                <a href="@Url.Action("Index", "Manage")" class="btn btn-default">Назад</a>
+            </div>
 
+        </div>
+    </div> <!-----правая часть End----->
