@@ -3,7 +3,7 @@
 @using Jewerly.Web.Utils
 @model Jewerly.Web.Models.StoreViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Trandycats";
     Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
 }
 
@@ -111,8 +111,13 @@
         }
         else
         {
-            <div>Поиск не дал результатов</div>
-        }
+<div class="col-md-12">
+    <div class="content_silver text-center">
+        К сожалению, Ваш запрос не дал результатов. Попробуйте изменить его.
+        <div><img src="/Content/img/ring.png" class="img-responsive" alt="TrandyCats" style="margin: auto;"/>
+        </div>
+    </div>
+</div>        }
     </div>
     <div class="text-center">
         @if (Model.Products.CountPage > 1)
@@ -155,12 +160,12 @@
 
 
             $(document).on("show.bs.modal", "#myAlert", function (e) {
-
+                $("#myAlert .modal-content").css("height", "5.0em");
                 var myAlert = $("#myAlert");
                 clearTimeout(myAlert.data('hideInterval'));
                 myAlert.data('hideInterval', setTimeout(function () {
                     myAlert.modal('hide');
-                }, 1000));
+                }, 1300));
 
             });
 
