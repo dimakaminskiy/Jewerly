@@ -4,10 +4,6 @@ body {
     /*overflow-x: hidden;*/
     overflow-y: auto;
 }
-/*скролл при модальном окне*/
-/*body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
-    margin-right: 0;
-}*/
 .row.mgo {
     margin: 0;
 }
@@ -54,16 +50,22 @@ a:focus {
     outline: none;
 }
 a:focus {
-    outline: thin solid;
+    /*outline: thin solid;
     outline: 2px auto -webkit-focus-ring-color;
-    outline-offset: -2px;
+    outline-offset: -2px;*/
     outline: none;
+}
+.modal-open .modal,.btn:focus{
+    outline:none!important
 }
 .modal-body {
     margin: 0 0.5em;
 }
 #myAlert.modal {
     overflow: hidden;
+}
+#myAlert .modal-content {
+    background: url("img/bg_ms.png") repeat;
 }
 .close {
     color: #fff;
@@ -79,7 +81,7 @@ button:focus {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.75), 0 0 8px rgba(254,254,254, .8) !important;
     box-shadow: inset 0 1px 1px rgba(0,0,0,.75), 0 0 8px rgba(254,254,254, .8) !important;
 }
-.btn:focus,
+/*.btn:focus,
 .btn:active:focus,
 .btn.active:focus,
 .btn.focus,
@@ -88,8 +90,7 @@ button:focus {
     outline: thin solid;
     outline: 2px auto -webkit-focus-ring-color;
     outline-offset: -2px;
-}
-
+}*/
 .btn-default {
     color: #fff;
     background-color: #9275F1;
@@ -98,7 +99,6 @@ button:focus {
     color: #fff;
     background-color: #2B1F53;
 }
-
 .navbar-form, .navbar-collapse {
     box-shadow: none;
     padding: 0;
@@ -197,9 +197,6 @@ button:focus {
 .nav-pills > li.active > a:focus{
     background-color: #9275F1;
 }
-/*.dropdown-menu {
-    width: 100%;
-}*/
 .dropdown-menu {
     min-width: 20px;
 }
@@ -246,7 +243,6 @@ button:focus {
 .form-horizontal .control-label {
     text-align: left;
 }
-/*Панели с информацией*//*Читать дальше*/
 .panel-default>.panel-heading, .panel-footer {
     background-color: #141414;
     color: #FEFEFE;
@@ -266,19 +262,15 @@ button:focus {
 .panel-group {
     margin-bottom: 0.1em;
 }
-
-.text-ov {
-    /* Fallback for non-webkit */
+/*.text-ov {
     display: -webkit-box;
-    /*height: $font-size*$line-height*$lines-to-show;*/
     height: 99px;
-    /* Fallback for non-webkit */
     margin: 0 auto;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-}
+}*/
 .glyphicon-shopping-cart {
     font-size: 2em;
 }
@@ -376,10 +368,6 @@ border-radius: 5px;
     right: 0;
     bottom: 0;
 }
-/*#searchMobile, #searchMobile input {
-    width: 100%;
-}*/
-
 #filter .btn-group, #filter .btn-group button {
     width: 100%;
 }
@@ -390,13 +378,13 @@ border-radius: 5px;
     color: #141414;
     padding: 0.5em 0;
 }
-#otherView .product-wrapper {
+/*#otherView .product-wrapper {
     background: #fff;
 }
 #otherView .product-wrapper img {
     margin: 0.5em auto;
     border-radius: 10px;
-}
+}*/
 .product-wrapper {
     background: none;
     margin: 0.5em 0;
@@ -411,9 +399,9 @@ border-radius: 5px;
         -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.75), 0 0 8px rgba(254,254,254, .8) !important;
     box-shadow: inset 0 1px 1px rgba(0,0,0,.75), 0 0 8px rgba(254,254,254, .8) !important;
 }
-#zoomContainer {
+/*#zoomContainer {
     display: none;
-}
+}*/
 .price {
     font-size: 1.4em;
     color: #9275F1;
@@ -432,10 +420,10 @@ border-radius: 5px;
     right: 2px;
     background: none;
     color: #fff;
-    -moz-transform: rotate(45deg); /* Для Firefox */
-    -ms-transform: rotate(45deg); /* Для IE */
-    -webkit-transform: rotate(45deg); /* Для Safari, Chrome, iOS */
-    -o-transform: rotate(45deg); /* Для Opera */
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
     transform: rotate(45deg);
     text-align: center;
     z-index: 21;
@@ -495,33 +483,6 @@ border-radius: 5px;
   color: #000;
     border-color: #2B1F53;
 }
-/*.row.footer {
-    height: 210px;
-    margin: 1.5em 0 0 0;
-    background: url("/Content/img/bg2.png") repeat;
-    background-size: initial;
-}
-.row.footer .panel {
-    font-size: 1.2em;
-    margin: 1.5em auto;
-    width: 20em;
-}*/
-/*.breadcrumb {
-  background-color: #9275F1;
-}
-.breadcrumb > li + li:before {
-  color: #141414;
-  content: "\227D";
-}
-.breadcrumb > .active {
-  color: #FEFEFE;
-}
-.breadcrumb a {
-  color: #fff5ee;
-}
-.breadcrumb a:hover {
-  color: #000;
-}*/
 /*Наверх*/
 #top-link {
     /*background: #000;*/
@@ -551,11 +512,9 @@ border-radius: 5px;
     height: 100%;
     font-size: 2em;
 }
-
 .row.bg.shadow {
     padding: 1.0em;
 }
-
 /* Овальное разговорное облако */
 p.speech {
 	position: relative;
@@ -593,151 +552,12 @@ p.speech:after {
 	border: 15px solid; 
 	border-color: #fff transparent transparent #fff;
 }
-
-
-
 .dropdown-submenu{position:relative;}
 .dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
 .dropdown-submenu:hover>.dropdown-menu{display:block;}
 .dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
 .dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
 .dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
-
-
-/* columns of same height styles */
-
-.inside-full-height {
-  /*
-  // if you want to give content full height give him height: 100%;
-  // with content full height you can't apply margins to the content
-  // content full height does not work in ie http://stackoverflow.com/questions/27384433/ie-display-table-cell-child-ignores-height-100
-  */
-  height: 100%;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-/* columns of same height styles */
-
-.row-height {
-  display: table;
-  table-layout: fixed;
-  height: 100%;
-  width: 100%;
-}
-.col-height {
-  display: table-cell;
-  float: none;
-  height: 100%;
-}
-.col-top {
-  vertical-align: top;
-}
-.col-middle {
-  vertical-align: middle;
-}
-.col-bottom {
-  vertical-align: bottom;
-}
-
-@media (min-width: 480px) {
-  .row-xs-height {
-    display: table;
-    table-layout: fixed;
-    height: 100%;
-    width: 100%;
-  }
-  .col-xs-height {
-    display: table-cell;
-    float: none;
-    height: 100%;
-  }
-  .col-xs-top {
-    vertical-align: top;
-  }
-  .col-xs-middle {
-    vertical-align: middle;
-  }
-  .col-xs-bottom {
-    vertical-align: bottom;
-  }
-}
-
-@media (min-width: 768px) {
-  .row-sm-height {
-    display: table;
-    table-layout: fixed;
-    height: 100%;
-    width: 100%;
-  }
-  .col-sm-height {
-    display: table-cell;
-    float: none;
-    height: 100%;
-  }
-  .col-sm-top {
-    vertical-align: top;
-  }
-  .col-sm-middle {
-    vertical-align: middle;
-  }
-  .col-sm-bottom {
-    vertical-align: bottom;
-  }
-}
-
-@media (min-width: 992px) {
-  .row-md-height {
-    display: table;
-    table-layout: fixed;
-    height: 100%;
-    width: 100%;
-  }
-  .col-md-height {
-    display: table-cell;
-    float: none;
-    height: 100%;
-  }
-  .col-md-top {
-    vertical-align: top;
-  }
-  .col-md-middle {
-    vertical-align: middle;
-  }
-  .col-md-bottom {
-    vertical-align: bottom;
-  }
-}
-
-@media (min-width: 1200px) {
-  .row-lg-height {
-    display: table;
-    table-layout: fixed;
-    height: 100%;
-    width: 100%;
-  }
-  .col-lg-height {
-    display: table-cell;
-    float: none;
-    height: 100%;
-  }
-  .col-lg-top {
-    vertical-align: top;
-  }
-  .col-lg-middle {
-    vertical-align: middle;
-  }
-  .col-lg-bottom {
-    vertical-align: bottom;
-  }
-}
-
-
-/* Set padding to keep content from hitting the edges */
-/*.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}*/
-
 /* Set width on the form input elements since they're 100% wide by default */
 textarea {
     width: 100%;
@@ -755,20 +575,16 @@ select
 .field-validation-error {
     color: #fff;
 }
-
 .field-validation-valid {
     display: none;
 }
-
 input.input-validation-error {
     -webkit-box-shadow: inset 0 1px 1px rgba(255,74,72,.9), 0 0 10px rgba(255,74,72,.9) !important;
     box-shadow: inset 0 1px 1px rgba(255,74,72,.9), 0 0 10px rgba(255,74,72,.9) !important;
 }
-
 input[type="checkbox"].input-validation-error {
     border: 0 none;
 }
-
 .validation-summary-errors {
     color: #fff;
 }
