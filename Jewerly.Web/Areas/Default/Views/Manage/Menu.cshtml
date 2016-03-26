@@ -21,10 +21,7 @@
                                 <div class="row">
                                     <!---категории--->
                                     <ul class="nav nav-pills nav-stacked">
-                                        @*<li><a href="@Url.Action("UserInfo")">Мои данные</a></li>
-                                        <li><a href="@Url.Action("History")">История заказов</a></li>
-                                        <li><a href='@Url.Action("ChangePassword", "Manage")'>Смена пароля</a></li>*@
-                                        @Html.LiActionLink("О магазине", "UserInfo", "Manage")
+                                        @Html.LiActionLink("Мои данные", "UserInfo", "Manage")
                                         @Html.LiActionLink("История заказов", "History", "Manage")
                                         @Html.LiActionLink("Смена пароля", "ChangePassword", "Manage")
                                     </ul>
