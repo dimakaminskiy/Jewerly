@@ -20,6 +20,7 @@
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.OrderDate)
         @Html.HiddenFor(model => model.CurrencyId)
+        @Html.HiddenFor(m => m.UserId)
         <div class="form-group">
             @Html.LabelFor(model => model.OrderDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

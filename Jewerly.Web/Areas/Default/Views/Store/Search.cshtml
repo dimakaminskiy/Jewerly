@@ -1,0 +1,178 @@
+﻿@using Jewerly.Web.Models
+@using Jewerly.Web.Models.Store
+@using Jewerly.Web.Utils
+@model Jewerly.Web.Models.StoreViewModel
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
+}
+
+
+
+<div class="col-sm-4 col-md-3">
+
+    @Html.Partial("_SiteNavigationMenu", Model.MenuCategories)
+    @Html.Partial("_FiltersPartialView", Model.Filters)
+</div> <!--левая часть End--->
+
+<div class="col-sm-8 col-md-9">
+    <div class="row text-center mgo">
+        @if (Model.Products.List.Any())
+        {
+            int count = 0;
+            foreach (var item in Model.Products.List)
+            {
+                <div class="col-md-3 col-xs-6">
+                    <div class="product-wrapper sale">
+                        <a href="@Url.Action("Details", new {id = item.Id, name = item.SeoName})">
+                            <div class="product-image">
+                                @if (item.Discount != 0)
+                                {
+                                    <div class="discount-img"></div>
+                                    <div class="discount-nm">
+                                        <span>@item.Discount</span>%<br />скидка
+                                    </div>
+                                }
+                                <img class="img-responsive" src="@item.Picture.Preview()" title="@item.Name" alt="@item.Name" />
+                            </div>
+                        </a>
+
+                        <div class="product-info text-center">
+                            <a href="@Url.Action("Details", new {id = item.Id, name = item.SeoName})">@item.FullName</a>
+                            <div class="price">
+                                @item.PriceString @Model.Currencies.CurrentCurrency.CurrencyCode
+                            </div>
+                            <button onclick="AjaxCart.addproducttocart_catalog('@Url.Action("AddProductToCart", "ShoppingCart", new {productId = @item.Id})');return false;"
+                                    class="btn btn-default btn-sm" type="button"
+                                    data-toggle="modal" data-target="#myAlert">
+                                Купить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                                count++;
+
+                                if (count == 2)
+                                {
+                                    <div class="clearfix visible-xs"></div>
+                                }
+                                else if (count == 4)
+                                {
+                                    count = 0;
+                                    <div class="clearfix visible-md"></div>
+                                    <div class="clearfix visible-xs"></div>
+
+                                }
+
+            }
+
+        }
+        else
+        {
+            <div class="col-md-12">
+                <div class="content_silver text-center">
+                    К сожалению, Ваш запрос не дал результатов. Попробуйте изменить его.
+                    <div>
+                        <img src="/Content/img/ring.png" class="img-responsive" alt="TrandyCats" style="margin: auto;" />
+                    </div>
+                </div>
+            </div>        }
+    </div>
+    <div class="text-center">
+        @if (Model.Products.CountPage > 1)
+        {
+            @Html.PageLinks(Model.Products.PageNo, Model.Products.CountPage, x => Url.Action("Search", "Store",
+                        new
+                        {
+                            text= ViewBag.text,
+                            sort = Model.CurrentSort,
+                            page = x,
+
+                        }));
+        }
+
+    </div>
+
+</div>
+
+
+@section scripts {
+
+    <script type="text/javascript">
+        AjaxCart.init('#top-card-count', '#top-card-totals', '#mini-shopping-cart-items');
+    </script>
+
+    <script>
+        $('.currency').click(function () {
+            var t = $(this).attr("data-currency");
+            $("#CurrencyId").val(t);
+            $("#form-currency").submit();
+        });
+    </script>
+
+
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $(document).on("show.bs.modal", "#myAlert", function (e) {
+                $("#myAlert .modal-content").css("height", "5.0em");
+                var myAlert = $("#myAlert");
+                clearTimeout(myAlert.data('hideInterval'));
+                myAlert.data('hideInterval', setTimeout(function () {
+                    myAlert.modal('hide');
+                }, 1300));
+
+            });
+
+
+            $(".filter-option").click(function (event) {
+                event.preventDefault();
+
+                var filterOptionId = $(this).attr("attr-option");
+                var filterOptionName = $(this).text();
+                var filterId = $(this).attr("attr-id");
+                var queryFilter = "#filter-name-" + filterId;
+                var filter = $(queryFilter);
+                var filterName = filter.attr("attr-name");
+
+                if (filterOptionId == undefined || filterOptionId !== "") {
+                    if (!filter.hasClass("selected")) {
+                        filter.addClass("selected");
+                    }
+                    filter.attr("attr-option", filterOptionId);
+
+                    filter.html(filterName + " / " + filterOptionName);
+
+                } else {
+                    if (filter.hasClass("selected")) {
+                        filter.removeClass("selected");
+                    }
+                    filter.attr("attr-option", "");
+                    filter.html(filterName);
+                }
+
+                $("div.btn-group.open").removeClass("open");
+                return false;
+
+            });
+
+
+            $("#execute-filter-btn").click(function () {
+                var orgLink = "@Request.Url.LocalPath";
+                var attributes = $("#filter span[id^='filter-name-']").filter('.selected');
+                for (var i = 0; i < attributes.length; i++) {
+                    var line = "";
+                    line += (i != 0) ? "&" : "?";
+                    line += $(attributes[i]).attr("attr-other-name") + "=" + $(attributes[i]).attr("attr-option");
+                    orgLink += line;
+                }
+                document.location.href = orgLink;
+            });
+        });
+    </script>
+}

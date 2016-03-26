@@ -70,7 +70,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         public ActionResult Edit(
             [Bind(
                 Include =
-                    "Id,OrderDate,FirstName,LastName,MiddleName,CurrencyId,Phone,Email,Total,CountryId,City,TextInfo,OrderStatusId,MethodOfPaymentId,MethodOfDeliveryId"
+                    "Id,OrderDate,FirstName,LastName,MiddleName,CurrencyId,UserId,Phone,Email,Total,CountryId,City,TextInfo,OrderStatusId,MethodOfPaymentId,MethodOfDeliveryId"
                 )] Order order)
         {
             if (ModelState.IsValid)
@@ -115,12 +115,12 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Order order = DataManager.Orders.GetById(id);
-            var orderDetails = DataManager.OrderDetails.SearchFor(t => t.OrderId == order.Id);
+            var orderDetails = DataManager.OrderDetails.SearchFor(t => t.OrderId == order.Id).ToList();
             foreach (var detail in orderDetails)
             {
                 DataManager.OrderDetails.Delete(detail);
             }
-            TempData["message"] = string.Format("Заказ \"{0}\" был изменён", order.Id);
+            TempData["message"] = string.Format("Заказ \"{0}\" был удален", order.Id);
             DataManager.Orders.Delete(order);
             return RedirectToAction("Index");
         }

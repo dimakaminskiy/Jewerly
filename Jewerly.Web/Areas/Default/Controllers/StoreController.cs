@@ -102,9 +102,15 @@ namespace Jewerly.Web.Areas.Default.Controllers
             {
                return DataManager.Products.SearchFor(t => t.CategoryId == catId && t.Published);
             }
-
-  
         }
+
+        private IQueryable<Product> GetProductBySearch(string text)
+        {
+            return DataManager.Products.SearchFor(t => t.ProductId.ToString().Contains(text));
+         }
+
+
+
         public IQueryable<Product> GetProducts(IQueryable<Product> queryableSet, string sort)
         {
           //  IQueryable<Product> queryableSet = GetProductByCategoryId(categoryId);
@@ -112,7 +118,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
             switch (sort)
             {
                 case "novelty" :
-                  queryableSet=  queryableSet.OrderBy(t => t.ProductId); break;
+                  queryableSet=  queryableSet.OrderByDescending(t => t.ProductId); break;
                 case "expensive" :
                   queryableSet=  queryableSet.OrderByDescending(t => t.Price); break;
                 case "cheap" :
@@ -443,6 +449,52 @@ namespace Jewerly.Web.Areas.Default.Controllers
            model.MenuCategories = new MenuCategories(product.CategoryId,GetListMenuCategories());
            return View(model);
         }
+
+
+        public ActionResult Search( int? page=0, string text="", string sort="")
+        {
+
+           if (Request.HttpMethod.ToString() == "POST")
+            {
+
+                var currencyParam = Request.Form["CurrencyId"];
+                if (currencyParam != null && DataManager.Currencies.Count(t => t.Published && t.CurrencyId.ToString() == currencyParam) > 0)
+                {
+                    SetCookie("Currency", currencyParam);
+                    return RedirectToAction("Search", new {text=text });
+                }
+
+                return RedirectToAction("Search", new
+                {
+                    text = text,
+                    sort = sort,
+                    page = page,
+               });
+            }
+           if (string.IsNullOrEmpty(text)) return RedirectToAction("Index");
+ 
+            if (!page.HasValue) page = 1;
+            if (string.IsNullOrEmpty(sort)) sort = "novelty";
+
+
+            var model = new StoreViewModel();
+            var itemPerPage = 12;
+            var sortOptions = new ProductSortModel(sort);
+            model.MenuCategories = new MenuCategories(null, GetListMenuCategories());
+            model.Currencies = GetCurrencyModel();
+
+            IQueryable<Product> queryableSet = GetProductBySearch(text);
+            model.Filters =  new List<ProductFilter>();
+            var products = GetProducts(queryableSet, string.IsNullOrEmpty(sort) ? sortOptions.SortByDefult : sort);
+            var productsViewModel = new PageableProducts(products,
+            model.Currencies.CurrentCurrency, (page == null || page == 0) ? 1 : page.Value, User.Identity.IsAuthenticated, itemPerPage);
+            model.Products = productsViewModel;
+            model.ProductSortModel = sortOptions;
+
+            ViewBag.text = text;
+            return View(model);
+        }
+
 
 
         public StoreController(DataManager dataManager) : base(dataManager)

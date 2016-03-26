@@ -410,6 +410,7 @@
     <Content Include="Areas\Default\Views\Manage\UserInfo.cshtml" />
     <Content Include="Areas\Default\Views\Manage\History.cshtml" />
     <Content Include="Areas\Default\Views\Manage\Menu.cshtml" />
+    <Content Include="Areas\Default\Views\Store\Search.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />
