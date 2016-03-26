@@ -22,23 +22,10 @@ $('#top-link a').click(function() {
     return false;
 });
 
-//товар добавлен в корзину
-
-//$(function () {
-//    $('#myAlert').on('show.bs.modal', function () {
-//        var myAlert = $("#myAlert");
-//        clearTimeout(myAlert.data('hideInterval'));
-//        myAlert.data('hideInterval', setTimeout(function () {
-//            myAlert.modal('hide');
-//        }, 1500));
-//    });
-//});
-
-
 $(window).load(function () {
     SetDiscountValueOnProductPicture();
 
-    //сдвиг при модальном окне
+    ////сдвиг при модальном окне
     function getScrollBarMargin() {
         var height_document = $(document).height();
         var height_client = document.body.clientHeight;
@@ -67,7 +54,6 @@ $(window).load(function () {
     $('#myAlert').on('hide.bs.modal', function () {
         $('body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom').css({ 'margin-right': 0 });
     });
-
 
 });
 
