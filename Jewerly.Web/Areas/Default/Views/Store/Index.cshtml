@@ -83,8 +83,7 @@
                                 @item.PriceString @Model.Currencies.CurrentCurrency.CurrencyCode
                             </div>
                             <button onclick="AjaxCart.addproducttocart_catalog('@Url.Action("AddProductToCart", "ShoppingCart", new {productId = @item.Id})');return false;"
-                                    class="btn btn-default btn-sm" type="button"
-                                    data-toggle="modal" data-target="#myAlert">
+                                    class="btn btn-default btn-sm btn-buy" type="button">
                                 Купить
                             </button>
                         </div>
@@ -157,15 +156,13 @@
     <script>
 
         $(document).ready(function () {
-
-
             $(document).on("show.bs.modal", "#myAlert", function (e) {
                 $("#myAlert .modal-content").css("height", "5.0em");
                 var myAlert = $("#myAlert");
                 clearTimeout(myAlert.data('hideInterval'));
                 myAlert.data('hideInterval', setTimeout(function () {
                     myAlert.modal('hide');
-                }, 1300));
+                }, 1500));
 
             });
 

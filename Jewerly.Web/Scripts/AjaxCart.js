@@ -1,8 +1,8 @@
-var AjaxCart = {
+п»їvar AjaxCart = {
     loadWaiting: false,
-    cartcountitems: '', //кол-во товаров к корзине
-    carttotalprice: '', // общая цена
-    cartitems:'', // список покупок
+    cartcountitems: '', //РєРѕР»-РІРѕ С‚РѕРІР°СЂРѕРІ Рє РєРѕСЂР·РёРЅРµ
+    carttotalprice: '', // РѕР±С‰Р°СЏ С†РµРЅР°
+    cartitems:'', // СЃРїРёСЃРѕРє РїРѕРєСѓРїРѕРє
    
     init: function (cartcountitems, carttotalprice, cartitems) {
         this.loadWaiting = false;
@@ -20,7 +20,6 @@ var AjaxCart = {
             return;
         }
         this.setLoadWaiting(true);
-
         $.ajax({
             cache: false,
             url: urladd,
@@ -51,13 +50,13 @@ var AjaxCart = {
 
     success_process: function (response) {
 
-        if (response.cartcountitems) { // обновить кол-во товара в корзине
+        if (response.cartcountitems) { // РѕР±РЅРѕРІРёС‚СЊ РєРѕР»-РІРѕ С‚РѕРІР°СЂР° РІ РєРѕСЂР·РёРЅРµ
             $(AjaxCart.cartcountitems).html("("+response.cartcountitems+")").css('opacity', 0).animate({opacity: 1});
         }
-        if (response.cartitems) { // обновление списка покупок
+        if (response.cartitems) { // РѕР±РЅРѕРІР»РµРЅРёРµ СЃРїРёСЃРєР° РїРѕРєСѓРїРѕРє
             $(AjaxCart.cartitems).replaceWith(response.cartitems).css('opacity', 0).animate({ opacity: 1 });
         }
-        if (response.carttotalprice) { // общая цена
+        if (response.carttotalprice) { // РѕР±С‰Р°СЏ С†РµРЅР°
             $(AjaxCart.carttotalprice).html(response.carttotalprice).css('opacity', 0).animate({ opacity: 1 });
         }
 
@@ -87,7 +86,7 @@ var AjaxCart = {
     },
 
     ajaxFailure: function () {
-        $("#myAlert .modal-body").text("Не удалось добавить продукт. Пожалуйста, обновите страницу и попробуйте еще раз.");
+        $("#myAlert .modal-body").text("РќРµ СѓРґР°Р»РѕСЃСЊ РґРѕР±Р°РІРёС‚СЊ РїСЂРѕРґСѓРєС‚. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РѕР±РЅРѕРІРёС‚Рµ СЃС‚СЂР°РЅРёС†Сѓ Рё РїРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰Рµ СЂР°Р·.");
     }
 };
 
@@ -104,6 +103,7 @@ var AjaxCart = {
 var barNotificationTimeout;
 function displayBarNotification(message, messagetype, timeout) {
     clearTimeout(barNotificationTimeout);
-     $("#myAlert .modal-body").text(message);
+    $("#myAlert .modal-body").text(message);
+    $('#myAlert').modal();
 }
 
