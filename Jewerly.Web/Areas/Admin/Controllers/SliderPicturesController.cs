@@ -10,6 +10,7 @@ using Jewerly.Web.Controllers;
 
 namespace Jewerly.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class SliderPicturesController : BaseController
     {
 

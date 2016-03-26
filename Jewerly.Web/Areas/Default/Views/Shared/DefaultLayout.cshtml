@@ -28,7 +28,6 @@
         @if (User.Identity.IsAuthenticated == false)
         {
             <ul class="nav nav-pills pull-right" id="ModalBtn">
-                <li role="presentation" class="active">@Html.ActionLink("Админка", "Index", "Home", new { area = "Admin" }, null)</li><!-- Админка-->
                 <li role="presentation">
                     <a href="@Url.Action("Login", "Account")" data-toggle="modal" data-target="#myModal">Вход</a>
                 </li>
@@ -43,6 +42,10 @@
             {
                 @Html.AntiForgeryToken()
                 <ul class="nav nav-pills pull-right" id="ModalBtn">
+                    @if (User.IsInRole("Administrator"))
+                    {
+                    <li role="presentation" class="active">@Html.ActionLink("Админка", "Index", "Home", new { area = "Admin" }, null)</li><!-- Админка-->
+                       }
                     <li role="presentation">
                         @Html.ActionLink("Аккаунт " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                     </li>

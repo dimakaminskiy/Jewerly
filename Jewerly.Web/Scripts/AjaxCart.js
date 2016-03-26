@@ -61,6 +61,10 @@ var AjaxCart = {
             $(AjaxCart.carttotalprice).html(response.carttotalprice).css('opacity', 0).animate({ opacity: 1 });
         }
 
+        if (response.redirect) {
+            location.href = response.redirect;
+            return true;
+        }
         if (response.message) {
             //display notification
             if (response.success == true) {
@@ -74,10 +78,7 @@ var AjaxCart = {
             }
             return false;
         }
-        if (response.redirect) {
-            location.href = response.redirect;
-            return true;
-        }
+       
         return false;
     },
 

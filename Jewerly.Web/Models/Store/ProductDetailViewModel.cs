@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Jewerly.Domain;
+using Microsoft.Owin.Security;
 
 namespace Jewerly.Web.Models
 {
@@ -35,8 +36,15 @@ namespace Jewerly.Web.Models
             get { return OldPrice.ToString("F2"); }
         }
 
-        public Dictionary<string, string> SpecificationAttributes { get; set; }
+        public List<ProductPerformance> SpecificationAttributes { get; set; }
         public List<ProductChoiceAttribute> ChoiceAttributes { get; set; }
 
     }
+
+    public class ProductPerformance
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
+
 }

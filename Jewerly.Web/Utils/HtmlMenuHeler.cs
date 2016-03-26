@@ -199,15 +199,31 @@ namespace Jewerly.Web.Utils
 
             foreach (var category in menu.Categories)
             {
-                builder.AppendLine("<li role='presentation'><span><a href=\"" 
-                    + urlHelper.Action("Index","Store", new {id = category.Id, name = category.SeoName})+ "\">" + category.Name + "</a></span>");
-                builder.AppendLine("<a class=\"menu-icon\" role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href='#" +
-                                   category.Id + "' aria-expanded=\"true\" aria-controls='" + category.Id + "'>" + "<span class='glyphicon glyphicon-resize-full'></span>" + "</a>");
-
-
+                if (menu.TopCategory != null && category.Id == menu.TopCategory.Id)
+                {
+                    builder.AppendLine("<li role='presentation'><span><a class=\"active_menu\" href=\""
+                        + urlHelper.Action("Index", "Store", new { id = category.Id, name = category.SeoName }) + "\">" + category.Name + "</a></span>");
+                }
+                else
+                {
+                    builder.AppendLine("<li role='presentation'><span><a href=\""
+                        + urlHelper.Action("Index", "Store", new { id = category.Id, name = category.SeoName }) + "\">" + category.Name + "</a></span>");
+                }
+                if (category.SubCategories.Count > 0)
+                {
+                    builder.AppendLine("<a class=\"menu-icon\" role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href='#" +
+                                       category.Id + "' aria-expanded=\"true\" aria-controls='" + category.Id + "'>" + "<span class='glyphicon glyphicon-resize-full'></span>" + "</a>");                   
+                }                
                 if (menu.TopCategory!=null && category.Id == menu.TopCategory.Id)
                 {
-                    builder.AppendLine("<div id='" + category.Id + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='headingOne'>");      
+                    if (category.SubCategories.Count > 0)
+                    {
+                        builder.AppendLine("<div id='" + category.Id + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='headingOne'>");  
+                    }
+                    else
+                    {
+                        builder.AppendLine("<div id='" + category.Id + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='headingOne'>"); 
+                    }
                 }
                 else
                 {
@@ -242,81 +258,9 @@ namespace Jewerly.Web.Utils
 
 
                 builder.AppendLine("</ul></div>");
-
                 builder.AppendLine("</div>");
                 builder.AppendLine("</li>");
             }
-           
-
-            
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //public static MvcHtmlString MenuCategoriesLinks(this HtmlHelper html,MenuViewModel menu)
-        //{
-        //    var builder = new StringBuilder();
-
-        //    foreach (var category in menu.Categories)
-        //    {
-        //        builder.AppendLine("<li role='presentation'>");
-        //        builder.AppendLine("<a role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href='#" +
-        //                           category.Id + "' aria-expanded=\"true\" aria-controls='" + category.Id + "'>" + category.Name + "</a>");
-
-
-        //        if (category.Id == menu.SelectCategory)
-        //        {
-        //            builder.AppendLine("<div id='" + category.Id + "' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='headingOne'>");      
-        //        }
-        //        else
-        //        {
-        //            builder.AppendLine("<div id='" + category.Id + "' class='panel-collapse collapse' role='tabpanel' aria-labelledby='headingOne'>"); 
-        //        }
-              
-
-        //        builder.AppendLine("<div class=\"panel-body\"> <ul class=\"nav nav-pills nav-stacked\">");
-
-
-        //        foreach (var subCategory in category.SubCategories)
-        //        {
-
-        //            if (subCategory.Id == menu.SelectSubCategory)
-        //            {
-        //                builder.AppendLine("<li class=\"active\">");     
-        //            }
-        //            else
-        //            {
-        //                builder.AppendLine("<li >"); 
-        //            }
-                   
-        //            builder.AppendLine(
-        //                html.ActionLink(subCategory.Name, "Index", "Store", 
-        //                    new
-        //                    {
-        //                        name = subCategory.TranslitName, id = subCategory.Id
-        //                    },null).ToString());
-        //            builder.AppendLine("</li>");
-
-        //        }
-
-
-        //        builder.AppendLine("</ul></div>");
-
-        //        builder.AppendLine("</div>");
-        //        builder.AppendLine("</li>");
-        //    }
-           
             return new MvcHtmlString(builder.ToString());
         }
 

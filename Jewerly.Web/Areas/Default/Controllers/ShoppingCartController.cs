@@ -99,7 +99,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
                     return Json(new
                     {
                         success = false,
-                        message = "Продукт не найден. Пожалуйста, обновите страницу и попробуйте еще раз."
+                        message = "Возникла ошибка. Пожалуйста, обновите страницу и попробуйте еще раз."
                     });
              }
             
@@ -135,7 +135,95 @@ namespace Jewerly.Web.Areas.Default.Controllers
             });
 
         }
-       
+
+        [HttpPost]
+        public ActionResult AddProductToCart_Details(int productId, int count, int? attrId, int? attrOptionId)
+        {
+            ProductChoiceAttribute attribute = null;
+            ChoiceAttributeOption option = null;
+            var product = DataManager.Products.GetById(productId);
+            if (product == null)
+            {
+                if (product == null)
+                    //no product found
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Возникла ошибка. Пожалуйста, обновите страницу и попробуйте еще раз."
+                    });
+            }
+             if (product.Published == false)
+            {
+                 // не опубликован
+                return Json(new
+                {
+                    success = false,
+                    message = "Возникла ошибка. Пожалуйста, обновите страницу и попробуйте еще раз."
+                });
+            }
+            if (product.MappingProductChoiceAttributeToProducts.Any())
+            {
+                //нет атрибутов
+                if (attrId.HasValue == false || attrOptionId.HasValue == false)
+                {
+                    return Json(new
+                {
+                    success = false,
+                    message = "Возникла ошибка. Пожалуйста, обновите страницу и попробуйте еще раз."
+                });
+                }
+                var map = product.MappingProductChoiceAttributeToProducts.SingleOrDefault(t => t.ProductChoiceAttributeId == attrId.Value);
+                if (map != null)
+                {
+                 
+                     attribute = map.ProductChoiceAttribute;
+                     option =
+                        attribute.ChoiceAttributeOptions.SingleOrDefault(
+                            t => t.ChoiceAttributeOptionId == attrOptionId.Value);
+
+                    if (option == null)
+                    {
+                        return Json(new
+                        {
+                            success = false,
+                            message = "Возникла ошибка. Пожалуйста, обновите страницу и попробуйте еще раз."
+                        });
+                    }
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Возникла ошибка. Пожалуйста, обновите страницу и попробуйте еще раз."
+                    });
+                }
+             }
+            if (count <= 0) count = 1;
+
+
+            int currencyId = GetCurrentCurrency();
+            var currency = DataManager.Currencies.SearchFor(t => t.CurrencyId == currencyId).Single();
+
+            var cart = ShoppingCart.GetCart(this, DataManager);
+            cart.AddProductToCart(productId, count);
+            var cartItems = cart.GetCarts();
+
+            var model = GetShoppingCartMiniModel(cartItems, currency);
+            var html = RenderViewToString(ControllerContext, "_ShoppingCartItemsPartialView", model);
+            //  var helper = new HtmlHelper(new ViewContext(), new ViewPage());
+            return Json(new 
+            {
+                cartcountitems = model.Count,
+                carttotalprice = model.TotalPrice + " " + currency.CurrencyCode,
+                cartitems = html,
+                message = "Товар добавлен в корзину",
+                success = true
+            });
+          }
+
+
+
         public ShoppingCartController(DataManager dataManager) : base(dataManager)
         {
         }

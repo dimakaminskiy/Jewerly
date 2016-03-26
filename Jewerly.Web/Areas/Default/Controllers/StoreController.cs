@@ -15,6 +15,7 @@ using Jewerly.Web.Models.Store;
 using Jewerly.Web.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using Ninject.Infrastructure.Language;
 
 namespace Jewerly.Web.Areas.Default.Controllers
@@ -44,9 +45,87 @@ namespace Jewerly.Web.Areas.Default.Controllers
             return result;
         }
 
-        private List<CategoryModel> GetListMenuCategories()
+
+
+        private List<CategoryModel> GetListMenuCategories1()
         {
-            List<CategoryModel> result = new List<CategoryModel>();
+            List<CategoryModel> categories = new List<CategoryModel>();
+            var topcategories =
+                DataManager.Categories.SearchFor(t => t.Published && t.ParentCategoryId == null).ToList();
+
+            foreach (var top in topcategories)
+            {
+                var child =
+                    DataManager.Categories.SearchFor(
+                        t => t.ParentCategoryId == top.Id && t.Products.Count(g => g.Published) > 0).ToList();
+
+                if (child.Count == 0)
+                {
+                    if (top.Products.Count(g => g.Published) > 0)
+                    {
+                        var t = new CategoryModel
+                        {
+                            Id = top.Id,
+                            Name = top.Name,
+                            SeoName = top.SeoName,
+                            SubCategories = new List<CategoryModel>()
+                        };
+                        categories.Add(t);
+                    }
+                }
+                else
+                {
+                    var topcategory = new CategoryModel
+                    {
+                        Id = top.Id,
+                        Name = top.Name,
+                        SeoName = top.SeoName,
+
+                    };
+
+
+                    List<CategoryModel> subcategories = new List<CategoryModel>();
+                    foreach (var c in child)
+                    {
+                        var s = new CategoryModel
+                        {
+                            Id = c.Id,
+                            Name = c.Name,
+                            SeoName = c.SeoName,
+                            ParentCategoryId = c.ParentCategoryId
+                        };
+                        subcategories.Add(s);
+                    }
+
+                    topcategory.SubCategories = subcategories;
+                    categories.Add(topcategory);
+                }
+            }
+            return categories;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private
+            List<CategoryModel> GetListMenuCategories()
+        {
+            List<CategoryModel> categories = new List<CategoryModel>();
 
             foreach (var c in DataManager.Categories.SearchFor(t => t.ParentCategoryId == null && t.Published)
                 .OrderBy(t => t.Name).Select(t => new CategoryModel()
@@ -57,11 +136,11 @@ namespace Jewerly.Web.Areas.Default.Controllers
                     ParentCategoryId = t.ParentCategoryId
                 }).ToList())
             {
-                result.Add(c);
+                categories.Add(c);
             }
 
 
-            foreach (var c in result)
+            foreach (var c in categories)
             {
                 List<CategoryModel> subcategories = new List<CategoryModel>();
                 foreach (var s in DataManager.Categories.SearchFor(t => t.ParentCategoryId == c.Id && t.Published)
@@ -78,84 +157,90 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 c.SubCategories = subcategories;
             }
 
-            return result;
+            return categories;
         }
 
         #endregion
 
+        #region Helpers
 
-      
-       
-
-
-        
         private IQueryable<Product> GetProductByCategoryId(int catId)
         {
             var category = DataManager.Categories.GetById(catId);
             if (category.ParentCategoryId == null)
             {
-                var childcategories = DataManager.Categories.SearchFor(t => t.ParentCategoryId == category.Id && t.Published).Select(t=>t.Id).ToEnumerable();
-                var products = DataManager.Products.SearchFor(t => childcategories.Any(g => g == t.CategoryId));
+                var childcategories =
+                    DataManager.Categories.SearchFor(t => t.ParentCategoryId == category.Id && t.Published)
+                        .Select(t => t.Id)
+                        .ToEnumerable();
+                var products =
+                    DataManager.Products.SearchFor(
+                        t => childcategories.Any(g => g == t.CategoryId) || t.CategoryId == catId);
                 return products;
             }
             else
             {
-               return DataManager.Products.SearchFor(t => t.CategoryId == catId && t.Published);
+                return DataManager.Products.SearchFor(t => t.CategoryId == catId && t.Published);
             }
         }
 
         private IQueryable<Product> GetProductBySearch(string text)
         {
             return DataManager.Products.SearchFor(t => t.ProductId.ToString().Contains(text));
-         }
+        }
 
-
-
-        public IQueryable<Product> GetProducts(IQueryable<Product> queryableSet, string sort)
+        private IQueryable<Product> GetProducts(IQueryable<Product> queryableSet, string sort)
         {
-          //  IQueryable<Product> queryableSet = GetProductByCategoryId(categoryId);
-                //DataManager.Products.SearchFor(t => t.CategoryId == categoryId && t.Published);
+            //  IQueryable<Product> queryableSet = GetProductByCategoryId(categoryId);
+            //DataManager.Products.SearchFor(t => t.CategoryId == categoryId && t.Published);
             switch (sort)
             {
-                case "novelty" :
-                  queryableSet=  queryableSet.OrderByDescending(t => t.ProductId); break;
-                case "expensive" :
-                  queryableSet=  queryableSet.OrderByDescending(t => t.Price); break;
-                case "cheap" :
-                     queryableSet=  queryableSet.OrderBy(t => t.Price); break;
-              Default :
-                         queryableSet=  queryableSet.OrderBy(t => t.ProductId); break;
-             }
-            
+                case "novelty":
+                    queryableSet = queryableSet.OrderByDescending(t => t.ProductId);
+                    break;
+                case "expensive":
+                    queryableSet = queryableSet.OrderByDescending(t => t.Price);
+                    break;
+                case "cheap":
+                    queryableSet = queryableSet.OrderBy(t => t.Price);
+                    break;
+                    Default :
+                    queryableSet = queryableSet.OrderBy(t => t.ProductId);
+                    break;
+            }
+
             return queryableSet;
         }
-        void InitializeRoles()
+
+        private void InitializeRoles()
         {
-            var roleManager = new RoleManager<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+            var roleManager =
+                new RoleManager<IdentityRole>(
+                    new RoleStore<IdentityRole>(new ApplicationDbContext()));
 
 
             if (!roleManager.RoleExists("Registered"))
             {
-                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                var role = new IdentityRole();
                 role.Name = "Registered";
                 roleManager.Create(role);
-             }
+            }
             if (!roleManager.RoleExists("Member"))
             {
-                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                var role = new IdentityRole();
                 role.Name = "Member";
                 roleManager.Create(role);
 
             }
             if (!roleManager.RoleExists("Administrator"))
             {
-                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                var role = new IdentityRole();
                 role.Name = "Administrator";
                 roleManager.Create(role);
             }
             if (!roleManager.RoleExists("Banned"))
             {
-                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                var role = new IdentityRole();
                 role.Name = "Banned";
                 roleManager.Create(role);
 
@@ -163,31 +248,29 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
 
         }
-        
+
         public CurrencyModel GetCurrencyModel()
         {
             var list = DataManager.Currencies.GetAll().OrderBy(t => t.DisplayOrder).ToList();
             int id = GetCurrentCurrency();
-            return  new CurrencyModel( list,id);
+            return new CurrencyModel(list, id);
         }
 
-
-
-        public static NameValueCollection ParseQueryString(string query)
+        private static NameValueCollection ParseQueryString(string query)
         {
             NameValueCollection queryParameters = new NameValueCollection();
             if (query.Contains("?"))
             {
                 query = query.Substring(query.IndexOf('?') + 1);
             }
-            
+
             string[] querySegments = query.Split('&');
             foreach (string segment in querySegments)
             {
                 string[] parts = segment.Split('=');
                 if (parts.Length > 0)
                 {
-                    string key = parts[0].Trim(new char[] { '?', ' ' });
+                    string key = parts[0].Trim(new char[] {'?', ' '});
                     string val = parts[1].Trim();
 
                     queryParameters.Add(key, val);
@@ -199,7 +282,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
             return queryParameters;
         }
 
-        public IQueryable<Product> FilterProducts(IQueryable<Product> queryableSet, int attrId, int optionId)
+        private IQueryable<Product> FilterProducts(IQueryable<Product> queryableSet, int attrId, int optionId)
         {
             return (from p in queryableSet
                 from m in p.MappingProductSpecificationAttributeToProducts
@@ -210,9 +293,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
         }
 
-
-
-        public List<QueryFilter> GetQueryFilters(string query)
+        private List<QueryFilter> GetQueryFilters(string query)
         {
             if (!query.Contains("?"))
             {
@@ -223,7 +304,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 query = query.Substring(query.IndexOf('?') + 1);
             }
             string[] querySegments = query.Split('&');
-            
+
             List<QueryFilter> filters = new List<QueryFilter>();
 
             foreach (string segment in querySegments)
@@ -241,17 +322,19 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
                     var Attr =
                         DataManager.ProductSpecificationAttributes.SearchFor(t => t.SeoName == attrString)
-                            .Include(x=>x.SpecificationAttributeOptions).SingleOrDefault();
+                            .Include(x => x.SpecificationAttributeOptions).SingleOrDefault();
                     if (Attr != null)
                     {
-                       if (Attr.SpecificationAttributeOptions.Any(t=>t.SpecificationAttributeOptionId.ToString()==optionString))
+                        if (
+                            Attr.SpecificationAttributeOptions.Any(
+                                t => t.SpecificationAttributeOptionId.ToString() == optionString))
                         {
-                                filters.Add(new QueryFilter()
-                                {
-                                    AttributeName = attrString,
-                                    AttributeId = Attr.ProductSpecificationAttributeId,
-                                    AttributeOptionId = int.Parse(optionString)
-                                });
+                            filters.Add(new QueryFilter()
+                            {
+                                AttributeName = attrString,
+                                AttributeId = Attr.ProductSpecificationAttributeId,
+                                AttributeOptionId = int.Parse(optionString)
+                            });
                         }
                     }
 
@@ -260,8 +343,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
             return filters;
         }
 
-
-        public List<ProductFilter> GetProductFilters(IQueryable<Product> queryableSet)
+        private List<ProductFilter> GetProductFilters(IQueryable<Product> queryableSet)
         {
             var filters = new List<ProductFilter>();
 
@@ -299,25 +381,8 @@ namespace Jewerly.Web.Areas.Default.Controllers
 
         }
 
-
-
-
-        void initializeSeoName()
-        {
-            foreach (var product in DataManager.Products.GetAll().ToList())
-            {
-                product.SeoName = product.Name.ToTranslit();
-                DataManager.Products.Edit(product);
-
-            }
-
-
-        }
-
-       
-
-
-
+            #endregion
+        
         public ActionResult Index(int? page = 0,int id = 0, string name = "", string sort = "")
         {
 
@@ -327,6 +392,29 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 var currencyParam =  Request.Form["CurrencyId"];
                 if (currencyParam != null && DataManager.Currencies.Count(t => t.Published && t.CurrencyId.ToString() == currencyParam) > 0)
                 {
+
+
+                    if (User.Identity.IsAuthenticated)
+                    {
+                       
+                        
+                        var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                        var userId = User.Identity.GetUserId();
+                        var u = manager.FindById(userId);
+
+                        if (DataManager.Currencies.SearchFor(t => t.CurrencyId.ToString() == currencyParam).Any())
+                        {
+                            u.CurrencyId = int.Parse(currencyParam);
+                            manager.Update(u);
+                        }
+
+                    }
+                   
+
+
+
+
+
                     SetCookie("Currency", currencyParam);
                     return RedirectToAction("Index", new { page = (page == 0) ? null : page, id, name, sort });
                 }
@@ -356,7 +444,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
            var model = new StoreViewModel();
            var itemPerPage = 12;
            var sortOptions = new ProductSortModel(sort);          
-           model.MenuCategories = new MenuCategories(id, GetListMenuCategories());
+           model.MenuCategories = new MenuCategories(id, GetListMenuCategories1());
            model.Currencies=GetCurrencyModel();
 
 
@@ -445,11 +533,10 @@ namespace Jewerly.Web.Areas.Default.Controllers
            var product = DataManager.Products.GetById(id);
            var model = new ProductDetailViewModel();
            var c= DataManager.Currencies.GetById(GetCurrentCurrency());
-           model.Product = product.ToProductDetailModel(c);
-           model.MenuCategories = new MenuCategories(product.CategoryId,GetListMenuCategories());
+           model.Product = product.ToProductDetailModel(c,User.Identity.IsAuthenticated);
+           model.MenuCategories = new MenuCategories(product.CategoryId,GetListMenuCategories1());
            return View(model);
         }
-
 
         public ActionResult Search( int? page=0, string text="", string sort="")
         {
@@ -480,7 +567,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
             var model = new StoreViewModel();
             var itemPerPage = 12;
             var sortOptions = new ProductSortModel(sort);
-            model.MenuCategories = new MenuCategories(null, GetListMenuCategories());
+            model.MenuCategories = new MenuCategories(null, GetListMenuCategories1());
             model.Currencies = GetCurrencyModel();
 
             IQueryable<Product> queryableSet = GetProductBySearch(text);
@@ -495,11 +582,14 @@ namespace Jewerly.Web.Areas.Default.Controllers
             return View(model);
         }
 
-
+        #region Ctor
 
         public StoreController(DataManager dataManager) : base(dataManager)
         {
         }
+
+        #endregion
+
 
         
     }

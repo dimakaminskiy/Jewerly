@@ -5,6 +5,12 @@ namespace Jewerly.Domain
 {
     public class Category
     {
+
+        public Category()
+        {
+            Products = new HashSet<Product>();
+        }
+
         public int Id { get; set; }
         [Display(Name = "Название")]
         [Required]
@@ -23,6 +29,7 @@ namespace Jewerly.Domain
         [Display(Name = "Изображение")]
         public int? CategoryPictureId { get; set; }
         public virtual CategoryPicture CategoryPicture { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
      
 
 

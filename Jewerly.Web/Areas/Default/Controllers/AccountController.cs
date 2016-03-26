@@ -151,6 +151,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
             {
                 case SignInStatus.Success:
                     string url = Url.Action("Index", "Store");
+                    SetCookie("Currency", user.CurrencyId.ToString());
                     return Json(new {success = true, url = url});
                 default:
                     ModelState.AddModelError("", @"Неверное имя пользователя или пароль");

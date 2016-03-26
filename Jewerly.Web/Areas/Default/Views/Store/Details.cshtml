@@ -4,16 +4,19 @@
     ViewBag.Title = "Trandycats";
     Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
 }
-
 <div class="col-sm-4 col-md-3">
     <!--левая часть--->
     @Html.Partial("_SiteNavigationMenu", Model.MenuCategories)
 </div> <!--левая часть End--->
 
+<div class="hidden">
+    
+</div>
+
+
 <div class="col-sm-8 col-md-9">
     <div class="row mgo">
         <div class="content_silver text-center">
-
             <div class="row">
                 <div class="col-md-7">
                     <div class="product-image">
@@ -21,23 +24,20 @@
                         {
                             <div class="discount-img"></div>
                             <div class="discount-nm">
-                                <span>@Model.Product.Discount</span>%<br />скидка
+                             <span>@Model.Product.Discount</span>%<br />скидка
                             </div>
                         }
                         <img class="img-responsive" src="@Model.Product.Picture.Image()" alt="@Model.Product.Name" title="@Model.Product.Name">
                     </div>
                 </div>
                 <div class="col-md-5">
-
                     <div class="product-info shadow text-center">
-
                         <h1>@Model.Product.FullName</h1>
                         <div class="product-price">
                             Цена
                             <span class="price">@Model.Product.PriceString</span>
                             @Model.Product.Currency
                         </div>
-
                         @if (Model.Product.Discount != 0)
                         {
                             <div class="product-price">
@@ -50,47 +50,105 @@
                         }
                         <div class="product-cart">
                             <div>
-                                 <input type="number" class="inp_count" value="1">
-                                 <button class="btn btn-default btn-sm" type="button" data-toggle="modal" data-target="#myAlert">Купить</button>
+                                <input class="inp_count" type="text" autocomplete="off" value="1" oldvalue="1" maxlength="3">
+                                <button class="btn btn-default btn-sm btn-buy" type="button">Купить</button>
                             </div>
                         </div>
                         <div>
                             <table class="table table-responsive table-hover">
+                                @for (int i = 0; i < Model.Product.ChoiceAttributes.Count; i++)
+                                {
+                                    <tr>
+                                        <td class="attr">@Model.Product.ChoiceAttributes[i].Name</td>
+                                        <td>
+                                            @Html.DropDownListFor(m => 
+                                           m.Product.ChoiceAttributes[i].ChoiceAttributeOptions,
+                                          new SelectList(Model.Product.ChoiceAttributes[i].ChoiceAttributeOptions,
+                                              "ChoiceAttributeOptionId", "Name"), new
+                                              {
+                                                  attr =  Model.Product.ChoiceAttributes[i].ProductChoiceAttributeId,
+                                                  id = "choiceAttribute"
+                                              })
+                                        </td>
+                                    </tr>
+                                }
                                 @foreach (var a in Model.Product.SpecificationAttributes)
                                 {
                                     <tr>
-                                        <td>@a.Key</td>
+                                        <td>@a.Name</td>
                                         <td>@a.Value</td>
                                     </tr>
                                 }
                             </table>
                         </div>
-
-
-                        @for (int i = 0; i < Model.Product.ChoiceAttributes.Count; i++)
-                        {
-                            <div>
-                                @Model.Product.ChoiceAttributes[i].Name
-                            </div>
-                            <div>
-
-                                @Html.DropDownListFor(m => m.Product.ChoiceAttributes[i].ChoiceAttributeOptions,
-                                    new SelectList(Model.Product.ChoiceAttributes[i].ChoiceAttributeOptions, "ChoiceAttributeOptionId", "Name"))
-
-                            </div>
-                        }
-
-
-
                         <div class="product-description">
                             @Model.Product.FullDescription
                         </div>
-
+                        </div>
                     </div>
-
-                </div>
             </div>
-
-        </div>
+            </div>
     </div>
 </div>
+<script>
+    $(".btn-buy").click(function() {
+        var url = "@Url.Action("AddProductToCart_Details", "ShoppingCart")";
+        var product = @Model.Product.Id;
+        var count = $(".inp_count").val();
+        var dropDown=$("#choiceAttribute");
+        var attr = dropDown.attr("attr");
+        var option = dropDown.val();
+      
+      $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: 
+                {
+                    productId: product,
+                    count: count,
+                    attrId:attr,
+                    attrOptionId:option
+                },
+            cache: false,
+            async: false,
+            success: function(response) {
+                if (response.cartcountitems) { // обновить кол-во товара в корзине
+                    $("#top-card-count").html("("+response.cartcountitems+")").css('opacity', 0).animate({opacity: 1});
+                }
+                if (response.cartitems) { // обновление списка покупок
+                    $("#mini-shopping-cart-items").replaceWith(response.cartitems).css('opacity', 0).animate({ opacity: 1 });
+                }
+                if (response.carttotalprice) { // общая цена
+                    $("#top-card-totals").html(response.carttotalprice).css('opacity', 0).animate({ opacity: 1 });
+                }
+
+                if (response.redirect) {
+                    location.href = response.redirect;
+                    return true;
+                }
+                if (response.message) {
+                    //display notification
+                    if (response.success == true) {
+                        //success
+                        //specify timeout for success messages
+                        displayBarNotification(response.message, 'success', 3500);
+                    }
+                    else {
+                        //no timeout for errors
+                        displayBarNotification(response.message, 'error', 0);
+                    }
+                    return false;
+                }
+       
+                return false;
+
+            },
+            error: function(xhr, textStatus, exceptionThrown) { alert(JSON.parse(xhr.responseText)); }
+        });
+    });
+    $(document).on("focusout", ".inp_count", function() {
+        if ($(this).val() == '' || $(this).val() == 0)
+            $(this).val($(this).attr('oldvalue'));
+    });
+</script>
