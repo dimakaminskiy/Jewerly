@@ -235,13 +235,30 @@
     <Compile Include="Areas\Default\Controllers\ReviewsController.cs" />
     <Compile Include="Areas\Default\Controllers\ShoppingCartController.cs" />
     <Compile Include="Areas\Default\Controllers\StoreController.cs" />
+    <Compile Include="Areas\Default\Controllers\TestController.cs" />
     <Compile Include="Areas\Default\DefaultAreaRegistration.cs" />
     <Compile Include="Areas\Default\Models\AccountViewModels.cs" />
+    <Compile Include="Areas\Default\Models\grab\1.cs" />
+    <Compile Include="Areas\Default\Models\grab\OtherRepository.cs" />
+    <Compile Include="Areas\Default\Models\SitemapNode.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Areas\Default\Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\SiteController.cs" />
     <Compile Include="extensions\Class1.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603262050561_json.cs" />
+    <Compile Include="Migrations\201603262050561_json.Designer.cs">
+      <DependentUpon>201603262050561_json.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603262058052_json1.cs" />
+    <Compile Include="Migrations\201603262058052_json1.Designer.cs">
+      <DependentUpon>201603262058052_json1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603262219365_json2.cs" />
+    <Compile Include="Migrations\201603262219365_json2.Designer.cs">
+      <DependentUpon>201603262219365_json2.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -266,6 +283,7 @@
     <Compile Include="Utils\PhotoEditor.cs" />
     <Compile Include="Utils\ProductExtentions.cs" />
     <Compile Include="Utils\SelectListHelperExtensions.cs" />
+    <Compile Include="Utils\StoreHelper.cs" />
     <Compile Include="Utils\Translit.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -273,8 +291,11 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\bg_dark.png" />
+    <Content Include="Content\images\city.png" />
+    <Content Include="Content\images\cloud.png" />
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\quantity_loading.gif" />
+    <Content Include="Content\images\slider\9e3c4973-6584-46c7-92ee-109c57c7aed6.jpg" />
     <Content Include="Content\img\bg.gif" />
     <Content Include="Content\img\bg.png" />
     <Content Include="Content\img\bg2.png" />
@@ -411,6 +432,7 @@
     <Content Include="Areas\Default\Views\Manage\History.cshtml" />
     <Content Include="Areas\Default\Views\Manage\Menu.cshtml" />
     <Content Include="Areas\Default\Views\Store\Search.cshtml" />
+    <None Include="Properties\PublishProfiles\Jewerly.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\fine-uploader\ajax.requester.js" />
     <Content Include="Scripts\fine-uploader\all.js" />
@@ -447,7 +469,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\site.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -468,10 +492,13 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Models\" />
+    <Folder Include="Areas\Default\Views\Site\" />
+    <Folder Include="Areas\Default\Views\Test\" />
     <Folder Include="Content\images\category\" />
     <Folder Include="Content\images\gallery\" />
     <Folder Include="Content\images\temp\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Site\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -510,6 +537,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Areas\Admin\Controllers\Migrations\201603231549496_order.resx">
       <DependentUpon>201603231549496_order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603262050561_json.resx">
+      <DependentUpon>201603262050561_json.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603262058052_json1.resx">
+      <DependentUpon>201603262058052_json1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603262219365_json2.resx">
+      <DependentUpon>201603262219365_json2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

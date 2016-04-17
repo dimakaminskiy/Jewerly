@@ -68,11 +68,8 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         public ActionResult Index()
         {
             List<Category> result = new List<Category>();
-
-
             var topCategories =
                 DataManager.Categories.SearchFor(t => t.ParentCategoryId == null).OrderBy(t => t.Name).ToList();
-
             foreach (Category category in topCategories)
             {
                 result.Add(category);
@@ -80,7 +77,6 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                     DataManager.Categories.SearchFor(t => t.ParentCategoryId == category.Id).OrderBy(t => t.Name);
                 result.AddRange(childrenCategories);
             }
-
             return View(result);
         }
 
@@ -145,6 +141,11 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                 {
                     category.SeoName = category.Name.ToTranslit();
                 }
+                if (category.Id == category.ParentCategoryId)
+                {
+                    category.ParentCategoryId = null;
+                }
+
                 DataManager.Categories.Edit(category);
 
                 TempData["message"] = string.Format("Изменения в категории \"{0}\" были сохранены", category.Name);
@@ -199,6 +200,24 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             DataManager.Categories.Delete(category);
             TempData["message"] = string.Format("Категории \"{0}\" была удалена", category.Name);
             return RedirectToAction("Index");
+        }
+
+
+        public ActionResult ProductPicturebyId(int id)
+        {
+            var picture = DataManager.CategoryPictures.GetById(id);
+            //if (picture == null)
+            //{
+
+            //}
+
+            //string pic = result.Preview();
+            return Json(
+                       new
+                       {
+                           success = true,
+                           name = (picture == null) ? "/Content/img/NoImage.gif" : picture.Path,
+                       }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

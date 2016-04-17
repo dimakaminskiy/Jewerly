@@ -31,7 +31,7 @@
     },
 
 
-    addproducttocart_details: function (urladd, formselector) {
+    addproducttocart_details: function (urladd, product,count,attr,option) {
         if (this.loadWaiting != false) {
             return;
         }
@@ -39,8 +39,15 @@
 
         $.ajax({
             cache: false,
+            async: false,
             url: urladd,
-            data: $(formselector).serialize(),
+            data:
+                {
+                    productId: product,
+                    count: count,
+                    attrId: attr,
+                    attrOptionId: option
+                },
             type: 'post',
             success: this.success_process,
             complete: this.resetLoadWaiting,
@@ -107,3 +114,6 @@ function displayBarNotification(message, messagetype, timeout) {
     $('#myAlert').modal();
 }
 
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}

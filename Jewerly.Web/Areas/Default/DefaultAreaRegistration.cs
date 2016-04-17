@@ -16,6 +16,25 @@ namespace Jewerly.Web.Areas.Default
         public override void RegisterArea(AreaRegistrationContext context)
         {
 
+
+
+
+            context.MapRoute(
+             name: "sitemap.xml",
+             url: "sitemap.xml",
+             defaults: new { controller = "Site", action = "SitemapXml" },
+             namespaces: new[] { "Jewerly.Web.Controllers" }
+         );
+         
+
+            context.MapRoute(
+            name: "robots.txt",
+            url: "robots.txt",
+            defaults: new { controller = "Site", action = "RobotsText" },
+            namespaces: new[] { "Jewerly.Web.Controllers" }
+           );
+
+
             context.MapRoute(
                "",
                "product/{name}/{id}",
@@ -52,6 +71,10 @@ namespace Jewerly.Web.Areas.Default
 
 
 
+
+           
+
+
       
             context.MapRoute(
                 "",
@@ -60,7 +83,6 @@ namespace Jewerly.Web.Areas.Default
                 constraints: new { id = @"\d+" },
                  namespaces: new[] { "Jewerly.Web.Areas.Default.Controllers" }
             );
-
             context.MapRoute(
                 "",
                 "{controller}/{action}/{id}",

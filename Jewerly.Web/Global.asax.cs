@@ -15,20 +15,27 @@ namespace Jewerly.Web
         protected void Application_Start()
         {
 
-            var adminArea = new AdminAreaRegistration();
-            var adminAreaContext = new AreaRegistrationContext(adminArea.AreaName, RouteTable.Routes);
-            adminArea.RegisterArea(adminAreaContext);
+           
 
             var defaultArea = new DefaultAreaRegistration();
             var defaultAreaContext = new AreaRegistrationContext(defaultArea.AreaName, RouteTable.Routes);
             defaultArea.RegisterArea(defaultAreaContext);
 
+            var adminArea = new AdminAreaRegistration();
+            var adminAreaContext = new AreaRegistrationContext(adminArea.AreaName, RouteTable.Routes);
+            adminArea.RegisterArea(adminAreaContext);
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            // RouteConfig.RegisterRoutes(RouteTable.Routes);
+            //RouteConfig.RegisterRoutes(RouteTable.Routes);
             //AreaRegistration.RegisterAllAreas();
 
+        }
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            //handle exceptions, send them via email, whatever
+            var exception = Server.GetLastError();
         }
     }
 }

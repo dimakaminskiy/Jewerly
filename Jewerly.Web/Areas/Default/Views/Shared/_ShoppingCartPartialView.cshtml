@@ -1,5 +1,4 @@
 ﻿@model Jewerly.Web.Models.ShoppingCartMiniModel
-
 <div class="btn-group cart" role="group">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" title="Корзина">
@@ -7,56 +6,10 @@
             <span class="glyphicon glyphicon-shopping-cart"></span>
             Корзина
             <span id="top-card-count">(@Model.Count)</span><br />
-           
-                <span id="top-card-totals">@Model.TotalPrice @Model.Currency</span>
-           
-        </div>
+            <span id="top-card-totals">@Model.TotalPrice @Model.Currency</span>
+           </div>
     </button>
     <div id="mini-shopping-cart" class="dropdown-menu popover popover-content">
         @Html.Partial("_ShoppingCartItemsPartialView", Model)
     </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @*<div id="mini-shopping-cart" class="dropdown-menu popover popover-content">
-        <div id="mini-shopping-cart-items">
-            <div class="buttons">
-                <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-sm pull-left">В корзину</a>
-            </div>
-            <div class="items">
-                <div class="item">
-                    <div class="picture col-xs-4">
-                        <a title="Show details for Fahrenheit 451 by Ray Bradbury" href="/fahrenheit-451-by-ray-bradbury">
-                            <img title="Show details for Fahrenheit 451 by Ray Bradbury" src="http://localhost:15536/content/images/thumbs/0000066_fahrenheit-451-by-ray-bradbury_70.jpeg" alt="Picture of Fahrenheit 451 by Ray Bradbury" class="img-responsive">
-                        </a>
-                    </div>
-                    <div class="product col-xs-8">
-                        <div class="name">
-                            <a href="/fahrenheit-451-by-ray-bradbury">Fahrenheit 451 by Ray Bradbury</a>
-                        </div>
-                        <div class="price">Unit price: <span>$27.00</span></div>
-                        <div class="quantity">Quantity: <span>4</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
-

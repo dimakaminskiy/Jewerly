@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Jewerly.Domain;
@@ -79,6 +80,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
                     ProductId = item.ProductId,
                     Quantity = item.Count,
                     UnitPrice = price,
+                    ChoiceAttributesInString = item.ChoiceAttributesInString,
                     Currency = currency.CurrencyCode
                 };
                 temp.TotalPrice = temp.UnitPrice*temp.Quantity;
@@ -115,7 +117,7 @@ namespace Jewerly.Web.Areas.Default.Controllers
             var currency = DataManager.Currencies.SearchFor(t => t.CurrencyId == currencyId).Single();
 
            var cart = ShoppingCart.GetCart(this, DataManager);
-           cart .AddProductToCart(productId,1);
+           cart .AddProductToCart(productId,1,"");
            var cartItems=  cart.GetCarts();
 
             var model = GetShoppingCartMiniModel(cartItems, currency);
@@ -135,7 +137,6 @@ namespace Jewerly.Web.Areas.Default.Controllers
             });
 
         }
-
         [HttpPost]
         public ActionResult AddProductToCart_Details(int productId, int count, int? attrId, int? attrOptionId)
         {
@@ -206,7 +207,8 @@ namespace Jewerly.Web.Areas.Default.Controllers
             var currency = DataManager.Currencies.SearchFor(t => t.CurrencyId == currencyId).Single();
 
             var cart = ShoppingCart.GetCart(this, DataManager);
-            cart.AddProductToCart(productId, count);
+            var attrAtring = (attribute == null) ? "" : attribute.Name + " " + option.Name;
+            cart.AddProductToCart(productId, count, attrAtring);
             var cartItems = cart.GetCarts();
 
             var model = GetShoppingCartMiniModel(cartItems, currency);
@@ -221,19 +223,37 @@ namespace Jewerly.Web.Areas.Default.Controllers
                 success = true
             });
           }
+        [HttpPost]
+        public ActionResult CleanCart()
+        {
+            var cart = ShoppingCart.GetCart(HttpContext, DataManager);
+            cart.EmptyCart();
 
 
+            int currencyId = GetCurrentCurrency();
+            var currency = DataManager.Currencies.SearchFor(t => t.CurrencyId == currencyId).Single();
 
+            var cartItems = cart.GetCarts();
+            var model = GetShoppingCartMiniModel(cartItems, currency);
+
+            var data = RenderViewToString(ControllerContext, "_ShoppingCart", model);
+            var mini = RenderViewToString(ControllerContext, "_ShoppingCartItemsPartialView", model);
+
+            return Json(new
+            {
+                success = true,
+                data = data,
+                mini = mini,
+                cartcountitems = model.Count,
+                carttotalprice = model.TotalPrice + " " + currency.CurrencyCode,
+            });
+  
+
+          
+        }
         public ShoppingCartController(DataManager dataManager) : base(dataManager)
         {
         }
-
-
-
-
-
-      
-
 
         public ActionResult MiniShoppingCart()
         {
@@ -241,42 +261,44 @@ namespace Jewerly.Web.Areas.Default.Controllers
             var cartItems = cart.GetCarts();
             int currencyId = GetCurrentCurrency();
             var currency = DataManager.Currencies.SearchFor(t => t.CurrencyId == currencyId).Single();
-            List<CartModel> carts = new List<CartModel>();
-            foreach (var item in cartItems)
-            {
-                var price = item.Product.Price * currency.Rate;
+            var model = GetShoppingCartMiniModel(cartItems, currency);
+            //List<CartModel> carts = new List<CartModel>();
+            //foreach (var item in cartItems)
+            //{
+            //    var price = item.Product.Price * currency.Rate;
 
-                if (item.Product.Markup != null)
-                {
-                    if (User.Identity.IsAuthenticated)
-                    {
-                        price = price + ((price / 100) * item.Product.Markup.Trade);
-                    }
-                    else
-                    {
-                        price = price + ((price / 100) * item.Product.Markup.Retail);
-                    }
-                }
+            //    if (item.Product.Markup != null)
+            //    {
+            //        if (User.Identity.IsAuthenticated)
+            //        {
+            //            price = price + ((price / 100) * item.Product.Markup.Trade);
+            //        }
+            //        else
+            //        {
+            //            price = price + ((price / 100) * item.Product.Markup.Retail);
+            //        }
+            //    }
 
 
-                if (item.Product.Discount != null)
-                {
-                    price = price - ((price / 100) * item.Product.Discount.Value);
-                }
-                carts.Add(new CartModel
-                {
-                    Id = item.Id,
-                    Name = item.Product.Name,
-                    SeoName = item.Product.SeoName,
-                    Picture = item.Product.Picture.Preview(),
-                    ProductId = item.ProductId,
-                    Quantity = item.Count,
-                    UnitPrice = price,
-                    Currency = currency.CurrencyCode
-                });
-            }
-            var model = new ShoppingCartMiniModel(carts);
-            model.Currency = currency.CurrencyCode;
+            //    if (item.Product.Discount != null)
+            //    {
+            //        price = price - ((price / 100) * item.Product.Discount.Value);
+            //    }
+            //    carts.Add(new CartModel
+            //    {
+            //        Id = item.Id,
+            //        Name = item.Product.Name,
+            //        SeoName = item.Product.SeoName,
+            //        Picture = item.Product.Picture.Preview(),
+            //        ProductId = item.ProductId,
+            //        Quantity = item.Count,
+            //        UnitPrice = price,
+            //        ChoiceAttributesInString = item.ChoiceAttributesInString,
+            //        Currency = currency.CurrencyCode
+            //    });
+            //}
+            //var model = new ShoppingCartMiniModel(carts);
+            //model.Currency = currency.CurrencyCode;
             return PartialView("_ShoppingCartPartialView",model);
             
         }

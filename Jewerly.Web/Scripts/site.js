@@ -76,6 +76,8 @@ function SetDiscountValueOnProductPicture() {
     var result = (mg - mgr) / 2;
     $(".discount-img").css("right", result);
     $(".discount-nm").css("right", result);
+    $(".product-info").css("margin-right", result);
+    $(".product-info").css("margin-left", result);
 }
 
 
@@ -98,4 +100,27 @@ $(document).ready(function () {
          var result = ((twidth - gwidth) / 2) + "px";
             g.css("left", result);
     });
+});
+
+
+//только цифры
+$(document).on("keydown", ".inp_count", function (e) {
+    if ($(this).is(':disabled'))
+        return false;
+    if ((e.which >= 48 && e.which <= 57) || (e.which >= 96 && e.which <= 105) || e.which == 8 || e.which == 46) {
+
+        if ($(this).val().length <= 1 && (e.which == 8 || e.which == 46))
+            return true;
+        var focusInput = $(this);
+        setTimeout(function () {
+            if (focusInput != null && focusInput.val() != 0) {
+                var load = focusInput.next(".product-qloading");
+                load.css('display', 'inline-block');
+                changeOrderCart(focusInput);
+            }
+        }, 500);
+
+    } else if ((e.which >= 112 && e.which <= 123) || (e.which >= 37 && e.which <= 40)) {
+    } else
+        return false;
 });

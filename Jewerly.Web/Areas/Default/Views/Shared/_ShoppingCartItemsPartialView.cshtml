@@ -1,7 +1,5 @@
 ﻿@using Jewerly.Web.Utils
 @model Jewerly.Web.Models.ShoppingCartMiniModel
-
-
     <div id="mini-shopping-cart-items">
         @if (Model.Items.Any())
         {
@@ -10,7 +8,6 @@
                 <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-sm pull-right">Оформить заказ</a>
             </div>
     <div class="items">
-
         @foreach (var item in Model.Items)
         {
             <div class="item row mgo">
@@ -25,6 +22,7 @@
                     </div>
                     <div>Цена: <span class="price">@item.UnitPrice.ToString("F2") @item.Currency</span></div>
                     <div class="quantity">Количество: <span>@item.Quantity</span></div>
+                    <div><b>@item.ChoiceAttributesInString</b></div>
                     <hr />
                 </div>
             </div>

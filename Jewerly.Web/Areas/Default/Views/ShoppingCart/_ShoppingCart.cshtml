@@ -3,14 +3,17 @@
 {
 
     <div>
-        <button class="btn btn-primary btn-lg pull-left" type="reset">Очистить корзину</button>
-        <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-lg pull-right">
-            Оформить заказ
-            <div>Cумма <span>@Model.TotalPrice</span> @Model.Currency</div>
+        <a href="@Url.Action("CleanCart", "ShoppingCart")" class="btn btn-primary btn-lg pull-left clean-cart">
+            Очистить корзину
         </a>
-    </div>
+            @*<button class="btn btn-primary btn-lg pull-left" type="reset">Очистить корзину</button>*@
+            <a href="@Url.Action("AddressAndPayment", "Checkout")" class="btn btn-default btn-lg pull-right">
+                Оформить заказ
+                <div>Cумма <span>@Model.TotalPrice</span> @Model.Currency</div>
+            </a>
+</div>
     <div class="clearfix" style="margin-bottom: 0.5em"></div>
-    <table class="table table-responsive table-bordered text-center">
+    <table class="table table-responsive table-bordered text-center" style ="min-width: 300px">
         <tr class="text-primary">
             <td>№</td>
             <td>Артикул</td>
@@ -28,24 +31,17 @@
                 <td>@(i + 1)</td>
                 <td>
                     @Html.DisplayFor(m => m.Items[i].ProductId)
-                    @*@Html.HiddenFor(m => m.Items[i].Id)*@
-
-                    <input type="hidden" value="@Model.Items[i].Id"
+                  <input type="hidden" value="@Model.Items[i].Id"
                            name="Items[@(i)].Id" id="Items_@(i)__Id">
                 </td>
                 <td>
-                    @Html.DisplayFor(m => m.Items[i].Name)
+                    @Html.DisplayFor(m => m.Items[i].Name)<br/>@Html.DisplayFor(m=>m.Items[i].ChoiceAttributesInString)
                 </td>
                 <td>
                     <img style="width: 150px; margin: auto" class="img-responsive shadow" src="@Html.DisplayFor(t => t.Items[i].Picture)"/>
                 </td>
                 <td>
-                    @*@Html.TextBoxFor(m => m.Items[i].Quantity,
-                  new { @class = "inp_count", 
-                  oldvalue = Model.Items[i].Quantity,
-                        min = "1"
-                  })*@
-                    <input id="@("cart_" + Model.Items[i].Id)" type="text" autocomplete="off" value="@Model.Items[i].Quantity" oldvalue="@Model.Items[i].Quantity" name="Items[@(i)].Quantity" maxlength="3" id="Items_@(i)__Quantity" class="inp_count">
+                   <input id="@("cart_" + Model.Items[i].Id)" type="text" autocomplete="off" value="@Model.Items[i].Quantity" oldvalue="@Model.Items[i].Quantity" name="Items[@(i)].Quantity" maxlength="3"  class="inp_count">
                     <div class="product-qloading">33333</div>
                 </td>
                 <td>
@@ -55,16 +51,9 @@
                     @Html.DisplayFor(m => m.Items[i].TotalPrice)
                 </td>
                 <td>
-
                     <button cartid="@Model.Items[i].Id" type="button" class="btn btn-xs btn-danger delete-cart">
                         <span class="glyphicon glyphicon-trash"></span>&nbsp;
                     </button>
-
-                    @*<button class="btn btn-info" type="button"> <span class="glyphicon  glyphicon-trash"></span> </button>*@
-                    @*<button type="button">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </button>*@
-                    @*<a href="#"><span class="glyphicon glyphicon-trash"></span></a>*@
                 </td>
             </tr>
         }

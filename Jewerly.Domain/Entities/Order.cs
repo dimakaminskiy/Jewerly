@@ -62,8 +62,8 @@ namespace Jewerly.Domain.Entities
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
-        public int ProductId { get; set; } 
-        public  string ChoiceAttributesInJson { get; set; }
+        public int ProductId { get; set; }
+        public string ChoiceAttributesInString { get; set; }
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
          public virtual Order Order { get; set; }
@@ -117,6 +117,7 @@ namespace Jewerly.Domain.Entities
             public int Id { get; set; }
             public string CartId { get; set; }
             public int ProductId { get; set; }
+            public string ChoiceAttributesInString { get; set; }
             public DateTime DateCreated { get; set; }
             public int Count { get; set; }
             public virtual Product Product { get; set; }

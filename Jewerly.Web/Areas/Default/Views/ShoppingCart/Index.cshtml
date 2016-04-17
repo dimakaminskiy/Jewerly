@@ -1,6 +1,6 @@
 ﻿@model  Jewerly.Web.Models.ShoppingCartMiniModel
 @{
-    ViewBag.Title = "Trandycats";
+    ViewBag.Title = "Trendycats";
     Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
 }
 
@@ -24,6 +24,11 @@
 </style>
 
 @section scripts{
+
+<script type="text/javascript">
+    AjaxCart.init('#top-card-count', '#top-card-totals', '#mini-shopping-cart-items');
+</script>
+
     <script>
         $(document).on("focusout", ".inp_count", function() {
             if ($(this).val() == '' || $(this).val() == 0)
@@ -31,23 +36,30 @@
         });
 
         $(document).on("click", ".delete-cart", function(e) {
-            //e.preventDefault();
-            //if ($(this).attr("delproduct" == 'F')) {
-            //    $(this).attr("delproduct", 'Y');
-            //    changeOrderCart(null);
-            //}
-            //alert($(this));
-            //alert($(this).attr("cartid"));
             var cartId = "#cart_" + $(this).attr("cartid");
             var cart = $(cartId);
             if (cart) {
                 cart.val(0);
                 changeOrderCart(null);
             }
-
-
         });
 
+        $(document).on("click", ".clean-cart", function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                cache: false,
+                async: false,
+                success: function (response) {
+                    setData(response);
+                  },
+                error: function (xhr, textStatus, exceptionThrown) { alert(JSON.parse(xhr.responseText)); }
+            });
+        });
+        
         $(document).on("keydown", ".inp_count", function(e) {
             if ($(this).is(':disabled'))
                 return false;
@@ -88,6 +100,26 @@
             }
         }
 
+
+
+        function setData(response) {
+            if (response.success) {
+                if (response.cartcountitems != undefined || response.cartcountitems != "") { // обновить кол-во товара в корзине
+                    $("#top-card-count").html("(" + response.cartcountitems + ")").css('opacity', 0).animate({ opacity: 1 });
+                }
+                if (response.mini) { // обновление списка покупок
+                    $("#mini-shopping-cart-items").replaceWith(response.mini).css('opacity', 0).animate({ opacity: 1 });
+                }
+                if (response.carttotalprice) { // общая цена
+                    $("#top-card-totals").html(response.carttotalprice).css('opacity', 0).animate({ opacity: 1 });
+                }
+
+                if (response.data) {
+                    $("#shopping-cart").html(response.data);
+                }
+            }
+        }
+        
         function changeOrderCart(focusInput) {
             var dataCart = $("#formAnswerScheme").serialize();
             $.ajax({
@@ -102,37 +134,16 @@
                 },
                 async: false,
                 success: function(response) {
-                    if (response.success) {
-                        if (response.cartcountitems != undefined || response.cartcountitems!="") { // обновить кол-во товара в корзине
-                            $("#top-card-count").html("(" + response.cartcountitems + ")").css('opacity', 0).animate({ opacity: 1 });
-                        }
-                        if (response.mini) { // обновление списка покупок
-                            $("#mini-shopping-cart-items").replaceWith(response.mini).css('opacity', 0).animate({ opacity: 1 });
-                        }
-                        if (response.carttotalprice) { // общая цена
-                            $("#top-card-totals").html(response.carttotalprice).css('opacity', 0).animate({ opacity: 1 });
-                        }
-
-
-                        $("#shopping-cart").html(response.data);
-                        if (focusInput) {
-                            var attrId = $(focusInput).attr("id");
-                            focusCampo(attrId);
-                        }
+                    setData(response);
+                    if (focusInput) {
+                        var attrId = $(focusInput).attr("id");
+                        focusCampo(attrId);
                     }
                 },
                 error: function(xhr, textStatus, exceptionThrown) { alert(JSON.parse(xhr.responseText)); }
             });
         }
 
-        //$(document).ready(function() {
-        //    $(".inp_count").validate({
-        //        onfocusout: false,
-        //        onkeyup: false,
-        //        onclick: false,
-        //        onsubmit: false
-        //    });
-        //});
 
     </script>
 

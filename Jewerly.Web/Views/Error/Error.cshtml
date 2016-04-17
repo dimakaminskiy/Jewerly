@@ -1,8 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewBag.Title = "Trandycats";
+    Layout = null;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Ошибка</title>
+    <title>Oops, cтраница не найдена-Trandycats</title>
     <style>
         html, body, table {
             height: 100%;
@@ -51,7 +55,9 @@
     <table>
         <tr>
             <td>
-                <div><a href="@Url.Action("Index","Store")">Вернуться на Главную</a></div>
+                <div>
+                    <a href="@Url.Action("Index", "Store")">Вернуться на Главную</a>
+                </div>
                 <img src="/Content/images/cloud.png">
             </td>
         </tr>

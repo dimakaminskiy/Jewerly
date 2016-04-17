@@ -168,7 +168,13 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                     sliderPicture.Caption = sliderPicture.Caption.Trim();
                     var oldPath = UrlToLocal(sliderPicture.Path);
                     string imgName = Path.GetFileName(oldPath);
-                    var newPath = UrlToLocal("~\\Content\\images\\slider\\" + imgName);
+                    var newPath = UrlToLocal("~/Content/images/slider/" + imgName);
+
+                    var dir = UrlToLocal("~/Content/images/slider");
+                    if (!Directory.Exists(dir))
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
                     System.IO.File.Move(oldPath, newPath);
 
                     sliderPicture.Path = "/Content/images/slider/" + imgName;

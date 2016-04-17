@@ -96,6 +96,14 @@
     <Compile Include="Migrations\201603261027532_orders1.Designer.cs">
       <DependentUpon>201603261027532_orders1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603270640192_43.cs" />
+    <Compile Include="Migrations\201603270640192_43.Designer.cs">
+      <DependentUpon>201603270640192_43.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603270655403_41.cs" />
+    <Compile Include="Migrations\201603270655403_41.Designer.cs">
+      <DependentUpon>201603270655403_41.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Db\ApplicationUser.cs" />
@@ -142,6 +150,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603261027532_orders1.resx">
       <DependentUpon>201603261027532_orders1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603270640192_43.resx">
+      <DependentUpon>201603270640192_43.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603270655403_41.resx">
+      <DependentUpon>201603270655403_41.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

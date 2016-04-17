@@ -2,7 +2,7 @@
 @using Jewerly.Web.Utils
 @model IEnumerable<Jewerly.Domain.Entities.Order>
     @{
-        ViewBag.Title = "Trandycats";
+        ViewBag.Title = "Trendycats";
         Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
     }
 
@@ -59,7 +59,8 @@
                                         {
                                             <tr>
                                                 <td>@item.Product.ProductId</td>
-                                                <td>@item.Product.Name</td>
+                                                <td>@item.Product.Name<br /> @item.ChoiceAttributesInString</td>
+
                                                 <td><img src="@item.Product.Picture.Preview()" /></td>
                                                 <td>@item.Quantity</td>
                                                 <td>@item.UnitPrice.ToString("F2")</td>

@@ -96,6 +96,10 @@ namespace Jewerly.Web.Areas.Admin.Controllers
 
                     try
                     {
+                        if (!Directory.Exists(UrlToLocal(TempFolder)))
+                        {
+                            Directory.CreateDirectory(UrlToLocal(TempFolder));
+                        }
                         img.Save(UrlToLocal(TempFolder) + "\\" + newName);
                         CleanUpTempFolder(UrlToLocal(TempFolder), 1);
                         return "/Content/images/Temp" + "/" + newName;

@@ -3,22 +3,16 @@
 @using Jewerly.Web.Utils
 @model Jewerly.Web.Models.StoreViewModel
 @{
-    ViewBag.Title = "Trandycats";
+    ViewBag.Title = "Trendycats";
     Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
 }
-
-
 <div class="col-sm-4 col-md-3">
-
     @Html.Partial("_SiteNavigationMenu", Model.MenuCategories)
     @Html.Partial("_FiltersPartialView", Model.Filters)
 </div> <!--левая часть End--->
-
 <div class="col-sm-8 col-md-9">
-
     <div class="row text-center product-filter shadow mgo">
         <div class="col-sm-6">
-
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Сортировка
@@ -28,7 +22,6 @@
             </div>
         </div>
         <div class="col-sm-6">
-
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Сумма 179,99">
                     <div id="exchange">
@@ -53,10 +46,7 @@
             </div>
         </div>
     </div>
-
     <div class="row text-center mgo">
-
-
         @if (Model.Products.List.Any())
         {
             int count = 0;
@@ -89,10 +79,7 @@
                         </div>
                     </div>
                 </div>
-
-
                 count++;
-
                 if (count == 2)
                 {
                     <div class="clearfix visible-xs"></div>
@@ -104,9 +91,7 @@
                     <div class="clearfix visible-xs"></div>
 
                 }
-
             }
-
         }
         else
         {
@@ -131,18 +116,12 @@
 
                         }) + string.Join("&", ((List<QueryFilter>)ViewBag.queryFilters).Select(h => "&" + h.AttributeName + "=" + h.AttributeOptionId)));
         }
-
     </div>
-
 </div>
-
-
 @section scripts {
-
     <script type="text/javascript">
         AjaxCart.init('#top-card-count', '#top-card-totals', '#mini-shopping-cart-items');
     </script>
-
     <script>
         $('.currency').click(function () {
             var t = $(this).attr("data-currency");
@@ -150,11 +129,7 @@
             $("#form-currency").submit();
         });
     </script>
-
-
-
     <script>
-
         $(document).ready(function () {
             $(document).on("show.bs.modal", "#myAlert", function (e) {
                 $("#myAlert .modal-content").css("height", "5.0em");
@@ -165,8 +140,6 @@
                 }, 1500));
 
             });
-
-
             $(".filter-option").click(function (event) {
                 event.preventDefault();
 
@@ -197,8 +170,6 @@
                 return false;
 
             });
-
-
             $("#execute-filter-btn").click(function () {
                 var orgLink = "@Request.Url.LocalPath";
                 var attributes = $("#filter span[id^='filter-name-']").filter('.selected');

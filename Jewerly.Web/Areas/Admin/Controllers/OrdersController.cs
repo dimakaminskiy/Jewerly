@@ -25,7 +25,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
                 orderStatusId = 1;
                 orders = orders.Where(t => t.OrderStatusId == 1);
             }
-            orders = orders.OrderBy(t => t.Id)
+            orders = orders.OrderByDescending(t => t.Id)
                 .Include(o => o.Country).Include(o => o.MethodOfDelivery)
                 .Include(o => o.MethodOfPayment).Include(o => o.OrderStatus).Include(t => t.Currency);
             var count = orders.Count();

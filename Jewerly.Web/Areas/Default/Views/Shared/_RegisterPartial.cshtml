@@ -2,21 +2,17 @@
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel"><img src="/Content/img/LogoTrandBig2.png" class="img-responsive" alt="Название" /></h4>
+    <h4 class="modal-title" id="myModalLabel"><img src="/Content/img/LogoTrandBig2.png" class="img-responsive" alt="Trendycats" /></h4>
 </div>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div class="modal-body">
-
         <!-- Nav tabs -->
         <ul class="nav nav-justified" role="tablist">
             <li role="presentation" class="active"><a href="#Register" aria-controls="Register" role="tab" data-toggle="tab">Регистрация</a></li>
             <li role="presentation"><a href="#Reg" aria-controls="Reg" role="tab" data-toggle="tab">Условия регистрации</a></li>
         </ul>
-
         <!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="Register">
@@ -31,15 +27,13 @@
                             @Html.ValidationMessageFor(model => model.LastName, "", new {@class = "text-danger"})
                         </div>
                     </div>
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.FirstName, htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.FirstName, new {htmlAttributes = new {@class = "form-control"}})
                             @Html.ValidationMessageFor(model => model.FirstName, "", new {@class = "text-danger"})
                         </div>
-                    </div>
-
+                   </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.MiddleName, htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
@@ -47,7 +41,6 @@
                             @Html.ValidationMessageFor(model => model.MiddleName, "", new {@class = "text-danger"})
                         </div>
                     </div>
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.CountryId, null, htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
@@ -55,7 +48,6 @@
                             @Html.ValidationMessageFor(model => model.CountryId, "", new {@class = "text-danger"})
                         </div>
                     </div>
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.City, htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
@@ -63,7 +55,6 @@
                             @Html.ValidationMessageFor(model => model.City, "", new {@class = "text-danger"})
                         </div>
                     </div>
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.Phone, htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
@@ -71,7 +62,6 @@
                             @Html.ValidationMessageFor(model => model.Phone, "", new {@class = "text-danger"})
                         </div>
                     </div>
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
@@ -79,7 +69,6 @@
                             @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger"})
                         </div>
                     </div>
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.Password, htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
@@ -87,7 +76,6 @@
                             @Html.ValidationMessageFor(model => model.Password, "", new {@class = "text-danger"})
                         </div>
                     </div>
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
@@ -95,7 +83,6 @@
                             @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new {@class = "text-danger"})
                         </div>
                     </div>
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.KindOfActivity, htmlAttributes: new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
@@ -132,13 +119,10 @@
                 </div>
             </div>
         </div>
-
-
     </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
         </div>
-
 }
 <script>
     //условия регистрации

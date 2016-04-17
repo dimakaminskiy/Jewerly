@@ -30,7 +30,7 @@ namespace Jewerly.Domain
         public int? CategoryPictureId { get; set; }
         public virtual CategoryPicture CategoryPicture { get; set; }
         public virtual ICollection<Product> Products { get; set; }
-     
+        public virtual Category ParentCategory { get; set; }
 
 
     }

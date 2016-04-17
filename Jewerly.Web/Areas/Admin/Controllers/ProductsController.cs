@@ -29,11 +29,10 @@ namespace Jewerly.Web.Areas.Admin.Controllers
         private SelectList GetSelectListPictures(int id)
         {
             SelectList list;
-            var selectedPic = DataManager.Products.GetAll().Select(t => t.PictureId).ToArray();
             if (id == 0)
             {
                 list =
-                    new SelectList(DataManager.Pictures.SearchFor(t=>selectedPic.All(g=>g!=t.Id)).OrderBy(x => x.Caption),
+                    new SelectList(DataManager.Pictures.GetAll().OrderBy(x => x.Caption),
                         "Id", "Caption").PreAppend( "-----------", "", true);
             }
             else
@@ -138,7 +137,7 @@ namespace Jewerly.Web.Areas.Admin.Controllers
             ViewBag.MarkupId = new SelectList(DataManager.Markups.GetAll(), "Id", "Name");
             ViewBag.CategoryId = GetSelectListCategories(product.CategoryId);
 
-            return View();
+            return View(product);
         }
 
         [HttpPost]

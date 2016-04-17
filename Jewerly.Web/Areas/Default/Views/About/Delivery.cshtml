@@ -1,14 +1,11 @@
 ﻿
 @{
-    ViewBag.Title = "Trandycats";
+    ViewBag.Title = "Trendycats";
     Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
 }
 
 <div class="col-md-12">
-
-
-<div class="hidden-xs hidden-sm">
-
+    <div class="hidden-xs hidden-sm">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist" id="DeliveryTab">
         <li role="presentation"><a href="#MinOrder" aria-controls="MinOrder" role="tab" data-toggle="tab">Минимальный заказ</a></li>
@@ -16,52 +13,41 @@
         <li role="presentation"><a href="#Pay" aria-controls="Pay" role="tab" data-toggle="tab">Оплата</a></li>
         <li role="presentation"><a href="#TermDelivery" aria-controls="TermDelivery" role="tab" data-toggle="tab">Срок доставки</a></li>
     </ul>
-
     <!-- Tab panes -->
     <div class="tab-content shadow bg">
         <div role="tabpanel" class="tab-pane fade" id="MinOrder">
-
             <p class="text-uppercase">Минимальный заказ для розничных и оптовых покупателей Украины, России, Белоруссии:</p>
-
             <p>Для РОЗНИЧНЫХ покупателей Украины - 120 грн.</p>
             <p>Для РОЗНИЧНЫХ покупателей России - 2000 руб.</p>
             <p>Для РОЗНИЧНЫХ покупателей Белоруссии - 200 000 бел. руб.</p>
             <p>Для ОПТОВЫХ покупателей Украины - 120 грн (по оптовым ценам, необходима регистрация как оптовик).</p>
             <p>Для ОПТОВЫХ покупателей России - 2000 руб (по оптовым ценам, необходима регистрация как оптовик).</p>
             <p>Для ОПТОВЫХ покупателей Белоруссии - 550 000 бел. руб (по оптовым ценам, необходима регистрация как оптовик).</p>
-
-        </div>
+            </div>
         <div role="tabpanel" class="tab-pane fade in active" id="Delivery">
             <ul>
                 Стоимость доставки для Розничных покупателей:
-
                 <li>
                     Доставка на <a href="http://novaposhta.ua/office" target="_blank">Склад «Новой почты»</a> при условии предоплаты - 25 грн. (любой вес);
                 </li>
-
                 <li>
                     Доставка на <a href="http://novaposhta.ua/office" target="_blank">Склад «Новой почты»</a> наложенным платежом (оплата при получении) - 25 грн. +3% от суммы заказа;
                 </li>
-
                 <li>
                     Доставка Курьером <a href="http://novaposhta.ua/" target="_blank">«Новой почты»</a> при условии предоплаты - 45 грн. (любой вес);
                 </li>
-
                 <li>
                     Доставка Курьером <a href="http://novaposhta.ua/" target="_blank">«Новой почты»</a> наложенным платежом (оплата при получении) - 45 грн. +3%от суммы заказа;
                 </li>
-
                 <li>
                     Доставка <a href="http://ukrposhta.ua/" target="_blank">«УкрПочтой»</a> при условии предоплаты - 10грн.;
                 </li>
-
                 <li>
                     Доставка <a href="http://ukrposhta.ua/" target="_blank">«УкрПочтой»</a> наложенным платежом (оплата при получении) - 10грн. +3.5%от суммы заказа;
                 </li>
             </ul>
             <ul>
                 Стоимость доставки для Оптовых покупателей:
-
                 <li>
                     Доставка на <a href="http://novaposhta.ua/office" target="_blank">Склад «Новой почты»</a> при условии предоплаты - 20 грн. + 3грн за кг;
                 </li>
@@ -83,34 +69,27 @@
                 </li>
             </ul>
         </div>
-
         <div role="tabpanel" class="tab-pane fade" id="Pay">
             <p class="text-uppercase">Оплатить товар Вы можете:</p>
-
             <ul>
                 <li>
                     перевод на карточный счет в <a href="https://privatbank.ua/ua/map/" target="_blank">кассе или терминале Приватбанка</a> (+ комиссия);
                 </li>
-
                 <li>
                     перевод через <a href="https://www.privat24.ua/#login" target="_blank">ПРИВАТ24</a> (+ комиссия);
                 </li>
-
                 <li>наложенным платежом при получении товара (доставка товара + обратная доставка денег);</li>
                 <li>или картой Visa/Mastercard.</li>
             </ul>
-
-        </div>
+            </div>
         <div role="tabpanel" class="tab-pane fade" id="TermDelivery">
             <ul>
-
                 <li>
                     Доставка осуществляется:
                     <ul>
                         <li>По всей территории Украины, России и Белоруссии;</li>
                     </ul>
                 </li>
-
                 <li>
                     Срок доставки по Украине:
                     <ul>
@@ -119,28 +98,21 @@
                         <li>Укрпочтой до 14 дней;</li>
                     </ul>
                 </li>
-
                 <li>
                     Вы можете отследить местоположение Вашего заказа:
                     <ul>
                         <li>
                             Для Новой почты перейдите по ссылке на сайт <a href="http://novaposhta.ua/tracking" target="_blank">«Новой почты»</a> и введите номер ТТН.
                         </li>
-
                         <li>
                             Для УкрПочты перейдите по ссылке на сайт <a href="http://ukrposhta.ua/ru/vidslidkuvati-forma-poshuku" target="_blank">УкрПочты</a> и введите номер Посылки.
                         </li>
                     </ul>
                 </li>
-
-            </ul>
-
-        </div>
+                </ul>
+            </div>
     </div>
-
 </div>
-
-
 
 <div class="visible-sm visible-xs">
 
@@ -182,23 +154,18 @@
                         <li>
                             Доставка на <a href="http://novaposhta.ua/office" target="_blank">Склад «Новой почты»</a> при условии предоплаты - 25 грн. (любой вес);
                         </li>
-
                         <li>
                             Доставка на <a href="http://novaposhta.ua/office" target="_blank">Склад «Новой почты»</a> наложенным платежом (оплата при получении) - 25 грн. +3% от суммы заказа;
                         </li>
-
                         <li>
                             Доставка Курьером <a href="http://novaposhta.ua/" target="_blank">«Новой почты»</a> при условии предоплаты - 45 грн. (любой вес);
                         </li>
-
                         <li>
                             Доставка Курьером <a href="http://novaposhta.ua/" target="_blank">«Новой почты»</a> наложенным платежом (оплата при получении) - 45 грн. +3%от суммы заказа;
                         </li>
-
                         <li>
                             Доставка <a href="http://ukrposhta.ua/" target="_blank">«УкрПочтой»</a> при условии предоплаты - 10грн.;
                         </li>
-
                         <li>
                             Доставка <a href="http://ukrposhta.ua/" target="_blank">«УкрПочтой»</a> наложенным платежом (оплата при получении) - 10грн. +3.5%от суммы заказа;
                         </li>

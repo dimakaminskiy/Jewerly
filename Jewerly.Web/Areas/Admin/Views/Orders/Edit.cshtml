@@ -150,7 +150,7 @@
             {
                 <tr>
                     <td>@item.Product.ProductId</td>
-                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Name<br/> @item.ChoiceAttributesInString</td>
                     <td><img src="@item.Product.Picture.Preview()"/></td>
                     <td>@item.Quantity</td>
                     <td>@item.UnitPrice.ToString("F2")</td>

@@ -61,12 +61,12 @@ namespace Jewerly.Web.Models
         }
 
         #endregion
-        public Cart GetCartItemByProductId(int productId)
+        public Cart GetCartItemByProductId(int productId, string attribute)
         {
             Cart cartItem = null;
             cartItem =
                 DataManager.Carts.SearchFor(x => x.CartId == ShoppingCartId)
-                    .SingleOrDefault(t => t.ProductId == productId);
+                    .SingleOrDefault(t => t.ProductId == productId && t.ChoiceAttributesInString==attribute);
             return cartItem;
         }
         public List<Cart> GetCarts()
@@ -74,9 +74,9 @@ namespace Jewerly.Web.Models
            return DataManager.Carts.SearchFor(t => t.CartId == ShoppingCartId).ToList();
         }
 
-        public void AddProductToCart(int productId, int count)
+        public void AddProductToCart(int productId, int count, string attribute)
         {
-            var cart = GetCartItemByProductId(productId);
+            var cart = GetCartItemByProductId(productId,attribute);
             if (cart == null) // новый товар
             {
                 cart = new Cart()
@@ -84,7 +84,8 @@ namespace Jewerly.Web.Models
                     ProductId = productId,
                     Count = count,
                     CartId = ShoppingCartId,
-                    DateCreated = DateTime.Now
+                    DateCreated = DateTime.Now,
+                    ChoiceAttributesInString = attribute
                 };
                 DataManager.Carts.Insert(cart);
             }
@@ -190,7 +191,8 @@ namespace Jewerly.Web.Models
                 {
                     ProductId = item.ProductId,
                     Quantity = item.Count,
-                    UnitPrice = price
+                    UnitPrice = price,
+                    ChoiceAttributesInString = item.ChoiceAttributesInString
                  };
                 list.Add(orderDetail);
             }
@@ -218,6 +220,7 @@ namespace Jewerly.Web.Models
         public string SeoName { get; set; }
         public string Picture { get; set; }
         public decimal UnitPrice { get; set; }
+        public string ChoiceAttributesInString { get; set; }
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
         public string Currency { get; set; }

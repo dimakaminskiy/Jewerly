@@ -6,30 +6,30 @@ namespace Jewerly.Web.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Введите Имя")]
         [Display(Name = "Имя")]
         public string FirstName { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Введите Фамилию")]
         [Display(Name = "Фамилия")]
         public string LastName { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Введите Отчество")]
         [Display(Name = "Отчество")]
         public string MiddleName { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Введите Телефон")]
         [Display(Name = "Телефон")]
         [RegularExpression(@"^(\+)?(\d{3,5})?\d{7,10}$", ErrorMessage = "Неверный номер теленфона")]
         public string Phone { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Введите E-mail")]
         [Display(Name = "E-mail")]
         public string Email { get; set; }        
        
         [Display(Name = "Страна")]
         public int CountryId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Введите Город")]
         [Display(Name = "Город")]
         public string City { get; set; }
         

@@ -1,19 +1,15 @@
 ﻿@using Jewerly.Web.Utils
 @model Jewerly.Web.Models.ProductDetailViewModel
 @{
-    ViewBag.Title = "Trandycats";
+    ViewBag.Title = "Trendycats";
     Layout = "~/Areas/Default/Views/Shared/DefaultLayout.cshtml";
 }
 <div class="col-sm-4 col-md-3">
     <!--левая часть--->
     @Html.Partial("_SiteNavigationMenu", Model.MenuCategories)
 </div> <!--левая часть End--->
-
-<div class="hidden">
-    
+<div class="hidden">  
 </div>
-
-
 <div class="col-sm-8 col-md-9">
     <div class="row mgo">
         <div class="content_silver text-center">
@@ -24,7 +20,7 @@
                         {
                             <div class="discount-img"></div>
                             <div class="discount-nm">
-                             <span>@Model.Product.Discount</span>%<br />скидка
+                                <span>@Model.Product.Discount</span>%<br/>скидка
                             </div>
                         }
                         <img class="img-responsive" src="@Model.Product.Picture.Image()" alt="@Model.Product.Name" title="@Model.Product.Name">
@@ -61,14 +57,14 @@
                                     <tr>
                                         <td class="attr">@Model.Product.ChoiceAttributes[i].Name</td>
                                         <td>
-                                            @Html.DropDownListFor(m => 
-                                           m.Product.ChoiceAttributes[i].ChoiceAttributeOptions,
-                                          new SelectList(Model.Product.ChoiceAttributes[i].ChoiceAttributeOptions,
-                                              "ChoiceAttributeOptionId", "Name"), new
-                                              {
-                                                  attr =  Model.Product.ChoiceAttributes[i].ProductChoiceAttributeId,
-                                                  id = "choiceAttribute"
-                                              })
+                                            @Html.DropDownListFor(m =>
+                                                m.Product.ChoiceAttributes[i].ChoiceAttributeOptions,
+                                                new SelectList(Model.Product.ChoiceAttributes[i].ChoiceAttributeOptions,
+                                                    "ChoiceAttributeOptionId", "Name"), new
+                                                    {
+                                                        attr = Model.Product.ChoiceAttributes[i].ProductChoiceAttributeId,
+                                                        id = "choiceAttribute"
+                                                    })
                                         </td>
                                     </tr>
                                 }
@@ -84,71 +80,58 @@
                         <div class="product-description">
                             @Model.Product.FullDescription
                         </div>
-                        </div>
                     </div>
+                </div>
             </div>
-            </div>
+        </div>
     </div>
 </div>
-<script>
-    $(".btn-buy").click(function() {
-        var url = "@Url.Action("AddProductToCart_Details", "ShoppingCart")";
-        var product = @Model.Product.Id;
-        var count = $(".inp_count").val();
-        var dropDown=$("#choiceAttribute");
-        var attr = dropDown.attr("attr");
-        var option = dropDown.val();
-      
-      $.ajax({
-            url: url,
-            type: 'POST',
-            dataType: 'json',
-            data: 
-                {
-                    productId: product,
-                    count: count,
-                    attrId:attr,
-                    attrOptionId:option
-                },
-            cache: false,
-            async: false,
-            success: function(response) {
-                if (response.cartcountitems) { // обновить кол-во товара в корзине
-                    $("#top-card-count").html("("+response.cartcountitems+")").css('opacity', 0).animate({opacity: 1});
-                }
-                if (response.cartitems) { // обновление списка покупок
-                    $("#mini-shopping-cart-items").replaceWith(response.cartitems).css('opacity', 0).animate({ opacity: 1 });
-                }
-                if (response.carttotalprice) { // общая цена
-                    $("#top-card-totals").html(response.carttotalprice).css('opacity', 0).animate({ opacity: 1 });
-                }
 
-                if (response.redirect) {
-                    location.href = response.redirect;
-                    return true;
-                }
-                if (response.message) {
-                    //display notification
-                    if (response.success == true) {
-                        //success
-                        //specify timeout for success messages
-                        displayBarNotification(response.message, 'success', 3500);
-                    }
-                    else {
-                        //no timeout for errors
-                        displayBarNotification(response.message, 'error', 0);
-                    }
-                    return false;
-                }
-       
-                return false;
+@section scripts {
+    <script type="text/javascript">
+        AjaxCart.init('#top-card-count', '#top-card-totals', '#mini-shopping-cart-items');
+        $(".btn-buy").click(function() {
+            var url = "@Url.Action("AddProductToCart_Details", "ShoppingCart")";
+            var product = @Model.Product.Id;
+            var count = $(".inp_count").val();
+            var dropDown = $("#choiceAttribute");
+            var attr = dropDown.attr("attr");
+            var option = dropDown.val();
 
-            },
-            error: function(xhr, textStatus, exceptionThrown) { alert(JSON.parse(xhr.responseText)); }
+            AjaxCart.addproducttocart_details(url, product, count, attr, option);
         });
-    });
-    $(document).on("focusout", ".inp_count", function() {
-        if ($(this).val() == '' || $(this).val() == 0)
-            $(this).val($(this).attr('oldvalue'));
-    });
-</script>
+        $(document).on("focusout", ".inp_count", function() {
+            if ($(this).val() == '' || $(this).val() == 0)
+                $(this).val($(this).attr('oldvalue'));
+        });
+        $(document).on("show.bs.modal", "#myAlert", function(e) {
+            $("#myAlert .modal-content").css("height", "5.0em");
+            var myAlert = $("#myAlert");
+            clearTimeout(myAlert.data('hideInterval'));
+            myAlert.data('hideInterval', setTimeout(function() {
+                myAlert.modal('hide');
+            }, 1500));
+        });
+        $(document).on("keydown", ".inp_count", function(e) {
+            if ($(this).is(':disabled'))
+                return false;
+            if ((e.which >= 48 && e.which <= 57) || (e.which >= 96 && e.which <= 105) || e.which == 8 || e.which == 46) {
+
+                if ($(this).val().length <= 1 && (e.which == 8 || e.which == 46))
+                    return true;
+                var focusInput = $(this);
+                setTimeout(function() {
+                    if (focusInput != null && focusInput.val() != 0) {
+                        var load = focusInput.next(".product-qloading");
+                        load.css('display', 'inline-block');
+                        changeOrderCart(focusInput);
+                    }
+                }, 500);
+
+            } else if ((e.which >= 112 && e.which <= 123) || (e.which >= 37 && e.which <= 40)) {
+            } else
+                return false;
+        });
+    </script>
+}
+

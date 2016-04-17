@@ -66,7 +66,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.CategoryPictureId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("CategoryPictureId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("CategoryPictureId", null, htmlAttributes: new { @class = "form-control pic-change" })
                         @Html.ValidationMessageFor(model => model.CategoryPictureId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -93,7 +93,7 @@
         <div class="col-sm-2">
             @*--------------------------------*@
             <div class="absolute_img pull-right">
-                <img src='@Html.DisplayFor(model => model.CategoryPicture.Path)' class="img-responsive shadow" />
+                <img src='@Html.DisplayFor(model => model.CategoryPicture.Path)' id="prodPic" class="img-responsive shadow" />
             </div>
             @*-------------------------------------*@
         </div>
@@ -103,3 +103,38 @@
 <div>
     <a href="@Url.Action("Index", "Categories")" class="btn btn-default">Назад</a>
 </div>
+
+@section scripts
+{
+    <script>
+        $(".pic-change").on("change", function () {
+            var picId = $(this).val();
+            var link = "@Url.Action("ProductPicturebyId")";
+            if (picId<1) {
+                $("#prodPic").attr("src", "/Content/img/NoImage.gif");
+                return;
+            }
+            
+            $.ajax({
+                type: "GET",
+                url: link,
+                traditional: true,
+                data: {
+                    id:picId
+                }
+            }).done(function (data) {
+                if (data.success === true) {
+                    $("#prodPic").attr("src", data.name);
+                }
+                else {
+                    alert(data.errorMessage);
+                }
+            }).fail(function (e) {
+                alert('Ошибка операции');
+            });
+
+
+
+        });
+    </script>
+}

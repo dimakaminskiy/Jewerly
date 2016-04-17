@@ -181,14 +181,6 @@ namespace Jewerly.Web.Areas.Default.Controllers
             var model = new RegisterViewModel
             {
                 AgreeWithConditions = true,
-                City = "Odessa",
-                ConfirmPassword = "123123",
-                Password = "123123",
-                Email = "rt@ua.fm",
-                FirstName = "dima",
-                MiddleName = "dima",
-                LastName = "dima",
-                KindOfActivity = "123"
             };
 
 
